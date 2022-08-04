@@ -1,0 +1,12 @@
+[
+  {
+    "name": "dummy_resource1",
+    "num": 2,
+    "className": "com.manong.stream.framework.resource.DummyResource"
+  },
+  {
+    "name": "dummy_resource2",
+    "num": 1,
+    "className": "com.manong.stream.framework.resource.DummyResource"
+  }
+]

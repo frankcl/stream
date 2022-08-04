@@ -1,0 +1,36 @@
+{
+  "name": "test_app",
+  "loggerKeys": ["key"],
+  "resources": [
+    {
+      "name": "dummy_resource",
+      "className": "com.manong.stream.framework.resource.DummyResource"
+    }
+  ],
+  "receivers": [
+    {
+      "name": "dummy_receiver",
+      "receiverClass": "com.manong.stream.framework.receiver.DummyReceiver",
+      "converterClass": "com.manong.stream.framework.receiver.DummyConverter",
+      "processors": ["dummy_processor1"]
+    }
+  ],
+  "processors": [
+    {
+      "name": "dummy_processor1",
+      "className": "com.manong.stream.framework.plugin.DummyPlugin",
+      "configMap": {
+        "counter": "dummy_resource"
+      },
+      "processors": {
+        "fail": "dummy_processor2"
+      }
+    },
+    {
+      "name": "dummy_processor2",
+      "className": "com.manong.stream.framework.plugin.DummyPlugin",
+      "processors": {
+      }
+    }
+  ]
+}

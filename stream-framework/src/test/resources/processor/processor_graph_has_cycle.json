@@ -1,0 +1,16 @@
+[
+  {
+    "name": "dummy_processor1",
+    "className": "com.manong.stream.framework.plugin.DummyPlugin",
+    "processors": {
+      "success": "dummy_processor2",
+    }
+  },
+  {
+    "name": "dummy_processor2",
+    "className": "com.manong.stream.framework.plugin.DummyPlugin",
+    "processors": {
+      "success": "dummy_processor1"
+    }
+  }
+]
