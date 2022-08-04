@@ -2,6 +2,7 @@ package com.manong.stream.framework.processor;
 
 import com.alibaba.fastjson.JSON;
 import com.manong.stream.sdk.common.UnacceptableException;
+import com.manong.weapon.base.common.Context;
 import com.manong.weapon.base.record.KVRecord;
 import com.manong.weapon.base.record.KVRecords;
 import com.manong.weapon.base.util.FileUtil;
@@ -36,14 +37,14 @@ public class ProcessorGraphSuite {
             kvRecord.put("fork", "success");
             KVRecords kvRecords = new KVRecords();
             kvRecords.addRecord(kvRecord);
-            processorGraph.process("dummy_processor1", kvRecords);
+            processorGraph.process("dummy_processor1", kvRecords, new Context());
         }
         {
             KVRecord kvRecord = new KVRecord();
             kvRecord.put("fork", "fail");
             KVRecords kvRecords = new KVRecords();
             kvRecords.addRecord(kvRecord);
-            processorGraph.process("dummy_processor1", kvRecords);
+            processorGraph.process("dummy_processor1", kvRecords, new Context());
         }
         ProcessorGraphFactory.sweep();
     }

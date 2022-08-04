@@ -1,6 +1,7 @@
 package com.manong.stream.framework.processor;
 
 import com.manong.stream.sdk.common.UnacceptableException;
+import com.manong.weapon.base.common.Context;
 import com.manong.weapon.base.record.KVRecords;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -78,21 +79,22 @@ public class ProcessorGraph {
     /**
      * 指定processor处理数据
      *
-     * @param processorName 处理processor名称
+     * @param name 处理processor名称
      * @param kvRecords 数据
+     * @param context 上下文
      * @throws UnacceptableException 不可接受异常
      */
-    public final void process(String processorName, KVRecords kvRecords) throws UnacceptableException {
-        if (StringUtils.isEmpty(processorName)) {
+    public final void process(String name, KVRecords kvRecords, Context context) throws UnacceptableException {
+        if (StringUtils.isEmpty(name)) {
             logger.warn("processor name is empty");
             throw new UnacceptableException("processor name is empty");
         }
-        Processor processor = processors.getOrDefault(processorName, null);
+        Processor processor = processors.getOrDefault(name, null);
         if (processor == null) {
-            logger.warn("processor is not found for name[{}]", processorName);
-            throw new UnacceptableException(String.format("processor is not found for name[%s]", processorName));
+            logger.warn("processor is not found for name[{}]", name);
+            throw new UnacceptableException(String.format("processor is not found for name[%s]", name));
         }
-        processor.process(kvRecords);
+        processor.process(kvRecords, context);
     }
 
     /**

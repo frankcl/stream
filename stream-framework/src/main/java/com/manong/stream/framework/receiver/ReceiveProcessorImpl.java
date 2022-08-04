@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 接收数据处理器实现
@@ -75,12 +76,13 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
     private void process(String processor, ProcessorGraph processorGraph,
                          KVRecord kvRecord) throws UnacceptableException {
         long startProcessTime = System.currentTimeMillis();
+        Context context = new Context();
         try {
             kvRecord.put(StreamConstants.STREAM_RECEIVER, name);
             kvRecord.put(StreamConstants.STREAM_START_PROCESS_TIME, startProcessTime);
             KVRecords kvRecords = new KVRecords();
             kvRecords.addRecord(kvRecord);
-            processorGraph.process(processor, kvRecords);
+            processorGraph.process(processor, kvRecords, context);
         } catch(UnacceptableException e) {
             logger.error("unacceptable exception occurred for receiver[{}]", name);
             logger.error(e.getMessage(), e);
@@ -90,7 +92,11 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             logger.error(e.getMessage(), e);
         } finally {
             kvRecord.put(StreamConstants.STREAM_PROCESS_TIME, System.currentTimeMillis() - startProcessTime);
-            JSONLogger.logging(kvRecord.getFieldMap(), StreamManager.loggerKeys);
+            Set<KVRecord> watchRecords = (Set<KVRecord>) context.get(StreamConstants.STREAM_KEEP_WATCH);
+            for (KVRecord watchRecord : watchRecords) {
+                JSONLogger.logging(watchRecord.getFieldMap(), StreamManager.loggerKeys);
+            }
+            context.featureMap.clear();
         }
     }
 

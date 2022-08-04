@@ -16,4 +16,5 @@ public class StreamConstants {
     public final static String STREAM_EXCEPTION_PROCESSOR = "__STREAM_EXCEPTION_PROCESSOR__";
     public final static String STREAM_EXCEPTION_RECEIVER = "__STREAM_EXCEPTION_RECEIVER__";
     public final static String STREAM_DEBUG_MESSAGE = "__STREAM_DEBUG_MESSAGE__";
+    public final static String STREAM_KEEP_WATCH = "__STREAM_KEEP_WATCH__";
 }

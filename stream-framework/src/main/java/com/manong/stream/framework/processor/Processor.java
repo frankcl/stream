@@ -3,10 +3,12 @@ package com.manong.stream.framework.processor;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.manong.stream.framework.common.StreamConstants;
+import com.manong.stream.framework.common.StreamManager;
 import com.manong.stream.framework.resource.ResourceInjector;
 import com.manong.stream.sdk.common.UnacceptableException;
 import com.manong.stream.sdk.plugin.Plugin;
 import com.manong.stream.sdk.common.ProcessResult;
+import com.manong.weapon.base.common.Context;
 import com.manong.weapon.base.record.KVRecord;
 import com.manong.weapon.base.record.KVRecords;
 import com.manong.weapon.base.util.ReflectParams;
@@ -90,12 +92,14 @@ public class Processor {
      * 调用用户plugin处理数据，并将处理结果分发到后续processor处理
      *
      * @param kvRecords 待处理数据
+     * @param context 上下文
      * @throws UnacceptableException 不可接受异常
      */
-    public final void process(KVRecords kvRecords) throws UnacceptableException {
+    public final void process(KVRecords kvRecords, Context context) throws UnacceptableException {
         ProcessResult processResult = new ProcessResult();
         for (int i = 0; i < kvRecords.getRecordCount(); i++) {
             KVRecord kvRecord = kvRecords.getRecord(i);
+            StreamManager.keepWatchRecord(kvRecord, context);
             long startTime = System.currentTimeMillis();
             recordProcessTrace(kvRecord);
             try {
@@ -118,7 +122,7 @@ public class Processor {
             }
         }
         for (String fork : processResult.getForks()) {
-            if (processors.containsKey(fork)) processors.get(fork).process(processResult.getRecords(fork));
+            if (processors.containsKey(fork)) processors.get(fork).process(processResult.getRecords(fork), context);
             else logger.warn("fork processor[{}] is not found for processor[{}]", fork, name);
         }
     }
