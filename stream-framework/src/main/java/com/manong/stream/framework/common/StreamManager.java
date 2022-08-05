@@ -44,11 +44,11 @@ public class StreamManager {
     }
 
     /**
-     * 记录stream框架日志
+     * 提交stream框架日志
      *
      * @param featureMap 日志数据
      */
-    public static void logging(Map<String, Object> featureMap) {
+    public static void commitLog(Map<String, Object> featureMap) {
         if (streamLogger != null) streamLogger.logging(featureMap);
         else logger.warn("stream logger not init");
     }

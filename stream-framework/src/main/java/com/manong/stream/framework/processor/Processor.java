@@ -98,11 +98,11 @@ public class Processor {
     public final void process(KVRecords kvRecords, Context context) throws UnacceptableException {
         ProcessResult processResult = new ProcessResult();
         for (int i = 0; i < kvRecords.getRecordCount(); i++) {
+            long startProcessTime = System.currentTimeMillis();
             KVRecord kvRecord = kvRecords.getRecord(i);
-            StreamManager.keepWatchRecord(kvRecord, context);
-            long startTime = System.currentTimeMillis();
-            recordProcessTrace(kvRecord);
             try {
+                StreamManager.keepWatchRecord(kvRecord, context);
+                commitProcessTrace(kvRecord);
                 ProcessResult result = plugin.handle(kvRecord);
                 if (result != null) processResult.addResult(result);
             } catch (UnacceptableException e) {
@@ -113,8 +113,8 @@ public class Processor {
                 kvRecord.put(StreamConstants.STREAM_EXCEPTION_PROCESSOR, name);
                 logger.warn("process record exception for processor[{}]", name);
             } finally {
-                long processTime = System.currentTimeMillis() - startTime;
-                recordProcessTime(kvRecord, processTime);
+                long processTime = System.currentTimeMillis() - startProcessTime;
+                commitProcessTime(kvRecord, processTime);
             }
             if (++processCount % 1000 == 0) {
                 plugin.flush();
@@ -151,11 +151,11 @@ public class Processor {
     }
 
     /**
-     * 记录处理轨迹
+     * 提交处理轨迹
      *
      * @param kvRecord 数据
      */
-    private void recordProcessTrace(KVRecord kvRecord) {
+    private void commitProcessTrace(KVRecord kvRecord) {
         if (!kvRecord.has(StreamConstants.STREAM_PROCESS_TRACE)) {
             kvRecord.put(StreamConstants.STREAM_PROCESS_TRACE, new JSONArray());
         }
@@ -164,12 +164,12 @@ public class Processor {
     }
 
     /**
-     * 记录处理时间
+     * 提交处理时间
      *
      * @param kvRecord 数据
      * @param processTime 处理时间
      */
-    private void recordProcessTime(KVRecord kvRecord, long processTime) {
+    private void commitProcessTime(KVRecord kvRecord, long processTime) {
         if (!kvRecord.has(StreamConstants.STREAM_PROCESSOR_TIME)) {
             kvRecord.put(StreamConstants.STREAM_PROCESSOR_TIME, new JSONObject());
         }

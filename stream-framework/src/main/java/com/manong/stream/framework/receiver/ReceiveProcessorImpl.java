@@ -54,7 +54,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             logger.error(e.getMessage(), e);
             context.put(StreamConstants.STREAM_EXCEPTION_RECEIVER, name);
             context.put(StreamConstants.STREAM_DEBUG_MESSAGE, "接收数据转换异常");
-            StreamManager.logging(context.getFeatureMap());
+            StreamManager.commitLog(context.getFeatureMap());
             return;
         }
         ProcessorGraph processorGraph = currentThreadProcessorGraph();
@@ -94,7 +94,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             kvRecord.put(StreamConstants.STREAM_PROCESS_TIME, System.currentTimeMillis() - startProcessTime);
             Set<KVRecord> watchRecords = (Set<KVRecord>) context.get(StreamConstants.STREAM_KEEP_WATCH);
             for (KVRecord watchRecord : watchRecords) {
-                StreamManager.logging(watchRecord.getFieldMap());
+                StreamManager.commitLog(watchRecord.getFieldMap());
             }
             context.sweep();
         }
