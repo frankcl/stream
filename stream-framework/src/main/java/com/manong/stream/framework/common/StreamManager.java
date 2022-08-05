@@ -1,9 +1,15 @@
 package com.manong.stream.framework.common;
 
 import com.manong.weapon.base.common.Context;
+import com.manong.weapon.base.log.JSONLogger;
 import com.manong.weapon.base.record.KVRecord;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -14,8 +20,38 @@ import java.util.Set;
  */
 public class StreamManager {
 
-    /* 日志key */
-    public static Set<String> loggerKeys = initLoggerKeys();
+    private final static Logger logger = LoggerFactory.getLogger(StreamManager.class);
+
+    /* 缺省stream框架日志文件 */
+    private final static String STREAM_LOGGER_FILE = "./logs/stream_framework.log";
+    /* 基本日志key */
+    private final static Set<String> BASE_LOGGER_KEYS = buildBaseLoggerKeys();
+
+    /* stream框架日志 */
+    private static JSONLogger streamLogger;
+
+    /**
+     * 构建stream框架日志
+     *
+     * @param filename 日志文件
+     * @param loggerKeys 日志记录key集合
+     */
+    public static void buildStreamLogger(String filename, List<String> loggerKeys) {
+        Set<String> keys = new HashSet<>(loggerKeys);
+        keys.addAll(BASE_LOGGER_KEYS);
+        filename = StringUtils.isEmpty(filename) ? STREAM_LOGGER_FILE : filename;
+        streamLogger = new JSONLogger(filename, keys);
+    }
+
+    /**
+     * 记录stream框架日志
+     *
+     * @param featureMap 日志数据
+     */
+    public static void logging(Map<String, Object> featureMap) {
+        if (streamLogger != null) streamLogger.logging(featureMap);
+        else logger.warn("stream logger not init");
+    }
 
     /**
      * 监管流程数据
@@ -38,16 +74,16 @@ public class StreamManager {
      *
      * @return 初始化日志字段
      */
-    private static Set<String> initLoggerKeys() {
-        Set<String> loggerKeys = new HashSet<>();
-        loggerKeys.add(StreamConstants.STREAM_DEBUG_MESSAGE);
-        loggerKeys.add(StreamConstants.STREAM_EXCEPTION_PROCESSOR);
-        loggerKeys.add(StreamConstants.STREAM_PROCESS_TIME);
-        loggerKeys.add(StreamConstants.STREAM_RECEIVER);
-        loggerKeys.add(StreamConstants.STREAM_PROCESS_TRACE);
-        loggerKeys.add(StreamConstants.STREAM_PROCESSOR_TIME);
-        loggerKeys.add(StreamConstants.STREAM_START_PROCESS_TIME);
-        loggerKeys.add(StreamConstants.STREAM_EXCEPTION_RECEIVER);
-        return loggerKeys;
+    private static Set<String> buildBaseLoggerKeys() {
+        Set<String> baseLoggerKeys = new HashSet<>();
+        baseLoggerKeys.add(StreamConstants.STREAM_DEBUG_MESSAGE);
+        baseLoggerKeys.add(StreamConstants.STREAM_EXCEPTION_PROCESSOR);
+        baseLoggerKeys.add(StreamConstants.STREAM_PROCESS_TIME);
+        baseLoggerKeys.add(StreamConstants.STREAM_RECEIVER);
+        baseLoggerKeys.add(StreamConstants.STREAM_PROCESS_TRACE);
+        baseLoggerKeys.add(StreamConstants.STREAM_PROCESSOR_TIME);
+        baseLoggerKeys.add(StreamConstants.STREAM_START_PROCESS_TIME);
+        baseLoggerKeys.add(StreamConstants.STREAM_EXCEPTION_RECEIVER);
+        return baseLoggerKeys;
     }
 }

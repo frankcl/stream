@@ -9,7 +9,6 @@ import com.manong.stream.sdk.common.UnacceptableException;
 import com.manong.stream.sdk.receiver.ReceiveConverter;
 import com.manong.stream.sdk.receiver.ReceiveProcessor;
 import com.manong.weapon.base.common.Context;
-import com.manong.weapon.base.log.JSONLogger;
 import com.manong.weapon.base.record.KVRecord;
 import com.manong.weapon.base.record.KVRecords;
 import org.slf4j.Logger;
@@ -55,7 +54,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             logger.error(e.getMessage(), e);
             context.put(StreamConstants.STREAM_EXCEPTION_RECEIVER, name);
             context.put(StreamConstants.STREAM_DEBUG_MESSAGE, "接收数据转换异常");
-            JSONLogger.logging(context.getFeatureMap(), StreamManager.loggerKeys);
+            StreamManager.logging(context.getFeatureMap());
             return;
         }
         ProcessorGraph processorGraph = currentThreadProcessorGraph();
@@ -95,7 +94,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             kvRecord.put(StreamConstants.STREAM_PROCESS_TIME, System.currentTimeMillis() - startProcessTime);
             Set<KVRecord> watchRecords = (Set<KVRecord>) context.get(StreamConstants.STREAM_KEEP_WATCH);
             for (KVRecord watchRecord : watchRecords) {
-                JSONLogger.logging(watchRecord.getFieldMap(), StreamManager.loggerKeys);
+                StreamManager.logging(watchRecord.getFieldMap());
             }
             context.sweep();
         }

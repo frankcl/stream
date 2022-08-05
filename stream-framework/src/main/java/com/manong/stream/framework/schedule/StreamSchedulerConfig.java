@@ -21,6 +21,7 @@ public class StreamSchedulerConfig {
     private final static Logger logger = LoggerFactory.getLogger(StreamSchedulerConfig.class);
 
     public String name;
+    public String loggerFile;
     public List<String> loggerKeys;
     public List<ReceiveControllerConfig> receivers = new ArrayList<>();
     public List<ProcessorConfig> processors = new ArrayList<>();

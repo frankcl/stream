@@ -40,6 +40,7 @@ public class StreamRecordConverter extends ReceiveConverter {
             logger.error("convert stream record failed");
             return null;
         }
+        kvRecord.put(TUNNEL_RECORD_TYPE, streamRecord.getRecordType().name());
         KVRecords kvRecords = new KVRecords();
         kvRecords.addRecord(kvRecord);
         return kvRecords;

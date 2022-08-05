@@ -44,7 +44,7 @@ public class StreamScheduler {
      */
     public boolean start() throws Exception {
         logger.info("stream scheduler[{}] is starting ...", config.name);
-        if (config.loggerKeys != null) StreamManager.loggerKeys.addAll(config.loggerKeys);
+        StreamManager.buildStreamLogger(config.loggerFile, config.loggerKeys);
         if (config.resources != null) {
             for (ResourceConfig resourceConfig : config.resources) {
                 ResourceManager.registerResource(resourceConfig);
