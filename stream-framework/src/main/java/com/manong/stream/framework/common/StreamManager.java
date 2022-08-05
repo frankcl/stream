@@ -49,7 +49,7 @@ public class StreamManager {
      * @param featureMap 日志数据
      */
     public static void commitLog(Map<String, Object> featureMap) {
-        if (streamLogger != null) streamLogger.logging(featureMap);
+        if (streamLogger != null) streamLogger.commit(featureMap);
         else logger.warn("stream logger not init");
     }
 
