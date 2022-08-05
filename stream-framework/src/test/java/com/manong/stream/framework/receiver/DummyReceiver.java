@@ -1,7 +1,6 @@
 package com.manong.stream.framework.receiver;
 
 import com.manong.stream.sdk.receiver.Receiver;
-import com.manong.weapon.base.common.Context;
 import com.manong.weapon.base.record.KVRecord;
 import com.manong.weapon.base.record.KVRecords;
 import org.slf4j.Logger;
@@ -36,7 +35,7 @@ public class DummyReceiver extends Receiver {
                 kvRecords.addRecord(kvRecord);
                 try {
                     logger.info("produce record[{}]", kvRecord);
-                    receiveProcessor.process(new Context(), kvRecords);
+                    receiveProcessor.process(kvRecords);
                     Thread.sleep(1000);
                 } catch (Throwable e) {
                     logger.error(e.getMessage(), e);

@@ -60,13 +60,11 @@ public class ReceiveProcessorSuite {
             kvRecord.put("key", "value2");
             kvRecords.addRecord(kvRecord);
         }
-        Context context = new Context();
-        receiveProcessor.process(context, kvRecords);
+        receiveProcessor.process(kvRecords);
     }
 
     @Test
     public void testProcessNullRecord() throws Exception {
-        Context context = new Context();
-        receiveProcessor.process(context, null);
+        receiveProcessor.process(null);
     }
 }

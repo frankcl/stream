@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * 资源注解
+ * 框架解析注解实现Resource注入
  *
  * @author frankcl
  * @create 2019-06-13 11:14

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.openservices.ons.api.*;
 import com.manong.stream.sdk.receiver.Receiver;
-import com.manong.weapon.base.common.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +44,7 @@ public class ONSReceiver extends Receiver {
             consumer = ONSFactory.createConsumer(properties);
             consumer.subscribe(consumerConfig.topic, consumerConfig.tags, (message, consumeContext) -> {
                 try {
-                    receiveProcessor.process(new Context(), message);
+                    receiveProcessor.process(message);
                     return Action.CommitMessage;
                 } catch (Throwable e) {
                     logger.error("process message[{}] failed", message.getMsgID());

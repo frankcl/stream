@@ -7,6 +7,9 @@ import java.util.Map;
 
 /**
  * 插件：处理数据，满足功能需求
+ * 插件抛出普通异常框架捕获处理消化
+ * 插件抛出UnacceptableException或Error框架认为处理失败，重新处理数据
+ *
  * 用户定义插件继承此类，实现以下方法
  * 1. init: 初始化插件
  * 2. destroy: 销毁插件

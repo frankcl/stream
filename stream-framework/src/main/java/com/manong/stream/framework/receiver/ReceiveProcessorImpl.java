@@ -45,8 +45,9 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
     }
 
     @Override
-    public void process(Context context, Object object) throws UnacceptableException {
+    public void process(Object object) throws UnacceptableException {
         KVRecords kvRecords;
+        Context context = new Context();
         try {
             kvRecords = converter.convert(context, object);
             if (kvRecords == null) throw new RuntimeException("convert record failed");
@@ -96,7 +97,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             for (KVRecord watchRecord : watchRecords) {
                 JSONLogger.logging(watchRecord.getFieldMap(), StreamManager.loggerKeys);
             }
-            context.featureMap.clear();
+            context.sweep();
         }
     }
 

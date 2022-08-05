@@ -11,6 +11,7 @@ import java.util.Set;
 
 /**
  * 数据处理结果
+ * 处理结果区分分支，根据分支将数据分发下游
  *
  * @author frankcl
  * @create 2019-05-27 16:23

@@ -7,6 +7,7 @@ import java.util.Map;
 
 /**
  * 接收数据转换器
+ * 负责将数据源数据转换为KVRecords
  *
  * @author frankcl
  * @date 2022-08-01 10:32:15
