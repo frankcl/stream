@@ -8,6 +8,8 @@ import com.manong.weapon.base.common.Context;
 import com.manong.weapon.base.record.KVRecord;
 import com.manong.weapon.base.record.KVRecords;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -19,6 +21,8 @@ import java.util.Map;
  * @date 2022-08-04 15:39:18
  */
 public class JSONMessageConverter extends ReceiveConverter {
+
+    private final static Logger logger = LoggerFactory.getLogger(JSONMessageConverter.class);
 
     private final static String DEFAULT_MESSAGE_ID = "message_id";
     private final static String DEFAULT_MESSAGE_KEY = "message_key";
@@ -45,7 +49,10 @@ public class JSONMessageConverter extends ReceiveConverter {
     @Override
     public KVRecords convert(Context context, Object object) throws Exception {
         Message message = (Message) object;
-        if (message == null) return null;
+        if (message == null) {
+            logger.error("convert record is null or not ONS message");
+            return null;
+        }
         context.put(messageId, message.getMsgID());
         if (!StringUtils.isEmpty(message.getKey())) context.put(messageKey, message.getKey());
         String content = new String(message.getBody(), Charset.forName("UTF-8"));

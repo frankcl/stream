@@ -1,8 +1,15 @@
 package com.manong.stream.boost.receiver.memory;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.manong.stream.sdk.annotation.Resource;
 import com.manong.stream.sdk.receiver.Receiver;
+import com.manong.weapon.base.record.KVRecords;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * 内存数据接收器
@@ -14,17 +21,36 @@ import java.util.Map;
  */
 public class MemoryReceiver extends Receiver {
 
+    private final static Logger logger = LoggerFactory.getLogger(MemoryReceiver.class);
+
+    private MemoryReceiveHandler[] handlers;
+    @Resource(name = "${recordQueue}")
+    private BlockingQueue<KVRecords> recordQueue;
+
     public MemoryReceiver(Map<String, Object> configMap) {
         super(configMap);
     }
 
     @Override
     public boolean start() {
-        return false;
+        logger.info("memory receiver is starting ...");
+        MemoryReceiverConfig receiveConfig = JSON.toJavaObject(
+                new JSONObject(configMap), MemoryReceiverConfig.class);
+        if (!receiveConfig.check()) return false;
+        String name = "memory-receive-handler";
+        handlers = new MemoryReceiveHandler[receiveConfig.threadNum];
+        for (int i = 0; i < receiveConfig.threadNum; i++) {
+            handlers[i] = new MemoryReceiveHandler(String.format("%s-%d", name, i), recordQueue, receiveProcessor);
+            handlers[i].start();
+        }
+        logger.info("memory receiver has been started");
+        return true;
     }
 
     @Override
     public void stop() {
-
+        logger.info("memory receiver is stopping ...");
+        for (int i = 0; i < handlers.length; i++) handlers[i].stop();
+        logger.info("memory receiver has been stopped");
     }
 }

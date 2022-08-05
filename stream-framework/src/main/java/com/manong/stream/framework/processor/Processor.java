@@ -60,11 +60,11 @@ public class Processor {
         params.values = new Object[] { config.pluginConfig };
         try {
             plugin = (Plugin) ReflectUtil.newInstance(config.className, params);
+            ResourceInjector.inject(plugin, config.pluginConfig);
             if (!plugin.init()) {
                 logger.error("init plugin[{}] failed", name);
                 return false;
             }
-            ResourceInjector.inject(plugin, config.pluginConfig);
             logger.info("init processor[{}] success", name);
             return true;
         } catch (Exception e) {

@@ -26,7 +26,7 @@
         </dependency>
         <dependency>
             <groupId>com.manong</groupId>
-            <artifactId>stream-framework</artifactId>
+            <artifactId>stream-sdk</artifactId>
             <version>${stream.version}</version>
         </dependency>
     </dependencies>
