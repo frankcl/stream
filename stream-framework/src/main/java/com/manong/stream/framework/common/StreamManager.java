@@ -23,7 +23,7 @@ public class StreamManager {
     private final static Logger logger = LoggerFactory.getLogger(StreamManager.class);
 
     /* 缺省stream框架日志文件 */
-    private final static String STREAM_LOGGER_FILE = "./logs/stream_framework.log";
+    private final static String STREAM_LOGGER_FILE = "./logs/stream.log";
     /* 基本日志key */
     private final static Set<String> BASE_LOGGER_KEYS = buildBaseLoggerKeys();
 
