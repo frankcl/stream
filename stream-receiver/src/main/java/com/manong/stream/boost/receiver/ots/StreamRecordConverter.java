@@ -1,6 +1,7 @@
 package com.manong.stream.boost.receiver.ots;
 
 import com.alicloud.openservices.tablestore.model.StreamRecord;
+import com.manong.stream.sdk.common.StreamConstants;
 import com.manong.stream.sdk.receiver.ReceiveConverter;
 import com.manong.weapon.aliyun.ots.OTSConverter;
 import com.manong.weapon.base.common.Context;
@@ -21,8 +22,6 @@ public class StreamRecordConverter extends ReceiveConverter {
 
     private final static Logger logger = LoggerFactory.getLogger(StreamRecordConverter.class);
 
-    public final static String TUNNEL_RECORD_TYPE = "__TUNNEL_RECORD_TYPE__";
-
     public StreamRecordConverter(Map<String, Object> configMap) {
         super(configMap);
     }
@@ -34,13 +33,12 @@ public class StreamRecordConverter extends ReceiveConverter {
             logger.error("convert record is null or not stream record");
             return null;
         }
-        context.put(TUNNEL_RECORD_TYPE, streamRecord.getRecordType().name());
+        context.put(StreamConstants.STREAM_RECORD_TYPE, streamRecord.getRecordType().name());
         KVRecord kvRecord = OTSConverter.convertStreamRecord(streamRecord);
         if (kvRecord == null) {
             logger.error("convert stream record failed");
             return null;
         }
-        kvRecord.put(TUNNEL_RECORD_TYPE, streamRecord.getRecordType().name());
         KVRecords kvRecords = new KVRecords();
         kvRecords.addRecord(kvRecord);
         return kvRecords;

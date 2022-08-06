@@ -1,6 +1,6 @@
 package com.manong.stream.framework.receiver;
 
-import com.manong.stream.framework.common.StreamConstants;
+import com.manong.stream.sdk.common.StreamConstants;
 import com.manong.stream.framework.common.StreamManager;
 import com.manong.stream.framework.processor.ProcessorConfig;
 import com.manong.stream.framework.processor.ProcessorGraph;
@@ -11,6 +11,7 @@ import com.manong.stream.sdk.receiver.ReceiveProcessor;
 import com.manong.weapon.base.common.Context;
 import com.manong.weapon.base.record.KVRecord;
 import com.manong.weapon.base.record.KVRecords;
+import com.manong.weapon.base.util.RandomID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +55,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             logger.error(e.getMessage(), e);
             context.put(StreamConstants.STREAM_EXCEPTION_RECEIVER, name);
             context.put(StreamConstants.STREAM_DEBUG_MESSAGE, "接收数据转换异常");
-            StreamManager.commitLog(context.getFeatureMap());
+            StreamManager.commitLog(context);
             return;
         }
         ProcessorGraph processorGraph = currentThreadProcessorGraph();
@@ -78,6 +79,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
         long startProcessTime = System.currentTimeMillis();
         Context context = new Context();
         try {
+            context.put(StreamConstants.STREAM_TRACE_ID, RandomID.build());
             kvRecord.put(StreamConstants.STREAM_RECEIVER, name);
             kvRecord.put(StreamConstants.STREAM_START_PROCESS_TIME, startProcessTime);
             KVRecords kvRecords = new KVRecords();
@@ -94,7 +96,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             kvRecord.put(StreamConstants.STREAM_PROCESS_TIME, System.currentTimeMillis() - startProcessTime);
             Set<KVRecord> watchRecords = (Set<KVRecord>) context.get(StreamConstants.STREAM_KEEP_WATCH);
             for (KVRecord watchRecord : watchRecords) {
-                StreamManager.commitLog(watchRecord.getFieldMap());
+                StreamManager.commitLog(watchRecord);
             }
             context.sweep();
         }

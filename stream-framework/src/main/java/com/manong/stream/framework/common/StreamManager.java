@@ -1,5 +1,6 @@
 package com.manong.stream.framework.common;
 
+import com.manong.stream.sdk.common.StreamConstants;
 import com.manong.weapon.base.common.Context;
 import com.manong.weapon.base.log.JSONLogger;
 import com.manong.weapon.base.record.KVRecord;
@@ -7,10 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 数据流管理
@@ -44,12 +42,25 @@ public class StreamManager {
     }
 
     /**
-     * 提交stream框架日志
+     * 提交stream日志
      *
-     * @param featureMap 日志数据
+     * @param kvRecord 数据
      */
-    public static void commitLog(Map<String, Object> featureMap) {
+    public static void commitLog(KVRecord kvRecord) {
+        Map<String, Object> featureMap = new HashMap<>(kvRecord.getFieldMap());
+        featureMap.put(StreamConstants.STREAM_RECORD_ID, kvRecord.getId());
+        featureMap.put(StreamConstants.STREAM_RECORD_TYPE, kvRecord.getRecordType().name());
         if (streamLogger != null) streamLogger.commit(featureMap);
+        else logger.warn("stream logger not init");
+    }
+
+    /**
+     * 提交stream日志
+     *
+     * @param context 上下文
+     */
+    public static void commitLog(Context context) {
+        if (streamLogger != null) streamLogger.commit(context.getFeatureMap());
         else logger.warn("stream logger not init");
     }
 
@@ -63,6 +74,10 @@ public class StreamManager {
         Set<KVRecord> watchRecords = context.contains(StreamConstants.STREAM_KEEP_WATCH) ?
             (Set<KVRecord>) context.get(StreamConstants.STREAM_KEEP_WATCH) : new HashSet<>();
         if (watchRecords.contains(kvRecord)) return;
+        String traceId = (String) context.get(StreamConstants.STREAM_TRACE_ID);
+        String processor = (String) context.get(StreamConstants.STREAM_PROCESSOR);
+        if (!StringUtils.isEmpty(traceId)) kvRecord.put(StreamConstants.STREAM_TRACE_ID, traceId);
+        if (!StringUtils.isEmpty(processor)) kvRecord.put(StreamConstants.STREAM_BIRTH_PROCESSOR, processor);
         watchRecords.add(kvRecord);
         if (!context.contains(StreamConstants.STREAM_KEEP_WATCH)) {
             context.put(StreamConstants.STREAM_KEEP_WATCH, watchRecords);
@@ -84,6 +99,10 @@ public class StreamManager {
         baseLoggerKeys.add(StreamConstants.STREAM_PROCESSOR_TIME);
         baseLoggerKeys.add(StreamConstants.STREAM_START_PROCESS_TIME);
         baseLoggerKeys.add(StreamConstants.STREAM_EXCEPTION_RECEIVER);
+        baseLoggerKeys.add(StreamConstants.STREAM_BIRTH_PROCESSOR);
+        baseLoggerKeys.add(StreamConstants.STREAM_RECORD_TYPE);
+        baseLoggerKeys.add(StreamConstants.STREAM_RECORD_ID);
+        baseLoggerKeys.add(StreamConstants.STREAM_TRACE_ID);
         return baseLoggerKeys;
     }
 }

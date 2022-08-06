@@ -2,7 +2,7 @@ package com.manong.stream.framework.processor;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.manong.stream.framework.common.StreamConstants;
+import com.manong.stream.sdk.common.StreamConstants;
 import com.manong.stream.framework.common.StreamManager;
 import com.manong.stream.framework.resource.ResourceInjector;
 import com.manong.stream.sdk.common.UnacceptableException;
@@ -97,6 +97,7 @@ public class Processor {
      */
     public final void process(KVRecords kvRecords, Context context) throws UnacceptableException {
         ProcessResult processResult = new ProcessResult();
+        context.put(StreamConstants.STREAM_PROCESSOR, name);
         for (int i = 0; i < kvRecords.getRecordCount(); i++) {
             long startProcessTime = System.currentTimeMillis();
             KVRecord kvRecord = kvRecords.getRecord(i);
