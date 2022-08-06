@@ -7,6 +7,7 @@ import com.manong.stream.sdk.receiver.ReceiveProcessor;
 import com.manong.stream.sdk.receiver.Receiver;
 import com.manong.weapon.base.util.ReflectParams;
 import com.manong.weapon.base.util.ReflectUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,6 +97,7 @@ public class ReceiveController {
      * @return 成功返回true，否则返回false
      */
     private boolean initConverter() {
+        if (StringUtils.isEmpty(config.converterClass)) return true;
         ReflectParams params = new ReflectParams();
         params.types = new Class[] { Map.class };
         params.values = new Object[] { config.converterConfigMap };

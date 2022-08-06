@@ -1,4 +1,4 @@
-package com.manong.stream.framework.receiver;
+package com.manong.stream.test.receiver;
 
 import com.manong.stream.sdk.receiver.Receiver;
 import com.manong.weapon.base.record.KVRecord;
@@ -13,25 +13,27 @@ import java.util.Random;
  * @author frankcl
  * @date 2022-08-04 17:05:41
  */
-public class DummyReceiver extends Receiver {
+public class TestReceiver extends Receiver {
 
-    private final static Logger logger = LoggerFactory.getLogger(DummyReceiver.class);
+    private final static Logger logger = LoggerFactory.getLogger(TestReceiver.class);
 
     private boolean running = false;
-    private Thread dummyThread;
+    private Thread workThread;
 
-    public DummyReceiver(Map<String, Object> configMap) {
+    public TestReceiver(Map<String, Object> configMap) {
         super(configMap);
     }
 
     @Override
     public boolean start() {
         running = true;
-        dummyThread = new Thread(() -> {
+        workThread = new Thread(() -> {
             while (running) {
                 KVRecords kvRecords = new KVRecords();
                 KVRecord kvRecord = new KVRecord();
-                kvRecord.put("key", new Random().nextInt(1000));
+                int key = new Random().nextInt(1000);
+                kvRecord.put("key", key);
+                kvRecord.put("fork", key % 2 == 0 ? "success" : "fail");
                 kvRecords.addRecord(kvRecord);
                 try {
                     logger.info("produce record[{}]", kvRecord);
@@ -42,16 +44,16 @@ public class DummyReceiver extends Receiver {
                 }
             }
         });
-        dummyThread.start();
+        workThread.start();
         return true;
     }
 
     @Override
     public void stop() {
         running = false;
-        dummyThread.interrupt();
+        workThread.interrupt();
         try {
-            dummyThread.join();
+            if (workThread.isAlive()) workThread.join();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

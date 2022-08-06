@@ -37,38 +37,34 @@ public class ResourceManagerSuite {
 
     @Test
     public void testBorrowAndReturn() throws Exception {
-        Resource resource = ResourceManager.borrowResource("dummy_resource2");
+        Resource resource = ResourceManager.borrowResource("counter2");
         Assert.assertTrue(resource != null);
         AtomicInteger counter = (AtomicInteger) resource.get();
-        Assert.assertEquals(0, counter.get());
+        Assert.assertEquals(10, counter.get());
         counter.addAndGet(2);
         Assert.assertTrue(ResourceManager.returnResource(resource));
 
-        resource = ResourceManager.borrowResource("dummy_resource2");
+        resource = ResourceManager.borrowResource("counter2");
         counter = (AtomicInteger) resource.get();
-        Assert.assertEquals(2, counter.get());
+        Assert.assertEquals(12, counter.get());
         Assert.assertTrue(ResourceManager.returnResource(resource));
     }
 
     @Test
     public void testUnregister() {
-        ResourceManager.unregisterResource("dummy_resource1");
-        Resource resource = ResourceManager.borrowResource("dummy_resource1");
+        ResourceManager.unregisterResource("counter1");
+        Resource resource = ResourceManager.borrowResource("counter1");
         Assert.assertTrue(resource == null);
     }
 
     @Test
     public void testGetResource() {
         {
-            AtomicInteger counter = ResourceManager.getResource("dummy_resource1", AtomicInteger.class);
+            AtomicInteger counter = ResourceManager.getResource("counter1", AtomicInteger.class);
             Assert.assertTrue(counter.get() == 0);
         }
         {
-            AtomicInteger counter = ResourceManager.getResource("dummy_resource", AtomicInteger.class);
-            Assert.assertTrue(counter == null);
-        }
-        {
-            AtomicInteger counter = ResourceManager.getResource("dummy_resource", AtomicInteger.class);
+            AtomicInteger counter = ResourceManager.getResource("counter", AtomicInteger.class);
             Assert.assertTrue(counter == null);
         }
     }

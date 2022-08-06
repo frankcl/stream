@@ -37,14 +37,14 @@ public class ProcessorGraphSuite {
             kvRecord.put("fork", "success");
             KVRecords kvRecords = new KVRecords();
             kvRecords.addRecord(kvRecord);
-            processorGraph.process("dummy_processor1", kvRecords, new Context());
+            processorGraph.process("processor1", kvRecords, new Context());
         }
         {
             KVRecord kvRecord = new KVRecord();
             kvRecord.put("fork", "fail");
             KVRecords kvRecords = new KVRecords();
             kvRecords.addRecord(kvRecord);
-            processorGraph.process("dummy_processor1", kvRecords, new Context());
+            processorGraph.process("processor1", kvRecords, new Context());
         }
         ProcessorGraphFactory.sweep();
     }

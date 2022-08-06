@@ -47,10 +47,6 @@ public class ReceiveControllerConfig {
             logger.error("receiver class name is empty");
             return false;
         }
-        if (StringUtils.isEmpty(converterClass)) {
-            logger.error("receive converter class name is empty");
-            return false;
-        }
         if (processors == null || processors.isEmpty()) {
             logger.error("processors are empty");
             return false;

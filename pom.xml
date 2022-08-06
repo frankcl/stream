@@ -10,6 +10,7 @@
     <version>1.0</version>
     <modules>
         <module>stream-sdk</module>
+        <module>stream-test</module>
         <module>stream-framework</module>
         <module>stream-resource</module>
         <module>stream-resource-aliyun</module>

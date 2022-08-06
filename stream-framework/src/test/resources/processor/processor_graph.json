@@ -1,21 +1,21 @@
 [
   {
-    "name": "dummy_processor1",
-    "className": "com.manong.stream.framework.plugin.DummyPlugin",
+    "name": "processor1",
+    "className": "com.manong.stream.test.plugin.TestPlugin",
     "processors": {
-        "success": "dummy_processor2",
-        "fail": "dummy_processor3"
+        "success": "processor2",
+        "fail": "processor3"
     }
   },
   {
-    "name": "dummy_processor2",
-    "className": "com.manong.stream.framework.plugin.DummyPlugin",
+    "name": "processor2",
+    "className": "com.manong.stream.test.plugin.TestPlugin",
     "processors": {
     }
   },
   {
-    "name": "dummy_processor3",
-    "className": "com.manong.stream.framework.plugin.DummyPlugin",
+    "name": "processor3",
+    "className": "com.manong.stream.test.plugin.TestPlugin",
     "processors": {
     }
   }

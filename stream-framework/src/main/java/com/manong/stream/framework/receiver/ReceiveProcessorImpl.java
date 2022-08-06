@@ -49,7 +49,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
         KVRecords kvRecords;
         Context context = new Context();
         try {
-            kvRecords = converter.convert(context, object);
+            kvRecords = converter == null ? (KVRecords) object : converter.convert(context, object);
             if (kvRecords == null) throw new RuntimeException("convert record failed");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

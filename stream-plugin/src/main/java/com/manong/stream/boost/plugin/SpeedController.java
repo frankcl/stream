@@ -17,7 +17,7 @@ import java.util.Map;
 public class SpeedController extends Plugin {
 
     @Resource(name = "${rateLimiter}")
-    private RateLimiter rateLimiter = null;
+    protected RateLimiter rateLimiter = null;
 
     public SpeedController(Map<String, Object> configMap) {
         super(configMap);

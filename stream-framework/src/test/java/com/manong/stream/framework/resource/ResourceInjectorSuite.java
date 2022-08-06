@@ -1,6 +1,7 @@
 package com.manong.stream.framework.resource;
 
 import com.alibaba.fastjson.JSON;
+import com.manong.stream.test.common.TestObject;
 import com.manong.weapon.base.util.FileUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -38,19 +39,19 @@ public class ResourceInjectorSuite {
     @Test
     public void testInjectSuccess() throws Exception {
         Map<String, Object> configMap = new HashMap<>();
-        configMap.put("dummy_resource", "dummy_resource2");
-        DummyObject dummyObject = new DummyObject();
-        ResourceInjector.inject(dummyObject, configMap);
-        Assert.assertTrue(dummyObject.counter1 != null);
-        Assert.assertTrue(dummyObject.counter2 != null);
+        configMap.put("counter2", "counter2");
+        TestObject testObject = new TestObject();
+        ResourceInjector.inject(testObject, configMap);
+        Assert.assertTrue(testObject.counter1 != null);
+        Assert.assertTrue(testObject.counter2 != null);
     }
 
     @Test(expected = RuntimeException.class)
     public void testInjectFail() throws Exception {
         ResourceManager.unregisterAllResources();
         Map<String, Object> configMap = new HashMap<>();
-        configMap.put("dummy_resource", "dummy_resource2");
-        DummyObject dummyObject = new DummyObject();
-        ResourceInjector.inject(dummyObject, configMap);
+        configMap.put("counter", "counter2");
+        TestObject testObject = new TestObject();
+        ResourceInjector.inject(testObject, configMap);
     }
 }

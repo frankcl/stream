@@ -1,12 +1,14 @@
 [
   {
-    "name": "dummy_resource1",
+    "name": "counter1",
     "num": 2,
-    "className": "com.manong.stream.framework.resource.DummyResource"
+    "className": "com.manong.stream.test.resource.CounterResource"
   },
   {
-    "name": "dummy_resource2",
-    "num": 1,
-    "className": "com.manong.stream.framework.resource.DummyResource"
+    "name": "counter2",
+    "className": "com.manong.stream.test.resource.CounterResource",
+    "configMap": {
+      "initValue": 10
+    }
   }
 ]

@@ -1,12 +1,7 @@
 [
   {
-    "name": "dummy_receiver",
-    "receiverClass": "com.manong.stream.framework.receiver.DummyReceiver",
-    "converterClass": "com.manong.stream.framework.receiver.DummyConverter",
-    "receiverConfigMap": {
-    },
-    "converterConfigMap": {
-    },
-    "processors": ["dummy_processor1"]
+    "name": "receiver",
+    "receiverClass": "com.manong.stream.test.receiver.TestReceiver",
+    "processors": ["processor1"]
   }
 ]

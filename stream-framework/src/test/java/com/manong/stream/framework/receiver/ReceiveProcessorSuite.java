@@ -2,9 +2,7 @@ package com.manong.stream.framework.receiver;
 
 import com.alibaba.fastjson.JSON;
 import com.manong.stream.framework.processor.ProcessorConfig;
-import com.manong.stream.sdk.receiver.ReceiveConverter;
 import com.manong.stream.sdk.receiver.ReceiveProcessor;
-import com.manong.weapon.base.common.Context;
 import com.manong.weapon.base.record.KVRecord;
 import com.manong.weapon.base.record.KVRecords;
 import com.manong.weapon.base.util.FileUtil;
@@ -15,7 +13,6 @@ import org.junit.Test;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,7 +23,6 @@ public class ReceiveProcessorSuite {
 
     private String processorGraphFile = this.getClass().getResource(
             "/processor/processor_graph.json").getPath();
-    private ReceiveConverter receiveConverter;
     private ReceiveProcessor receiveProcessor;
 
     @Before
@@ -35,16 +31,13 @@ public class ReceiveProcessorSuite {
         List<ProcessorConfig> processorConfigList = JSON.parseArray(content, ProcessorConfig.class);
         Assert.assertTrue(processorConfigList != null);
         List<String> processors = new ArrayList<>();
-        processors.add("dummy_processor1");
-        receiveConverter = new DummyConverter(new HashMap<>());
-        Assert.assertTrue(receiveConverter.init());
-        receiveProcessor = new ReceiveProcessorImpl("test_receiver", processors,
-                processorConfigList, receiveConverter);
+        processors.add("processor1");
+        receiveProcessor = new ReceiveProcessorImpl("receiver", processors,
+                processorConfigList, null);
     }
 
     @After
     public void tearDown() {
-        receiveConverter.destroy();
     }
 
     @Test
@@ -53,11 +46,13 @@ public class ReceiveProcessorSuite {
         {
             KVRecord kvRecord = new KVRecord();
             kvRecord.put("key", "value1");
+            kvRecord.put("fork", "success");
             kvRecords.addRecord(kvRecord);
         }
         {
             KVRecord kvRecord = new KVRecord();
             kvRecord.put("key", "value2");
+            kvRecord.put("fork", "fail");
             kvRecords.addRecord(kvRecord);
         }
         receiveProcessor.process(kvRecords);

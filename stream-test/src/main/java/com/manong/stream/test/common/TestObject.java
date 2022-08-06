@@ -1,4 +1,4 @@
-package com.manong.stream.framework.resource;
+package com.manong.stream.test.common;
 
 import com.manong.stream.sdk.annotation.Resource;
 
@@ -8,11 +8,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author frankcl
  * @date 2022-07-28 18:17:47
  */
-public class DummyObject {
+public class TestObject {
 
-    @Resource(name = "dummy_resource1", required = false)
+    @Resource(name = "counter1", required = false)
     public AtomicInteger counter1;
 
-    @Resource(name = "${dummy_resource}")
+    @Resource(name = "${counter2}")
     public AtomicInteger counter2;
 }
