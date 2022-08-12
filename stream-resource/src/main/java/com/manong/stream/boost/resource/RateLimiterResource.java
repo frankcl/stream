@@ -33,12 +33,13 @@ public class RateLimiterResource extends Resource<RateLimiter> {
         }
         Double permitsPerSecond = MapUtil.getValue(configMap, KEY_PERMITS_PER_SECOND, Double.class);
         if (permitsPerSecond == null) return null;
+        logger.info("create rate limiter success");
         return RateLimiter.create(permitsPerSecond);
     }
 
     @Override
     public void destroy() {
-        logger.info("rate limiter has been destroyed");
+        logger.info("destroy rate limiter success");
         object = null;
     }
 }
