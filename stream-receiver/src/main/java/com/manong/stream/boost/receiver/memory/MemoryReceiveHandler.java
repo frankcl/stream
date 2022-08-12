@@ -39,6 +39,8 @@ public class MemoryReceiveHandler implements Runnable {
                 KVRecords kvRecords = recordQueue.poll(1, TimeUnit.SECONDS);
                 if (kvRecords == null) continue;
                 receiveProcessor.process(kvRecords);
+            } catch (InterruptedException e) {
+                logger.warn(e.getMessage(), e);
             } catch (Throwable e) {
                 logger.error("process memory record failed");
                 logger.error(e.getMessage(), e);
@@ -54,7 +56,7 @@ public class MemoryReceiveHandler implements Runnable {
         running = true;
         workThread = new Thread(this, name);
         workThread.start();
-        logger.info("memory receive handler[{}] has been started");
+        logger.info("memory receive handler[{}] has been started", name);
     }
 
     /**

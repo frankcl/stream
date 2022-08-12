@@ -25,7 +25,7 @@ public class MemoryReceiver extends Receiver {
 
     private MemoryReceiveHandler[] handlers;
     @Resource(name = "${recordQueue}")
-    private BlockingQueue<KVRecords> recordQueue;
+    protected BlockingQueue<KVRecords> recordQueue;
 
     public MemoryReceiver(Map<String, Object> configMap) {
         super(configMap);

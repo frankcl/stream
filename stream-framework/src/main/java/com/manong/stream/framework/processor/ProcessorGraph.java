@@ -23,7 +23,7 @@ public class ProcessorGraph {
     private List<ProcessorConfig> processorGraphConfig;
     private Map<String, Processor> processors;
 
-    ProcessorGraph(List<ProcessorConfig> processorGraphConfig) {
+    public ProcessorGraph(List<ProcessorConfig> processorGraphConfig) {
         this.processorGraphConfig = processorGraphConfig;
     }
 

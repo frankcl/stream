@@ -48,11 +48,11 @@ public class JSONMessageConverter extends ReceiveConverter {
 
     @Override
     public KVRecords convert(Context context, Object object) throws Exception {
-        Message message = (Message) object;
-        if (message == null) {
+        if (object == null || !(object instanceof Message)) {
             logger.error("convert record is null or not ONS message");
             return null;
         }
+        Message message = (Message) object;
         context.put(messageId, message.getMsgID());
         if (!StringUtils.isEmpty(message.getKey())) context.put(messageKey, message.getKey());
         String content = new String(message.getBody(), Charset.forName("UTF-8"));

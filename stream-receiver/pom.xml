@@ -29,5 +29,23 @@
             <artifactId>stream-sdk</artifactId>
             <version>${stream.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.manong</groupId>
+            <artifactId>stream-test</artifactId>
+            <scope>test</scope>
+            <version>${stream.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.manong</groupId>
+            <artifactId>stream-framework</artifactId>
+            <scope>test</scope>
+            <version>${stream.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.manong</groupId>
+            <artifactId>stream-resource</artifactId>
+            <scope>test</scope>
+            <version>${stream.version}</version>
+        </dependency>
     </dependencies>
 </project>
