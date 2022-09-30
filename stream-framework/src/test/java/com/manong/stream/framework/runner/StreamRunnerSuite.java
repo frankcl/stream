@@ -1,4 +1,4 @@
-package com.manong.stream.framework.schedule;
+package com.manong.stream.framework.runner;
 
 import org.junit.Test;
 
@@ -6,11 +6,11 @@ import org.junit.Test;
  * @author frankcl
  * @date 2022-08-04 17:27:09
  */
-public class StreamSchedulerSuite {
+public class StreamRunnerSuite {
 
     private String streamSchedulerFile = this.getClass().getResource(
-            "/schedule/scheduler.json").getPath();
-    private StreamScheduler streamScheduler;
+            "/runner/scheduler.json").getPath();
+    private StreamRunner streamRunner;
 
     @Test
     public void testRun() throws Exception {
@@ -23,6 +23,6 @@ public class StreamSchedulerSuite {
         });
         thread.start();
         String[] args = new String[] {"-c", streamSchedulerFile};
-        StreamScheduler.main(args);
+        StreamRunner.run(args);
     }
 }

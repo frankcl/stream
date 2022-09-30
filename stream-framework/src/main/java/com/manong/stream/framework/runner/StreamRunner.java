@@ -1,4 +1,4 @@
-package com.manong.stream.framework.schedule;
+package com.manong.stream.framework.runner;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.Feature;
@@ -19,21 +19,20 @@ import java.nio.charset.Charset;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * 数据流调度器
+ * 数据流运行器
  *
  * @author frankcl
  * @date 2022-08-03 14:36:39
  */
-public class StreamScheduler {
+public class StreamRunner {
 
-    private final static Logger logger = LoggerFactory.getLogger(StreamScheduler.class);
+    private final static Logger logger = LoggerFactory.getLogger(StreamRunner.class);
 
-    private CountDownLatch countDownLatch;
-    private StreamSchedulerConfig config;
+    private StreamRunnerConfig config;
     private ReceiveManager receiveManager;
 
-    public StreamScheduler(StreamSchedulerConfig config) {
-        if (config == null || !config.check()) throw new RuntimeException("check scheduler config failed");
+    public StreamRunner(StreamRunnerConfig config) {
+        if (config == null || !config.check()) throw new RuntimeException("check stream config failed");
         this.config = config;
     }
 
@@ -43,7 +42,7 @@ public class StreamScheduler {
      * @return 成功返回true，否则返回false
      */
     public boolean start() throws Exception {
-        logger.info("stream scheduler[{}] is starting ...", config.name);
+        logger.info("stream[{}] is starting ...", config.name);
         StreamManager.buildStreamLogger(config.loggerFile, config.loggerKeys);
         if (config.resources != null) {
             for (ResourceConfig resourceConfig : config.resources) {
@@ -54,8 +53,7 @@ public class StreamScheduler {
         receiveManager = new ReceiveManager(config.receivers, config.processors);
         if (!receiveManager.init()) return false;
         if (!receiveManager.start()) return false;
-        countDownLatch = new CountDownLatch(1);
-        logger.info("stream scheduler[{}] has been started", config.name);
+        logger.info("stream[{}] has been started", config.name);
         return true;
     }
 
@@ -63,12 +61,11 @@ public class StreamScheduler {
      * 停止调度器
      */
     public void stop() {
-        logger.info("stream scheduler[{}] is stopping ...", config.name);
+        logger.info("stream[{}] is stopping ...", config.name);
         if (receiveManager != null) receiveManager.destroy();
         ProcessorGraphFactory.sweep();
         ResourceManager.unregisterAllResources();
-        if (countDownLatch != null) countDownLatch.countDown();
-        logger.info("stream scheduler[{}] has been stopped", config.name);
+        logger.info("stream[{}] has been stopped", config.name);
     }
 
     /**
@@ -103,40 +100,41 @@ public class StreamScheduler {
     private static String parseCommands(String[] args) throws ParseException {
         Options options = new Options();
         options.addOption(Option.builder("h").longOpt("help").
-                desc("help information for stream scheduler").build());
+                desc("help information for stream runner").build());
         options.addOption(Option.builder("c").hasArg().required().desc("stream config file path").build());
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine command = parser.parse(options, args);
         if (command.hasOption("h")) {
-            formatter.printHelp(StreamScheduler.class.getName(), options);
+            formatter.printHelp(StreamRunner.class.getName(), options);
             System.exit(0);
         }
         return command.getOptionValue("c");
     }
 
     /**
-     * 数据流调度启动入口
+     * 数据流启动入口
      *
      * @param args 命令行参数
      * @throws Exception
      */
-    public static void main(String[] args) throws Exception {
+    public static void run(String[] args) throws Exception {
         JSON.DEFAULT_PARSER_FEATURE &= ~Feature.UseBigDecimal.getMask();
         String configFile = parseCommands(args);
         String content = FileUtil.read(configFile, Charset.forName("UTF-8"));
-        StreamSchedulerConfig config = JSON.parseObject(content, StreamSchedulerConfig.class);
-        StreamScheduler streamScheduler = new StreamScheduler(config);
+        StreamRunnerConfig config = JSON.parseObject(content, StreamRunnerConfig.class);
+        StreamRunner streamRunner = new StreamRunner(config);
+        CountDownLatch countDownLatch = new CountDownLatch(1);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            logger.info("shutdown hook thread is triggered");
-            streamScheduler.stop();
+            streamRunner.stop();
+            countDownLatch.countDown();
         }));
-        if (!streamScheduler.start()) {
-            logger.error("start stream scheduler[{}] failed", config.name);
+        if (!streamRunner.start()) {
+            logger.error("start stream[{}] failed", config.name);
             System.exit(1);
         }
-        logger.info("stream scheduler[{}] is working ...", config.name);
-        streamScheduler.countDownLatch.await();
+        logger.info("stream[{}] is working ...", config.name);
+        countDownLatch.await();
         Thread.sleep(3000);
         System.exit(0);
     }

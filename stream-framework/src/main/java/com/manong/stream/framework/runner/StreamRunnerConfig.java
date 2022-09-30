@@ -1,4 +1,4 @@
-package com.manong.stream.framework.schedule;
+package com.manong.stream.framework.runner;
 
 import com.manong.stream.framework.processor.ProcessorConfig;
 import com.manong.stream.framework.receiver.ReceiveControllerConfig;
@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 数据流调度器配置
+ * 数据流运行配置
  *
  * @author frankcl
  * @date 2022-08-03 14:37:09
  */
-public class StreamSchedulerConfig {
+public class StreamRunnerConfig {
 
-    private final static Logger logger = LoggerFactory.getLogger(StreamSchedulerConfig.class);
+    private final static Logger logger = LoggerFactory.getLogger(StreamRunnerConfig.class);
 
     public String name;
     public String loggerFile;
@@ -34,7 +34,7 @@ public class StreamSchedulerConfig {
      */
     public boolean check() {
         if (StringUtils.isEmpty(name)) {
-            logger.error("app name is empty");
+            logger.error("stream name is empty");
             return false;
         }
         if (loggerKeys == null || loggerKeys.isEmpty()) {
