@@ -102,6 +102,7 @@ public class ReceiveController {
         params.types = new Class[] { Map.class };
         params.values = new Object[] { config.converterConfigMap };
         converter = (ReceiveConverter) ReflectUtil.newInstance(config.converterClass, params);
+        ResourceInjector.inject(converter, config.converterConfigMap);
         if (!converter.init()) {
             logger.error("init receive converter[{}] failed", name);
             return false;

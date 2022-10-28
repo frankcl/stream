@@ -39,13 +39,13 @@ public class ReceiveManager {
         }
         Set<String> receiverNames = new HashSet<>();
         for (ReceiveControllerConfig config : configList) {
+            if (receiverNames.contains(config.name)) {
+                logger.error("the same receiver[{}] exists", config.name);
+                return false;
+            }
             ReceiveController receiveController = new ReceiveController();
             if (!receiveController.init(config, processorGraphConfig)) {
                 logger.error("init receiver[{}] failed", config.name);
-                return false;
-            }
-            if (receiverNames.contains(config.name)) {
-                logger.error("the same receiver[{}] exists", config.name);
                 return false;
             }
             receiverNames.add(config.name);
