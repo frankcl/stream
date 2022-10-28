@@ -135,7 +135,6 @@ public class StreamRunner {
         }
         logger.info("stream[{}] is working ...", config.name);
         countDownLatch.await();
-        Thread.sleep(3000);
-        System.exit(0);
+        logger.info("stream[{}] finished working", config.name);
     }
 }

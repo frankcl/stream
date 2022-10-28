@@ -16,13 +16,12 @@ public class StreamRunnerSuite {
     public void testRun() throws Exception {
         Thread thread = new Thread(() -> {
             try {
-                Thread.sleep(5000);
-                System.exit(0);
+                String[] args = new String[] {"-c", streamSchedulerFile};
+                StreamRunner.run(args);
             } catch (Exception e) {
             }
         });
         thread.start();
-        String[] args = new String[] {"-c", streamSchedulerFile};
-        StreamRunner.run(args);
+        Thread.sleep(5000);
     }
 }
