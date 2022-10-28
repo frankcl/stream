@@ -1,6 +1,6 @@
 package com.manong.stream.boost.receiver.ots;
 
-import com.manong.weapon.aliyun.secret.KeySecret;
+import com.manong.weapon.aliyun.secret.AliyunSecret;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class OTSTunnelConfig {
     public String instance;
     public String table;
     public String tunnel;
-    public KeySecret keySecret;
+    public AliyunSecret keySecret;
 
     /**
      * 检测OTS通道配置有效性

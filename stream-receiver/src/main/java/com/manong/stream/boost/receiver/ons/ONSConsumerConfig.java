@@ -1,6 +1,6 @@
 package com.manong.stream.boost.receiver.ons;
 
-import com.manong.weapon.aliyun.secret.KeySecret;
+import com.manong.weapon.aliyun.secret.AliyunSecret;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class ONSConsumerConfig {
     public String serverURL;
     public String topic;
     public String tags = DEFAULT_TAGS;
-    public KeySecret keySecret;
+    public AliyunSecret keySecret;
 
     /**
      * 检测配置合法性
