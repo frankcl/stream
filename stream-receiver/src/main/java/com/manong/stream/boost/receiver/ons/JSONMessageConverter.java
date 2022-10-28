@@ -39,10 +39,12 @@ public class JSONMessageConverter extends ReceiveConverter {
 
     @Override
     public boolean init() {
+        logger.info("json message converter is init ...");
         messageId = configMap.containsKey(KEY_MESSAGE_ID) ?
                 (String) configMap.get(KEY_MESSAGE_ID) : DEFAULT_MESSAGE_ID;
         messageKey = configMap.containsKey(KEY_MESSAGE_KEY) ?
                 (String) configMap.get(KEY_MESSAGE_KEY) : DEFAULT_MESSAGE_KEY;
+        logger.info("json message converter init success");
         return true;
     }
 
