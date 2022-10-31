@@ -31,7 +31,7 @@ public class OTSTunnelConfig {
     public String instance;
     public String table;
     public String tunnel;
-    public AliyunSecret keySecret;
+    public AliyunSecret aliyunSecret;
 
     /**
      * 检测OTS通道配置有效性
@@ -39,7 +39,7 @@ public class OTSTunnelConfig {
      * @return 有效返回true，否则返回false
      */
     public boolean check() {
-        if (keySecret == null || !keySecret.check()) return false;
+        if (aliyunSecret == null || !aliyunSecret.check()) return false;
         if (StringUtils.isEmpty(table)) {
             logger.error("oss table name is empty");
             return false;

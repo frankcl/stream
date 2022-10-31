@@ -25,7 +25,7 @@ public class ONSConsumerConfig {
     public String serverURL;
     public String topic;
     public String tags = DEFAULT_TAGS;
-    public AliyunSecret keySecret;
+    public AliyunSecret aliyunSecret;
 
     /**
      * 检测配置合法性
@@ -45,8 +45,8 @@ public class ONSConsumerConfig {
             logger.error("consume id is empty");
             return false;
         }
-        if (keySecret == null || !keySecret.check()) {
-            logger.error("key secret is invalid");
+        if (aliyunSecret == null || !aliyunSecret.check()) {
+            logger.error("aliyun secret is invalid");
             return false;
         }
         if (consumeThreadNum <= 0) consumeThreadNum = DEFAULT_CONSUME_THREAD_NUM;

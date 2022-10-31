@@ -12,6 +12,9 @@ import com.alicloud.openservices.tablestore.tunnel.worker.ProcessRecordsInput;
 import com.alicloud.openservices.tablestore.tunnel.worker.TunnelWorker;
 import com.alicloud.openservices.tablestore.tunnel.worker.TunnelWorkerConfig;
 import com.manong.stream.sdk.receiver.Receiver;
+import com.manong.weapon.aliyun.common.RebuildManager;
+import com.manong.weapon.aliyun.common.Rebuildable;
+import com.manong.weapon.aliyun.secret.DynamicSecret;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,10 +32,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author frankcl
  * @date 2022-08-03 19:11:02
  */
-public class OTSTunnelReceiver extends Receiver {
+public class OTSTunnelReceiver extends Receiver implements Rebuildable {
 
     private final static Logger logger = LoggerFactory.getLogger(OTSTunnelReceiver.class);
 
+    private OTSTunnelConfig tunnelConfig;
     private OTSTunnelMonitor monitor;
     protected TunnelClient tunnelClient;
     protected TunnelWorker worker;
@@ -41,13 +45,14 @@ public class OTSTunnelReceiver extends Receiver {
         super(configMap);
     }
 
-    @Override
-    public boolean start() {
-        logger.info("OTSTunnel receiver is starting ...");
-        OTSTunnelConfig tunnelConfig = JSON.toJavaObject(new JSONObject(configMap), OTSTunnelConfig.class);
-        if (tunnelConfig == null || !tunnelConfig.check()) return false;
-        tunnelClient = new TunnelClient(tunnelConfig.endpoint, tunnelConfig.keySecret.accessKey,
-                tunnelConfig.keySecret.secretKey, tunnelConfig.instance);
+    /**
+     * 构建OTS通道接收器
+     *
+     * @return 构建成功返回true，否则返回false
+     */
+    private boolean build() {
+        tunnelClient = new TunnelClient(tunnelConfig.endpoint, tunnelConfig.aliyunSecret.accessKey,
+                tunnelConfig.aliyunSecret.secretKey, tunnelConfig.instance);
         DescribeTunnelRequest request = new DescribeTunnelRequest(tunnelConfig.table, tunnelConfig.tunnel);
         try {
             DescribeTunnelResponse response = tunnelClient.describeTunnel(request);
@@ -63,11 +68,42 @@ public class OTSTunnelReceiver extends Receiver {
             worker.connectAndWorking();
             monitor = new OTSTunnelMonitor(tunnelConfig, tunnelClient);
             monitor.start();
+            logger.info("build OTSTunnel receiver success");
         } catch (Exception e) {
-            logger.error("start OTSTunnel receiver failed");
+            logger.error("build OTSTunnel receiver failed");
             logger.error(e.getMessage(), e);
             return false;
         }
+        return true;
+    }
+
+    @Override
+    public void rebuild() {
+        logger.info("OTS receiver is rebuilding ...");
+        if (DynamicSecret.accessKey.equals(tunnelConfig.aliyunSecret.accessKey) &&
+                DynamicSecret.secretKey.equals(tunnelConfig.aliyunSecret.secretKey)) {
+            logger.warn("secret is not changed, ignore OTS receiver rebuilding");
+            return;
+        }
+        tunnelConfig.aliyunSecret.accessKey = DynamicSecret.accessKey;
+        tunnelConfig.aliyunSecret.secretKey = DynamicSecret.secretKey;
+        OTSTunnelMonitor prevMonitor = monitor;
+        TunnelWorker prevWorker = worker;
+        TunnelClient prevClient = tunnelClient;
+        if (!build()) throw new RuntimeException("rebuild OTS receiver failed");
+        if (prevMonitor != null) prevMonitor.stop();
+        if (prevWorker != null) prevWorker.shutdown();
+        if (prevClient != null) prevClient.shutdown();
+        logger.info("OTS receiver rebuild success");
+    }
+
+    @Override
+    public boolean start() {
+        logger.info("OTSTunnel receiver is starting ...");
+        tunnelConfig = JSON.toJavaObject(new JSONObject(configMap), OTSTunnelConfig.class);
+        if (tunnelConfig == null || !tunnelConfig.check()) return false;
+        if (!build()) return false;
+        RebuildManager.register(this);
         logger.info("OTSTunnel receiver has been started");
         return true;
     }
@@ -75,6 +111,7 @@ public class OTSTunnelReceiver extends Receiver {
     @Override
     public void stop() {
         logger.info("OTSTunnel receiver is stopping ...");
+        RebuildManager.unregister(this);
         if (monitor != null) monitor.stop();
         if (worker != null) worker.shutdown();
         if (tunnelClient != null) tunnelClient.shutdown();
