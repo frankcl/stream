@@ -74,6 +74,7 @@ public class ReceiveController {
         logger.info("receiver[{}] is destroying ...", name);
         if (receiver != null) receiver.stop();
         if (converter != null) converter.destroy();
+        receiveProcessor.sweep();
         logger.info("receiver[{}] has been destroyed", name);
     }
 

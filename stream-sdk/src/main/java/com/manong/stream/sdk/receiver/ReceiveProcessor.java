@@ -21,4 +21,9 @@ public abstract class ReceiveProcessor {
      * @throws UnacceptableException 不可接受异常
      */
     public abstract void process(Object object) throws UnacceptableException;
+
+    /**
+     * 清理资源
+     */
+    public abstract void sweep();
 }

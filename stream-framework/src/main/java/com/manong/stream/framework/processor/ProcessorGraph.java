@@ -20,10 +20,12 @@ public class ProcessorGraph {
 
     private final static Logger logger = LoggerFactory.getLogger(ProcessorGraph.class);
 
+    private String id;
     private List<ProcessorConfig> processorGraphConfig;
     private Map<String, Processor> processors;
 
     public ProcessorGraph(List<ProcessorConfig> processorGraphConfig) {
+        this.id = UUID.randomUUID().toString();
         this.processorGraphConfig = processorGraphConfig;
     }
 
@@ -181,5 +183,14 @@ public class ProcessorGraph {
             }
         }
         return new LinkedList<>(processorMap.values());
+    }
+
+    /**
+     * 获取插件图ID
+     *
+     * @return 插件图ID
+     */
+    public String getId() {
+        return id;
     }
 }

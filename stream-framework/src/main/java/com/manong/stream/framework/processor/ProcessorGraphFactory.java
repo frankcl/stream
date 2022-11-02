@@ -4,9 +4,10 @@ import com.manong.stream.sdk.common.UnacceptableException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Iterator;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * processor拓扑图工厂
@@ -18,7 +19,7 @@ public class ProcessorGraphFactory {
 
     private final static Logger logger = LoggerFactory.getLogger(ProcessorGraphFactory.class);
 
-    private static Queue<ProcessorGraph> processorGraphs = new ConcurrentLinkedQueue<>();
+    private static Map<String, ProcessorGraph> processorGraphMap = new ConcurrentHashMap<>();
 
     private ProcessorGraphFactory() {
     }
@@ -37,19 +38,35 @@ public class ProcessorGraphFactory {
         }
         ProcessorGraph processorGraph = new ProcessorGraph(graphConfig);
         processorGraph.buildGraph();
-        processorGraphs.add(processorGraph);
+        processorGraphMap.put(processorGraph.getId(), processorGraph);
         return processorGraph;
+    }
+
+    /**
+     * 清理指定ID插件图
+     *
+     * @param processorGraphId 清理插件图ID
+     */
+    public static void clean(String processorGraphId) {
+        if (!processorGraphMap.containsKey(processorGraphId)) {
+            logger.warn("processor graph[{}] is not found", processorGraphId);
+            return;
+        }
+        processorGraphMap.remove(processorGraphId);
+        logger.info("clean processor graph[{}] success", processorGraphId);
     }
 
     /**
      * 清理工厂：清除所有processorGraph
      */
     public static void sweep() {
-        while (!processorGraphs.isEmpty()) {
-            ProcessorGraph processorGraph = processorGraphs.poll();
+        Iterator<ProcessorGraph> iterator = processorGraphMap.values().iterator();
+        while (iterator.hasNext()) {
+            ProcessorGraph processorGraph = iterator.next();
+            iterator.remove();
             if (processorGraph == null) continue;
             processorGraph.closeGraph();
         }
-        processorGraphs = new ConcurrentLinkedQueue<>();
+        processorGraphMap = new ConcurrentHashMap<>();
     }
 }

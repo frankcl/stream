@@ -12,11 +12,15 @@ import com.manong.weapon.base.common.Context;
 import com.manong.weapon.base.record.KVRecord;
 import com.manong.weapon.base.record.KVRecords;
 import com.manong.weapon.base.util.RandomID;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * 接收数据处理器实现
@@ -32,6 +36,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
     private String name;
     private List<String> processors;
     private List<ProcessorConfig> processorGraphConfig;
+    private Queue<String> processorGraphIds;
     private ThreadLocal<ProcessorGraph> processorGraph;
 
     public ReceiveProcessorImpl(String name, List<String> processors,
@@ -41,6 +46,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
         this.processors = processors;
         this.processorGraphConfig = processorGraphConfig;
         this.converter = converter;
+        this.processorGraphIds = new ConcurrentLinkedQueue<>();
         this.processorGraph = new ThreadLocal<>();
     }
 
@@ -63,6 +69,15 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             for (int i = 0; i < kvRecords.getRecordCount(); i++) {
                 process(processor, processorGraph, kvRecords.getRecord(i).copy());
             }
+        }
+    }
+
+    @Override
+    public void sweep() {
+        while (!processorGraphIds.isEmpty()) {
+            String id = processorGraphIds.poll();
+            if (StringUtils.isEmpty(id)) continue;
+            ProcessorGraphFactory.clean(id);
         }
     }
 
@@ -112,6 +127,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
         ProcessorGraph threadProcessorGraph = processorGraph.get();
         if (threadProcessorGraph != null) return threadProcessorGraph;
         threadProcessorGraph = ProcessorGraphFactory.make(processorGraphConfig);
+        processorGraphIds.add(threadProcessorGraph.getId());
         processorGraph.set(threadProcessorGraph);
         return threadProcessorGraph;
     }
