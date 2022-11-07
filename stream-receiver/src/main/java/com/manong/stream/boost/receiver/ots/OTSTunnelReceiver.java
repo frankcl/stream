@@ -6,8 +6,9 @@ import com.alicloud.openservices.tablestore.tunnel.worker.IChannelProcessor;
 import com.manong.stream.sdk.receiver.Receiver;
 import com.manong.weapon.aliyun.common.RebuildListener;
 import com.manong.weapon.aliyun.common.Rebuildable;
+import com.manong.weapon.aliyun.ots.OTSTunnel;
 import com.manong.weapon.aliyun.ots.OTSTunnelConfig;
-import com.manong.weapon.aliyun.ots.OTSTunnelWorker;
+import com.manong.weapon.aliyun.ots.OTSTunnelWorkerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,7 @@ public class OTSTunnelReceiver extends Receiver implements RebuildListener {
     private final static Logger logger = LoggerFactory.getLogger(OTSTunnelReceiver.class);
 
     private IChannelProcessor channelProcessor;
-    private OTSTunnelWorker tunnelWorker;
+    private OTSTunnel tunnel;
 
     public OTSTunnelReceiver(Map<String, Object> configMap) {
         super(configMap);
@@ -33,16 +34,26 @@ public class OTSTunnelReceiver extends Receiver implements RebuildListener {
     @Override
     public boolean start() {
         logger.info("OTSTunnel receiver is starting ...");
-        OTSTunnelConfig tunnelConfig = JSON.toJavaObject(new JSONObject(configMap), OTSTunnelConfig.class);
-        if (tunnelConfig == null || !tunnelConfig.check()) return false;
         if (receiveProcessor == null) {
             logger.error("receive processor is null");
             return false;
         }
         channelProcessor = new OTSChannelProcessor(receiveProcessor);
-        tunnelWorker = new OTSTunnelWorker(tunnelConfig, channelProcessor);
-        if (!tunnelWorker.start()) return false;
-        tunnelWorker.addRebuildListener(this);
+        OTSTunnelConfig tunnelConfig = JSON.toJavaObject(new JSONObject(configMap), OTSTunnelConfig.class);
+        if (tunnelConfig == null) {
+            logger.error("invalid OTS tunnel config");
+            return false;
+        }
+        if (tunnelConfig.workerConfigs == null || tunnelConfig.workerConfigs.isEmpty()) {
+            logger.error("miss OTS tunnel worker config");
+            return false;
+        }
+        for (OTSTunnelWorkerConfig workerConfig : tunnelConfig.workerConfigs) {
+            workerConfig.channelProcessor = channelProcessor;
+        }
+        tunnel = new OTSTunnel(tunnelConfig);
+        if (!tunnel.start()) return false;
+        tunnel.addRebuildListener(this);
         logger.info("OTSTunnel receiver has been started");
         return true;
     }
@@ -50,13 +61,14 @@ public class OTSTunnelReceiver extends Receiver implements RebuildListener {
     @Override
     public void stop() {
         logger.info("OTSTunnel receiver is stopping ...");
-        if (tunnelWorker != null) tunnelWorker.stop();
+        if (tunnel != null) tunnel.stop();
+        if (channelProcessor != null) channelProcessor.shutdown();
         logger.info("OTSTunnel receiver has been stopped");
     }
 
     @Override
     public void notifyRebuildEvent(Rebuildable rebuildObject) {
-        if (rebuildObject == null || rebuildObject != tunnelWorker) return;
+        if (rebuildObject == null || rebuildObject != tunnel) return;
         if (receiveProcessor == null) return;
         receiveProcessor.sweep();
     }
