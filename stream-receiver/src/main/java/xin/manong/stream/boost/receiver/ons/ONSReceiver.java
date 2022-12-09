@@ -5,10 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.receiver.Receiver;
-import xin.manong.weapon.aliyun.common.RebuildListener;
-import xin.manong.weapon.aliyun.common.Rebuildable;
 import xin.manong.weapon.aliyun.ons.ONSConsumer;
 import xin.manong.weapon.aliyun.ons.ONSConsumerConfig;
+import xin.manong.weapon.base.rebuild.RebuildListener;
+import xin.manong.weapon.base.rebuild.Rebuildable;
 
 import java.util.Map;
 

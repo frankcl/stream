@@ -13,9 +13,11 @@ import xin.manong.stream.framework.receiver.ReceiveManager;
 import xin.manong.stream.framework.resource.ResourceConfig;
 import xin.manong.stream.framework.resource.ResourceManager;
 import xin.manong.stream.sdk.common.UnacceptableException;
+import xin.manong.weapon.base.secret.DynamicSecretListener;
 import xin.manong.weapon.base.util.FileUtil;
 
 import java.nio.charset.Charset;
+import java.util.ServiceLoader;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -43,6 +45,8 @@ public class StreamRunner {
      */
     public boolean start() throws Exception {
         logger.info("stream[{}] is starting ...", config.name);
+        ServiceLoader<DynamicSecretListener> serviceLoader = ServiceLoader.load(DynamicSecretListener.class);
+        for (DynamicSecretListener listener : serviceLoader) listener.start();
         StreamManager.buildStreamLogger(config.loggerFile, config.loggerKeys);
         if (config.resources != null) {
             for (ResourceConfig resourceConfig : config.resources) {

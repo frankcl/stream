@@ -6,11 +6,11 @@ import com.alicloud.openservices.tablestore.tunnel.worker.IChannelProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.receiver.Receiver;
-import xin.manong.weapon.aliyun.common.RebuildListener;
-import xin.manong.weapon.aliyun.common.Rebuildable;
 import xin.manong.weapon.aliyun.ots.OTSTunnel;
 import xin.manong.weapon.aliyun.ots.OTSTunnelConfig;
 import xin.manong.weapon.aliyun.ots.OTSTunnelWorkerConfig;
+import xin.manong.weapon.base.rebuild.RebuildListener;
+import xin.manong.weapon.base.rebuild.Rebuildable;
 
 import java.util.Map;
 
