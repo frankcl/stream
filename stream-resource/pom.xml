@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>stream</artifactId>
-        <groupId>com.manong</groupId>
-        <version>1.0</version>
+        <groupId>xin.manong</groupId>
+        <version>0.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,7 +27,7 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.manong</groupId>
+            <groupId>xin.manong</groupId>
             <artifactId>stream-sdk</artifactId>
             <version>${stream.version}</version>
         </dependency>

@@ -2,11 +2,11 @@
   {
     "name": "counter1",
     "num": 2,
-    "className": "com.manong.stream.test.resource.CounterResource"
+    "className": "xin.manong.stream.test.resource.CounterResource"
   },
   {
     "name": "counter2",
-    "className": "com.manong.stream.test.resource.CounterResource",
+    "className": "xin.manong.stream.test.resource.CounterResource",
     "configMap": {
       "initValue": 10
     }

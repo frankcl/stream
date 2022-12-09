@@ -1,7 +1,7 @@
 [
   {
     "name": "processor1",
-    "className": "com.manong.stream.test.plugin.TestPlugin",
+    "className": "xin.manong.stream.test.plugin.TestPlugin",
     "processors": {
         "success": "processor2",
         "fail": "processor3"
@@ -9,7 +9,7 @@
   },
   {
     "name": "processor2",
-    "className": "com.manong.stream.test.plugin.TestPlugin",
+    "className": "xin.manong.stream.test.plugin.TestPlugin",
     "processors": {
     }
   }

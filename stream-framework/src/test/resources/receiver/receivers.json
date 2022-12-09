@@ -1,7 +1,7 @@
 [
   {
     "name": "receiver",
-    "receiverClass": "com.manong.stream.test.receiver.TestReceiver",
+    "receiverClass": "xin.manong.stream.test.receiver.TestReceiver",
     "processors": ["processor1"]
   }
 ]
