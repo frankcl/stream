@@ -63,12 +63,13 @@ public class StreamRunner {
         }
         if (!checkProcessorGraph()) return false;
         receiveManager = new ReceiveManager(config.receivers, config.processors);
+        receiveManager.setAppName(config.name);
         receiveManager.setAlarmSender(alarmSender);
         if (!receiveManager.init()) return false;
         if (!receiveManager.start()) return false;
         if (alarmSender != null) {
             alarmSender.send(new Alarm(String.format("stream app[%s] has been started",
-                    config.name), AlarmStatus.INFO));
+                    config.name), AlarmStatus.INFO).setAppName(config.name).setTitle("应用启动通知"));
         }
         logger.info("stream[{}] has been started", config.name);
         return true;
@@ -84,7 +85,7 @@ public class StreamRunner {
         ResourceManager.unregisterAllResources();
         if (alarmSender != null) {
             alarmSender.send(new Alarm(String.format("stream app[%s] has been stopped",
-                    config.name), AlarmStatus.INFO));
+                    config.name), AlarmStatus.INFO).setAppName(config.name).setTitle("应用停止通知"));
             alarmSender.stop();
         }
         logger.info("stream[{}] has been stopped", config.name);
@@ -108,6 +109,10 @@ public class StreamRunner {
             ReflectParams reflectParams = new ReflectParams(
                     new Class[]{ AlarmConfig.class }, new Object[]{ config.alarmConfig });
             alarmSender = (AlarmSender) ReflectUtil.newInstance(config.alarmConfig.alarmSenderClass, reflectParams);
+            if (!alarmSender.start()) {
+                logger.error("start alarm sender[{}] failed", config.alarmConfig.alarmSenderClass);
+                return false;
+            }
             logger.info("start alarm sender[{}] success", config.alarmConfig.alarmSenderClass);
             return true;
         } catch (Exception e) {
@@ -171,7 +176,7 @@ public class StreamRunner {
         JSON.DEFAULT_PARSER_FEATURE &= ~Feature.UseBigDecimal.getMask();
         String configFile = parseCommands(args);
         String content = FileUtil.read(configFile, Charset.forName("UTF-8"));
-        StreamRunnerConfig config = JSON.parseObject(content, StreamRunnerConfig.class);
+        StreamRunnerConfig config = JSON.toJavaObject(JSON.parseObject(content), StreamRunnerConfig.class);
         StreamRunner streamRunner = new StreamRunner(config);
         CountDownLatch countDownLatch = new CountDownLatch(1);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

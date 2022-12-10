@@ -26,6 +26,7 @@ public class ReceiveController {
     private final static Logger logger = LoggerFactory.getLogger(ReceiveController.class);
 
     private String name;
+    private String appName;
     private ReceiveControllerConfig config;
     private Receiver receiver;
     private ReceiveConverter converter;
@@ -92,6 +93,7 @@ public class ReceiveController {
         params.values = new Object[] { config.receiverConfigMap };
         receiver = (Receiver) ReflectUtil.newInstance(config.receiverClass, params);
         ResourceInjector.inject(receiver, config.receiverConfigMap);
+        receiver.setAppName(appName);
         return true;
     }
 
@@ -121,5 +123,14 @@ public class ReceiveController {
      */
     public void setAlarmSender(AlarmSender alarmSender) {
         this.alarmSender = alarmSender;
+    }
+
+    /**
+     * 设置所属应用名
+     *
+     * @param appName 所属应用名
+     */
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 }

@@ -14,6 +14,7 @@ import java.util.Map;
  */
 public abstract class Receiver {
 
+    protected String appName;
     /* 接收器配置 */
     protected Map<String, Object> configMap;
     /* 接收数据处理器，stream框架负责注入，对外不可见 */
@@ -45,5 +46,14 @@ public abstract class Receiver {
      */
     public void setAlarmSender(AlarmSender alarmSender) {
         this.alarmSender = alarmSender;
+    }
+
+    /**
+     * 设置所属应用名
+     *
+     * @param appName 所属应用名
+     */
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 }

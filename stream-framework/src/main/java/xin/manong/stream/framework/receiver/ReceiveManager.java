@@ -17,6 +17,7 @@ public class ReceiveManager {
 
     private final static Logger logger = LoggerFactory.getLogger(ReceiveManager.class);
 
+    private String appName;
     private List<ReceiveControllerConfig> configList;
     private List<ProcessorConfig> processorGraphConfig;
     private List<ReceiveController> receiveControllers;
@@ -46,6 +47,7 @@ public class ReceiveManager {
                 return false;
             }
             ReceiveController receiveController = new ReceiveController();
+            receiveController.setAppName(appName);
             receiveController.setAlarmSender(alarmSender);
             if (!receiveController.init(config, processorGraphConfig)) {
                 logger.error("init receiver[{}] failed", config.name);
@@ -90,5 +92,14 @@ public class ReceiveManager {
      */
     public void setAlarmSender(AlarmSender alarmSender) {
         this.alarmSender = alarmSender;
+    }
+
+    /**
+     * 设置所属应用名
+     *
+     * @param appName 所属应用名
+     */
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 }
