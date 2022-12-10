@@ -13,8 +13,10 @@ import xin.manong.stream.framework.receiver.ReceiveManager;
 import xin.manong.stream.framework.resource.ResourceConfig;
 import xin.manong.stream.framework.resource.ResourceManager;
 import xin.manong.stream.sdk.common.UnacceptableException;
+import xin.manong.weapon.alarm.Alarm;
 import xin.manong.weapon.alarm.AlarmConfig;
 import xin.manong.weapon.alarm.AlarmSender;
+import xin.manong.weapon.alarm.AlarmStatus;
 import xin.manong.weapon.base.secret.DynamicSecretListener;
 import xin.manong.weapon.base.util.FileUtil;
 import xin.manong.weapon.base.util.ReflectParams;
@@ -64,6 +66,10 @@ public class StreamRunner {
         receiveManager.setAlarmSender(alarmSender);
         if (!receiveManager.init()) return false;
         if (!receiveManager.start()) return false;
+        if (alarmSender != null) {
+            alarmSender.send(new Alarm(String.format("stream app[%s] has been started",
+                    config.name), AlarmStatus.INFO));
+        }
         logger.info("stream[{}] has been started", config.name);
         return true;
     }
@@ -76,7 +82,11 @@ public class StreamRunner {
         if (receiveManager != null) receiveManager.destroy();
         ProcessorGraphFactory.sweep();
         ResourceManager.unregisterAllResources();
-        if (alarmSender != null) alarmSender.stop();
+        if (alarmSender != null) {
+            alarmSender.send(new Alarm(String.format("stream app[%s] has been stopped",
+                    config.name), AlarmStatus.INFO));
+            alarmSender.stop();
+        }
         logger.info("stream[{}] has been stopped", config.name);
     }
 
