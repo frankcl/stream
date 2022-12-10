@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import xin.manong.stream.framework.processor.ProcessorConfig;
 import xin.manong.stream.framework.receiver.ReceiveControllerConfig;
 import xin.manong.stream.framework.resource.ResourceConfig;
+import xin.manong.weapon.alarm.AlarmConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class StreamRunnerConfig {
     public List<ReceiveControllerConfig> receivers = new ArrayList<>();
     public List<ProcessorConfig> processors = new ArrayList<>();
     public List<ResourceConfig> resources = new ArrayList<>();
+    public AlarmConfig alarmConfig;
 
     /**
      * 检测有效性

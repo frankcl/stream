@@ -52,6 +52,7 @@ public class OTSTunnelReceiver extends Receiver implements RebuildListener {
             workerConfig.channelProcessor = channelProcessor;
         }
         tunnel = new OTSTunnel(tunnelConfig);
+        tunnel.setAlarmSender(alarmSender);
         if (!tunnel.start()) return false;
         tunnel.addRebuildListener(this);
         logger.info("OTSTunnel receiver has been started");

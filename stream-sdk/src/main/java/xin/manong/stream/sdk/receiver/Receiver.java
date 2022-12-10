@@ -1,5 +1,7 @@
 package xin.manong.stream.sdk.receiver;
 
+import xin.manong.weapon.alarm.AlarmSender;
+
 import java.util.Map;
 
 /**
@@ -16,6 +18,7 @@ public abstract class Receiver {
     protected Map<String, Object> configMap;
     /* 接收数据处理器，stream框架负责注入，对外不可见 */
     protected ReceiveProcessor receiveProcessor;
+    protected AlarmSender alarmSender;
 
     public Receiver(Map<String, Object> configMap) {
         this.configMap = configMap;
@@ -34,4 +37,13 @@ public abstract class Receiver {
      * @return 成功返回true，否则返回false
      */
     public abstract void stop();
+
+    /**
+     * 设置报警发送器
+     *
+     * @param alarmSender 报警发送器
+     */
+    public void setAlarmSender(AlarmSender alarmSender) {
+        this.alarmSender = alarmSender;
+    }
 }

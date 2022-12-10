@@ -11,6 +11,9 @@ import xin.manong.stream.sdk.common.StreamConstants;
 import xin.manong.stream.sdk.common.UnacceptableException;
 import xin.manong.stream.sdk.receiver.ReceiveConverter;
 import xin.manong.stream.sdk.receiver.ReceiveProcessor;
+import xin.manong.weapon.alarm.Alarm;
+import xin.manong.weapon.alarm.AlarmSender;
+import xin.manong.weapon.alarm.AlarmStatus;
 import xin.manong.weapon.base.common.Context;
 import xin.manong.weapon.base.record.KVRecord;
 import xin.manong.weapon.base.record.KVRecords;
@@ -37,6 +40,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
     private List<ProcessorConfig> processorGraphConfig;
     private Queue<String> processorGraphIds;
     private ThreadLocal<ProcessorGraph> processorGraph;
+    private AlarmSender alarmSender;
 
     public ReceiveProcessorImpl(String name, List<String> processors,
                                 List<ProcessorConfig> processorGraphConfig,
@@ -100,10 +104,16 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             kvRecords.addRecord(kvRecord);
             processorGraph.process(processor, kvRecords, context);
         } catch(UnacceptableException e) {
+            if (alarmSender != null) {
+                alarmSender.submit(new Alarm(String.format("严重错误发生[%s]", e.getMessage()), AlarmStatus.FATAL));
+            }
             logger.error("unacceptable exception occurred for receiver[{}]", name);
             logger.error(e.getMessage(), e);
             throw e;
         } catch (Exception e) {
+            if (alarmSender != null) {
+                alarmSender.submit(new Alarm(String.format("链路异常发生[%s]", e.getMessage()), AlarmStatus.ERROR));
+            }
             logger.error("process record exception for receiver[{}]", name);
             logger.error(e.getMessage(), e);
         } finally {
@@ -129,5 +139,14 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
         processorGraphIds.add(threadProcessorGraph.getId());
         processorGraph.set(threadProcessorGraph);
         return threadProcessorGraph;
+    }
+
+    /**
+     * 设置报警发送器
+     *
+     * @param alarmSender 报警发送器
+     */
+    public void setAlarmSender(AlarmSender alarmSender) {
+        this.alarmSender = alarmSender;
     }
 }

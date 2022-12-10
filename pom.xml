@@ -79,6 +79,11 @@
             </dependency>
             <dependency>
                 <groupId>xin.manong</groupId>
+                <artifactId>weapon-alarm</artifactId>
+                <version>${weapon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xin.manong</groupId>
                 <artifactId>weapon-aliyun</artifactId>
                 <version>${weapon.version}</version>
             </dependency>

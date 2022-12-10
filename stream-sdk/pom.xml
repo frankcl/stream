@@ -25,5 +25,9 @@
             <groupId>xin.manong</groupId>
             <artifactId>weapon-base</artifactId>
         </dependency>
+        <dependency>
+            <groupId>xin.manong</groupId>
+            <artifactId>weapon-alarm</artifactId>
+        </dependency>
     </dependencies>
 </project>

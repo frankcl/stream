@@ -13,8 +13,12 @@ import xin.manong.stream.framework.receiver.ReceiveManager;
 import xin.manong.stream.framework.resource.ResourceConfig;
 import xin.manong.stream.framework.resource.ResourceManager;
 import xin.manong.stream.sdk.common.UnacceptableException;
+import xin.manong.weapon.alarm.AlarmConfig;
+import xin.manong.weapon.alarm.AlarmSender;
 import xin.manong.weapon.base.secret.DynamicSecretListener;
 import xin.manong.weapon.base.util.FileUtil;
+import xin.manong.weapon.base.util.ReflectParams;
+import xin.manong.weapon.base.util.ReflectUtil;
 
 import java.nio.charset.Charset;
 import java.util.ServiceLoader;
@@ -32,6 +36,7 @@ public class StreamRunner {
 
     private StreamRunnerConfig config;
     private ReceiveManager receiveManager;
+    private AlarmSender alarmSender;
 
     public StreamRunner(StreamRunnerConfig config) {
         if (config == null || !config.check()) throw new RuntimeException("check stream config failed");
@@ -47,6 +52,7 @@ public class StreamRunner {
         logger.info("stream[{}] is starting ...", config.name);
         ServiceLoader<DynamicSecretListener> serviceLoader = ServiceLoader.load(DynamicSecretListener.class);
         for (DynamicSecretListener listener : serviceLoader) listener.start();
+        if (!startAlarmSender()) return false;
         StreamManager.buildStreamLogger(config.loggerFile, config.loggerKeys);
         if (config.resources != null) {
             for (ResourceConfig resourceConfig : config.resources) {
@@ -55,6 +61,7 @@ public class StreamRunner {
         }
         if (!checkProcessorGraph()) return false;
         receiveManager = new ReceiveManager(config.receivers, config.processors);
+        receiveManager.setAlarmSender(alarmSender);
         if (!receiveManager.init()) return false;
         if (!receiveManager.start()) return false;
         logger.info("stream[{}] has been started", config.name);
@@ -69,7 +76,35 @@ public class StreamRunner {
         if (receiveManager != null) receiveManager.destroy();
         ProcessorGraphFactory.sweep();
         ResourceManager.unregisterAllResources();
+        if (alarmSender != null) alarmSender.stop();
         logger.info("stream[{}] has been stopped", config.name);
+    }
+
+    /**
+     * 启动报警发送器
+     *
+     * @return 启动成功返回true，否则返回false
+     */
+    private boolean startAlarmSender() {
+        if (config.alarmConfig == null) {
+            logger.info("alarm config is null, ignore start alarm sender request");
+            return true;
+        }
+        if (!config.alarmConfig.check()) {
+            logger.error("invalid alarm config");
+            return false;
+        }
+        try {
+            ReflectParams reflectParams = new ReflectParams(
+                    new Class[]{ AlarmConfig.class }, new Object[]{ config.alarmConfig });
+            alarmSender = (AlarmSender) ReflectUtil.newInstance(config.alarmConfig.alarmSenderClass, reflectParams);
+            logger.info("start alarm sender[{}] success", config.alarmConfig.alarmSenderClass);
+            return true;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            logger.error("start alarm sender[{}] failed", config.alarmConfig.alarmSenderClass);
+            return false;
+        }
     }
 
     /**

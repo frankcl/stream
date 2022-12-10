@@ -8,6 +8,7 @@ import xin.manong.stream.framework.resource.ResourceInjector;
 import xin.manong.stream.sdk.receiver.ReceiveConverter;
 import xin.manong.stream.sdk.receiver.ReceiveProcessor;
 import xin.manong.stream.sdk.receiver.Receiver;
+import xin.manong.weapon.alarm.AlarmSender;
 import xin.manong.weapon.base.util.ReflectParams;
 import xin.manong.weapon.base.util.ReflectUtil;
 
@@ -29,6 +30,7 @@ public class ReceiveController {
     private Receiver receiver;
     private ReceiveConverter converter;
     private ReceiveProcessor receiveProcessor;
+    private AlarmSender alarmSender;
 
     /**
      * 初始化
@@ -47,6 +49,7 @@ public class ReceiveController {
         this.name = config.name;
         if (!initReceiver() || !initConverter()) return false;
         receiveProcessor = new ReceiveProcessorImpl(name, config.processors, processorGraphConfig, converter);
+        ((ReceiveProcessorImpl) receiveProcessor).setAlarmSender(alarmSender);
         ReflectUtil.setFieldValue(receiver, "receiveProcessor", receiveProcessor);
         logger.info("init receiver[{}] success", name);
         return true;
@@ -109,5 +112,14 @@ public class ReceiveController {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 设置报警发送器
+     *
+     * @param alarmSender 报警发送器
+     */
+    public void setAlarmSender(AlarmSender alarmSender) {
+        this.alarmSender = alarmSender;
     }
 }
