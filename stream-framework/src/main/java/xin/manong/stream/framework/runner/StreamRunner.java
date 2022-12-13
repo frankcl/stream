@@ -269,15 +269,21 @@ public class StreamRunner {
      * @param outerAnnotation 包含Import注解的注解
      */
     private static void processImports(Import importAnnotation, Annotation outerAnnotation) {
-        Class preprocessorClass = importAnnotation.value();
-        if (!Preprocessor.class.isAssignableFrom(preprocessorClass)) {
-            logger.warn("import class[{}] is not an implementation of {}",
-                    preprocessorClass.getName(), Preprocessor.class.getName());
+        Class[] preprocessorClasses = importAnnotation.value();
+        if (preprocessorClasses == null || preprocessorClasses.length == 0) {
+            logger.warn("missing classes for {}", importAnnotation.getClass().getName());
             return;
         }
-        ReflectParams params = new ReflectParams(new Class[] { Annotation.class }, new Object[] { outerAnnotation });
-        Preprocessor preprocessor = (Preprocessor) ReflectUtil.newInstance(preprocessorClass, params);
-        PreprocessManager.register(preprocessor);
+        for (Class preprocessorClass : preprocessorClasses) {
+            if (!Preprocessor.class.isAssignableFrom(preprocessorClass)) {
+                logger.warn("import class[{}] is not an implementation of {}",
+                        preprocessorClass.getName(), Preprocessor.class.getName());
+                return;
+            }
+            ReflectParams params = new ReflectParams(new Class[]{Annotation.class}, new Object[]{outerAnnotation});
+            Preprocessor preprocessor = (Preprocessor) ReflectUtil.newInstance(preprocessorClass, params);
+            PreprocessManager.register(preprocessor);
+        }
     }
 
     /**
