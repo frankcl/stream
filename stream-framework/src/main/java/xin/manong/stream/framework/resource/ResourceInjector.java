@@ -36,7 +36,7 @@ public class ResourceInjector {
         if (!matcher.matches()) return resource.name();
         String name = matcher.group(1);
         if (resource.required() && (configMap == null || !configMap.containsKey(name))) {
-            String message = String.format("resource name is not found in config map for key[{}]", name);
+            String message = String.format("resource name is not found in config map for key[%s]", name);
             logger.error(message);
             throw new RuntimeException(message);
         }
