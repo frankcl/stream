@@ -1,4 +1,4 @@
-package xin.manong.stream.framework.annotation;
+package xin.manong.stream.sdk.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

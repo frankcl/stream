@@ -6,7 +6,6 @@ import org.apache.commons.cli.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xin.manong.stream.framework.annotation.StreamApplication;
 import xin.manong.stream.framework.common.StreamManager;
 import xin.manong.stream.framework.prepare.PreprocessManager;
 import xin.manong.stream.framework.processor.ProcessorGraph;
@@ -16,6 +15,7 @@ import xin.manong.stream.framework.receiver.ReceiveManager;
 import xin.manong.stream.framework.resource.ResourceConfig;
 import xin.manong.stream.framework.resource.ResourceManager;
 import xin.manong.stream.sdk.annotation.Import;
+import xin.manong.stream.sdk.annotation.StreamApplication;
 import xin.manong.stream.sdk.common.UnacceptableException;
 import xin.manong.stream.sdk.prepare.Preprocessor;
 import xin.manong.weapon.alarm.Alarm;
@@ -270,6 +270,11 @@ public class StreamRunner {
      */
     private static void processImports(Import importAnnotation, Annotation outerAnnotation) {
         Class preprocessorClass = importAnnotation.value();
+        if (!Preprocessor.class.isAssignableFrom(preprocessorClass)) {
+            logger.warn("import class[{}] is not an implementation of {}",
+                    preprocessorClass.getName(), Preprocessor.class.getName());
+            return;
+        }
         ReflectParams params = new ReflectParams(new Class[] { Annotation.class }, new Object[] { outerAnnotation });
         Preprocessor preprocessor = (Preprocessor) ReflectUtil.newInstance(preprocessorClass, params);
         PreprocessManager.register(preprocessor);

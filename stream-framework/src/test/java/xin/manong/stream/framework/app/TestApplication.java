@@ -1,6 +1,6 @@
 package xin.manong.stream.framework.app;
 
-import xin.manong.stream.framework.annotation.StreamApplication;
+import xin.manong.stream.sdk.annotation.StreamApplication;
 
 /**
  * @author frankcl
