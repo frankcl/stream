@@ -119,7 +119,7 @@
                             <goal>sign</goal>
                         </goals>
                         <configuration>
-                            <keyname></keyname>
+                            <keyname>9893D73D</keyname>
                             <passphrase></passphrase>
                         </configuration>
                     </execution>

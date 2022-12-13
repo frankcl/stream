@@ -41,7 +41,7 @@ public class ReceiveController {
      * @return 成功返回true，否则返回false
      */
     public final boolean init(ReceiveControllerConfig config, List<ProcessorConfig> processorGraphConfig) {
-        logger.info("init receiver[{}] ...", name);
+        logger.info("init receiver[{}] ...", config.name);
         if (config == null || !config.check()) {
             logger.error("receive controller config is invalid");
             return false;
