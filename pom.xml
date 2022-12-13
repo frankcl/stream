@@ -118,6 +118,10 @@
                         <goals>
                             <goal>sign</goal>
                         </goals>
+                        <configuration>
+                            <keyname></keyname>
+                            <passphrase></passphrase>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
