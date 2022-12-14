@@ -1,4 +1,4 @@
-package xin.manong.stream.boost.resource;
+package xin.manong.stream.boost.resource.common;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,25 +8,24 @@ import java.util.Map;
 
 /**
  * @author frankcl
- * @date 2022-08-12 13:53:28
+ * @date 2022-08-12 13:46:26
  */
-public class RecordQueueResourceSuite {
+public class RateLimiterResourceSuite {
 
     @Test
-    public void testCreateSuccess() {
+    public void testBuildSuccess() {
         Map<String, Object> configMap = new HashMap<>();
-        configMap.put("queueSize", 100);
-        RecordQueueResource resource = new RecordQueueResource("record_queue");
+        configMap.put("permitsPerSecond", 10d);
+        RateLimiterResource resource = new RateLimiterResource("rate_limiter");
         resource.build(configMap);
         Assert.assertTrue(resource.get() != null);
         resource.destroy();
     }
 
     @Test
-    public void testCreateFail() {
+    public void testBuildFail() {
         Map<String, Object> configMap = new HashMap<>();
-        configMap.put("queueSize", -1);
-        RecordQueueResource resource = new RecordQueueResource("record_queue");
+        RateLimiterResource resource = new RateLimiterResource("rate_limiter");
         resource.build(configMap);
         Assert.assertTrue(resource.get() == null);
         resource.destroy();

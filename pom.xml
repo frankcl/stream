@@ -7,7 +7,7 @@
     <groupId>xin.manong</groupId>
     <artifactId>stream</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <name>stream</name>
     <description>framework for building data stream</description>
     <url>https://github.com/frankcl/stream</url>
@@ -39,7 +39,6 @@
         <module>stream-test</module>
         <module>stream-framework</module>
         <module>stream-resource</module>
-        <module>stream-resource-aliyun</module>
         <module>stream-receiver</module>
         <module>stream-plugin</module>
     </modules>
@@ -51,8 +50,11 @@
         <commons-pool2.version>2.11.1</commons-pool2.version>
         <commons-cli.version>1.3</commons-cli.version>
         <guava.version>31.1-jre</guava.version>
-        <weapon.version>0.0.2</weapon.version>
-        <stream.version>0.0.3</stream.version>
+        <oss.version>3.15.0</oss.version>
+        <ons-client.version>1.8.0.Final</ons-client.version>
+        <tablestore.version>5.13.10</tablestore.version>
+        <weapon.version>0.0.3</weapon.version>
+        <stream.version>0.0.4</stream.version>
     </properties>
 
     <profiles>
@@ -166,6 +168,21 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${oss.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun.openservices</groupId>
+                <artifactId>ons-client</artifactId>
+                <version>${ons-client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun.openservices</groupId>
+                <artifactId>tablestore</artifactId>
+                <version>${tablestore.version}</version>
             </dependency>
             <dependency>
                 <groupId>xin.manong</groupId>

@@ -1,4 +1,4 @@
-package xin.manong.stream.boost.resource;
+package xin.manong.stream.boost.resource.common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

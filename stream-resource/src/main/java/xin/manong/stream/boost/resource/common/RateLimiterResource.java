@@ -1,4 +1,4 @@
-package xin.manong.stream.boost.resource;
+package xin.manong.stream.boost.resource.common;
 
 import com.google.common.util.concurrent.RateLimiter;
 import org.slf4j.Logger;

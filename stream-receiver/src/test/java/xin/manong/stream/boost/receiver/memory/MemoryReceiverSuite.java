@@ -33,7 +33,7 @@ public class MemoryReceiverSuite {
     public void setUp() {
         ResourceConfig resourceConfig = new ResourceConfig();
         resourceConfig.name = "record_queue";
-        resourceConfig.className = "xin.manong.stream.boost.resource.RecordQueueResource";
+        resourceConfig.className = "xin.manong.stream.boost.resource.common.RecordQueueResource";
         resourceConfig.configMap = new HashMap<>();
         resourceConfig.configMap.put("queueSize", 10);
         ResourceManager.registerResource(resourceConfig);
