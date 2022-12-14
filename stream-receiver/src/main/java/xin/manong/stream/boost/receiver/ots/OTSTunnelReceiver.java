@@ -9,8 +9,10 @@ import xin.manong.stream.sdk.receiver.Receiver;
 import xin.manong.weapon.aliyun.ots.OTSTunnel;
 import xin.manong.weapon.aliyun.ots.OTSTunnelConfig;
 import xin.manong.weapon.aliyun.ots.OTSTunnelWorkerConfig;
+import xin.manong.weapon.aliyun.secret.AliyunSecret;
 import xin.manong.weapon.base.rebuild.RebuildListener;
 import xin.manong.weapon.base.rebuild.Rebuildable;
+import xin.manong.weapon.base.secret.DynamicSecret;
 
 import java.util.Map;
 
@@ -41,9 +43,12 @@ public class OTSTunnelReceiver extends Receiver implements RebuildListener {
         channelProcessor = new OTSChannelProcessor(receiveProcessor);
         OTSTunnelConfig tunnelConfig = JSON.toJavaObject(new JSONObject(configMap), OTSTunnelConfig.class);
         if (tunnelConfig == null) {
-            logger.error("invalid OTS tunnel config");
+            logger.error("parse OTS tunnel config failed");
             return false;
         }
+        tunnelConfig.aliyunSecret = new AliyunSecret();
+        tunnelConfig.aliyunSecret.accessKey = DynamicSecret.accessKey;
+        tunnelConfig.aliyunSecret.secretKey = DynamicSecret.secretKey;
         if (tunnelConfig.workerConfigs == null || tunnelConfig.workerConfigs.isEmpty()) {
             logger.error("miss OTS tunnel worker config");
             return false;
