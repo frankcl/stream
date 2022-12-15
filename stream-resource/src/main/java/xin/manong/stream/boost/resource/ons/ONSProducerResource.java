@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.resource.Resource;
 import xin.manong.weapon.aliyun.ons.ONSProducer;
 import xin.manong.weapon.aliyun.ons.ONSProducerConfig;
-import xin.manong.weapon.aliyun.secret.AliyunSecret;
-import xin.manong.weapon.base.secret.DynamicSecret;
 
 import java.util.Map;
 
@@ -34,9 +32,6 @@ public class ONSProducerResource extends Resource<ONSProducer> {
             logger.error("parse ONS producer config failed");
             return null;
         }
-        producerConfig.aliyunSecret = new AliyunSecret();
-        producerConfig.aliyunSecret.accessKey = DynamicSecret.accessKey;
-        producerConfig.aliyunSecret.secretKey = DynamicSecret.secretKey;
         ONSProducer producer = new ONSProducer(producerConfig);
         if (!producer.init()) {
             logger.error("init ONS producer failed");

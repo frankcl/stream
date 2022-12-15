@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.resource.Resource;
 import xin.manong.weapon.aliyun.oss.OSSClient;
 import xin.manong.weapon.aliyun.oss.OSSClientConfig;
-import xin.manong.weapon.aliyun.secret.AliyunSecret;
-import xin.manong.weapon.base.secret.DynamicSecret;
 
 import java.util.Map;
 
@@ -34,11 +32,9 @@ public class OSSClientResource extends Resource<OSSClient> {
             logger.error("parse OSS client config failed");
             return null;
         }
-        clientConfig.aliyunSecret = new AliyunSecret();
-        clientConfig.aliyunSecret.accessKey = DynamicSecret.accessKey;
-        clientConfig.aliyunSecret.secretKey = DynamicSecret.secretKey;
+        OSSClient ossClient = new OSSClient(clientConfig);
         logger.info("create OSS client success");
-        return new OSSClient(clientConfig);
+        return ossClient;
     }
 
     @Override

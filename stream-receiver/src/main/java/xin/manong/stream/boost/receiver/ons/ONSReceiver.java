@@ -7,10 +7,8 @@ import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.receiver.Receiver;
 import xin.manong.weapon.aliyun.ons.ONSConsumer;
 import xin.manong.weapon.aliyun.ons.ONSConsumerConfig;
-import xin.manong.weapon.aliyun.secret.AliyunSecret;
 import xin.manong.weapon.base.rebuild.RebuildListener;
 import xin.manong.weapon.base.rebuild.Rebuildable;
-import xin.manong.weapon.base.secret.DynamicSecret;
 
 import java.util.Map;
 
@@ -39,9 +37,6 @@ public class ONSReceiver extends Receiver implements RebuildListener {
             logger.error("parse ONS consumer config failed");
             return false;
         }
-        consumerConfig.aliyunSecret = new AliyunSecret();
-        consumerConfig.aliyunSecret.accessKey = DynamicSecret.accessKey;
-        consumerConfig.aliyunSecret.secretKey = DynamicSecret.secretKey;
         if (!consumerConfig.check()) return false;
         if (receiveProcessor == null) {
             logger.error("receive processor is null");
