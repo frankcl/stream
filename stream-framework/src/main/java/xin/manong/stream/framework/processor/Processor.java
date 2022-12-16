@@ -120,7 +120,7 @@ public class Processor {
         }
         for (String fork : processResult.getForks()) {
             if (processors.containsKey(fork)) processors.get(fork).process(processResult.getRecords(fork), context);
-            else logger.warn("fork processor[{}] is not found for processor[{}]", fork, name);
+            else logger.debug("fork processor[{}] is not found for processor[{}]", fork, name);
         }
     }
 
