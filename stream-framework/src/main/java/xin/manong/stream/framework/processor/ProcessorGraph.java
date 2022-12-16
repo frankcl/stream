@@ -86,7 +86,7 @@ public class ProcessorGraph {
      * @param context 上下文
      * @throws UnacceptableException 不可接受异常
      */
-    public final void process(String name, KVRecords kvRecords, Context context) throws UnacceptableException {
+    public final void process(String name, KVRecords kvRecords, Context context) throws Exception {
         if (StringUtils.isEmpty(name)) {
             logger.warn("processor name is empty");
             throw new UnacceptableException("processor name is empty");

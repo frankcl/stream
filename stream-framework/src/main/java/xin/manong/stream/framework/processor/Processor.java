@@ -95,7 +95,7 @@ public class Processor {
      * @param context 上下文
      * @throws UnacceptableException 不可接受异常
      */
-    public final void process(KVRecords kvRecords, Context context) throws UnacceptableException {
+    public final void process(KVRecords kvRecords, Context context) throws Exception {
         ProcessResult processResult = new ProcessResult();
         context.put(StreamConstants.STREAM_PROCESSOR, name);
         for (int i = 0; i < kvRecords.getRecordCount(); i++) {
@@ -106,13 +106,9 @@ public class Processor {
                 commitProcessTrace(kvRecord);
                 ProcessResult result = plugin.handle(kvRecord);
                 if (result != null) processResult.addResult(result);
-            } catch (UnacceptableException e) {
-                kvRecord.put(StreamConstants.STREAM_EXCEPTION_PROCESSOR, name);
-                logger.error("unacceptable exception occurred for processor[{}]", name);
-                throw e;
             } catch (Exception e) {
                 kvRecord.put(StreamConstants.STREAM_EXCEPTION_PROCESSOR, name);
-                logger.warn("process record exception for processor[{}]", name);
+                throw e;
             } finally {
                 long processTime = System.currentTimeMillis() - startProcessTime;
                 commitProcessTime(kvRecord, processTime);
