@@ -29,20 +29,22 @@ public class ResourceManager {
      * @return 获取成功返回资源实例，否则返回null
      */
     public static <T> T getResource(String resourceName, Class<T> clazz) {
-        Resource resource = borrowResource(resourceName);
-        if (resource == null) {
-            logger.warn("get resource failed for name[{}]", resourceName);
-            return null;
-        }
-        try {
-            return clazz.cast(resource.get());
-        } catch (Exception e) {
-            logger.error("convert resource failed for name[{}], class[{}]",
-                    resourceName, clazz.getName());
-            logger.error(e.getMessage(), e);
-            return null;
-        } finally {
-            returnResource(resource);
+        synchronized (resourcePoolMap) {
+            Resource resource = borrowResource(resourceName);
+            if (resource == null) {
+                logger.warn("get resource failed for name[{}]", resourceName);
+                return null;
+            }
+            try {
+                return clazz.cast(resource.get());
+            } catch (Exception e) {
+                logger.error("convert resource failed for name[{}], class[{}]",
+                        resourceName, clazz.getName());
+                logger.error(e.getMessage(), e);
+                return null;
+            } finally {
+                returnResource(resource);
+            }
         }
     }
 
