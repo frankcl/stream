@@ -85,19 +85,22 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
     }
 
     /**
-     * 处理不可接受异常或错误
+     * 处理异常
      *
-     * @param e 异常或错误
-     * @throws Throwable 异常或错误
+     * @param kvRecord 数据
+     * @param e 异常
      */
-    private void handleUnacceptableException(Throwable e) throws Throwable {
+    private void handleException(KVRecord kvRecord, Throwable e) {
         if (alarmSender != null) {
-            alarmSender.submit(new Alarm(String.format("严重错误发生[%s]", e.getMessage()), AlarmStatus.FATAL));
+            AlarmStatus alarmStatus = e instanceof UnacceptableException || e instanceof Error ?
+                    AlarmStatus.FATAL : AlarmStatus.ERROR;
+            Alarm alarm = new Alarm(String.format(alarmStatus == AlarmStatus.FATAL ?
+                    "严重错误发生[%s]" : "链路异常发生[%s]", e.getMessage()), alarmStatus);
+            alarmSender.submit(alarm);
         }
+        kvRecord.put(StreamConstants.STREAM_DEBUG_MESSAGE, e.getMessage());
         logger.error(e.getMessage(), e);
-        logger.error("{} occurred for receiver[{}]", e instanceof UnacceptableException ?
-                "unacceptable exception" : "error", name);
-        throw e;
+        logger.error("process record exception for receiver[{}]", name);
     }
 
     /**
@@ -120,15 +123,13 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             kvRecords.addRecord(kvRecord);
             processorGraph.process(processor, kvRecords, context);
         } catch (UnacceptableException e) {
-            handleUnacceptableException(e);
+            handleException(kvRecord, e);
+            throw e;
         } catch (Exception e) {
-            if (alarmSender != null) {
-                alarmSender.submit(new Alarm(String.format("链路异常发生[%s]", e.getMessage()), AlarmStatus.ERROR));
-            }
-            logger.error("process record exception for receiver[{}]", name);
-            logger.error(e.getMessage(), e);
+            handleException(kvRecord, e);
         } catch (Throwable t) {
-            handleUnacceptableException(t);
+            handleException(kvRecord, t);
+            throw t;
         } finally {
             kvRecord.put(StreamConstants.STREAM_PROCESS_TIME, System.currentTimeMillis() - startProcessTime);
             Set<KVRecord> watchRecords = (Set<KVRecord>) context.get(StreamConstants.STREAM_KEEP_WATCH);
