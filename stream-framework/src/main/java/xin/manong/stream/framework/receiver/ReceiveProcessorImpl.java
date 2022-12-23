@@ -63,7 +63,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             context.put(StreamConstants.STREAM_EXCEPTION_RECEIVER, name);
-            context.put(StreamConstants.STREAM_DEBUG_MESSAGE, "接收数据转换异常");
+            context.put(StreamConstants.STREAM_DEBUG_MESSAGE, String.format("数据转换异常[%s]", e.getMessage()));
             StreamManager.commitLog(context);
             return;
         }
