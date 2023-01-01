@@ -41,7 +41,7 @@ public class ReceiveProcessorSuite {
     }
 
     @Test
-    public void testProcessNormalRecord() throws Exception {
+    public void testProcessNormalRecord() throws Throwable {
         KVRecords kvRecords = new KVRecords();
         {
             KVRecord kvRecord = new KVRecord();
@@ -59,7 +59,7 @@ public class ReceiveProcessorSuite {
     }
 
     @Test
-    public void testProcessNullRecord() throws Exception {
+    public void testProcessNullRecord() throws Throwable {
         receiveProcessor.process(null);
     }
 }
