@@ -1,7 +1,7 @@
-package xin.manong.stream.boost.receiver.ons;
+package xin.manong.stream.boost.receiver.kafka;
 
 import com.alibaba.fastjson.JSONObject;
-import com.aliyun.openservices.ons.api.Message;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,7 +11,6 @@ import xin.manong.weapon.base.common.Context;
 import xin.manong.weapon.base.record.KVRecord;
 import xin.manong.weapon.base.record.KVRecords;
 
-import java.nio.charset.Charset;
 import java.util.HashMap;
 
 /**
@@ -35,43 +34,41 @@ public class JSONMessageConverterSuite {
 
     @Test
     public void testConvertNormal() throws Exception {
+        String topic = "topic";
+        String key = "key";
         JSONObject body = new JSONObject();
         body.put("key", "k");
         body.put("v1", 1000);
-        Message message = new Message();
-        message.setMsgID("message_id");
-        message.setKey("message_key");
-        message.setTopic("topic");
-        message.setTag("A");
-        message.setBody(body.toJSONString().getBytes(Charset.forName("UTF-8")));
+        ConsumerRecord<byte[], byte[]> consumerRecord = new ConsumerRecord<>(topic, 1, 100L,
+                key.getBytes("UTF-8"), body.toJSONString().getBytes("UTF-8"));
         Context context = new Context();
-        KVRecords kvRecords = converter.convert(context, message);
+        KVRecords kvRecords = converter.convert(context, consumerRecord);
         Assert.assertEquals(1, kvRecords.getRecordCount());
         KVRecord kvRecord = kvRecords.getRecord(0);
         Assert.assertTrue(kvRecord.has("key"));
         Assert.assertTrue(kvRecord.has("v1"));
-        Assert.assertTrue(kvRecord.has(StreamConstants.STREAM_MESSAGE_ID));
         Assert.assertTrue(kvRecord.has(StreamConstants.STREAM_MESSAGE_KEY));
-        Assert.assertTrue(kvRecord.has(StreamConstants.STREAM_MESSAGE_TIMESTAMP));
         Assert.assertTrue(kvRecord.has(StreamConstants.STREAM_MESSAGE_TOPIC));
-        Assert.assertTrue(kvRecord.has(StreamConstants.STREAM_MESSAGE_TAG));
+        Assert.assertTrue(kvRecord.has(StreamConstants.STREAM_MESSAGE_PARTITION));
+        Assert.assertTrue(kvRecord.has(StreamConstants.STREAM_MESSAGE_OFFSET));
+        Assert.assertTrue(kvRecord.has(StreamConstants.STREAM_MESSAGE_TIMESTAMP));
         Assert.assertEquals("k", kvRecord.get("key"));
         Assert.assertEquals(1000, kvRecord.get("v1"));
-        Assert.assertEquals("message_id", kvRecord.get(StreamConstants.STREAM_MESSAGE_ID));
-        Assert.assertEquals("message_key", kvRecord.get(StreamConstants.STREAM_MESSAGE_KEY));
+        Assert.assertEquals("key", kvRecord.get(StreamConstants.STREAM_MESSAGE_KEY));
         Assert.assertEquals("topic", kvRecord.get(StreamConstants.STREAM_MESSAGE_TOPIC));
-        Assert.assertEquals("A", kvRecord.get(StreamConstants.STREAM_MESSAGE_TAG));
-        Assert.assertEquals(0L, (long) kvRecord.get(StreamConstants.STREAM_MESSAGE_TIMESTAMP));
-        Assert.assertTrue(context.contains(StreamConstants.STREAM_MESSAGE_ID));
+        Assert.assertEquals(1, (int) kvRecord.get(StreamConstants.STREAM_MESSAGE_PARTITION));
+        Assert.assertEquals(100L, (long) kvRecord.get(StreamConstants.STREAM_MESSAGE_OFFSET));
+        Assert.assertEquals(-1L, (long) kvRecord.get(StreamConstants.STREAM_MESSAGE_TIMESTAMP));
         Assert.assertTrue(context.contains(StreamConstants.STREAM_MESSAGE_KEY));
-        Assert.assertTrue(context.contains(StreamConstants.STREAM_MESSAGE_TIMESTAMP));
         Assert.assertTrue(context.contains(StreamConstants.STREAM_MESSAGE_TOPIC));
-        Assert.assertTrue(context.contains(StreamConstants.STREAM_MESSAGE_TAG));
-        Assert.assertEquals("message_id", context.get(StreamConstants.STREAM_MESSAGE_ID));
-        Assert.assertEquals("message_key", context.get(StreamConstants.STREAM_MESSAGE_KEY));
+        Assert.assertTrue(context.contains(StreamConstants.STREAM_MESSAGE_PARTITION));
+        Assert.assertTrue(context.contains(StreamConstants.STREAM_MESSAGE_OFFSET));
+        Assert.assertTrue(context.contains(StreamConstants.STREAM_MESSAGE_TIMESTAMP));
+        Assert.assertEquals("key", context.get(StreamConstants.STREAM_MESSAGE_KEY));
         Assert.assertEquals("topic", context.get(StreamConstants.STREAM_MESSAGE_TOPIC));
-        Assert.assertEquals("A", context.get(StreamConstants.STREAM_MESSAGE_TAG));
-        Assert.assertEquals(0L, (long) context.get(StreamConstants.STREAM_MESSAGE_TIMESTAMP));
+        Assert.assertEquals(1, (int) context.get(StreamConstants.STREAM_MESSAGE_PARTITION));
+        Assert.assertEquals(100L, (long) context.get(StreamConstants.STREAM_MESSAGE_OFFSET));
+        Assert.assertEquals(-1L, (long) context.get(StreamConstants.STREAM_MESSAGE_TIMESTAMP));
     }
 
     @Test

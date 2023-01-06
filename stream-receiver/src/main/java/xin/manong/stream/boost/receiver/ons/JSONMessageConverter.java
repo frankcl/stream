@@ -6,6 +6,7 @@ import com.aliyun.openservices.ons.api.Message;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xin.manong.stream.sdk.common.StreamConstants;
 import xin.manong.stream.sdk.receiver.ReceiveConverter;
 import xin.manong.weapon.base.common.Context;
 import xin.manong.weapon.base.record.KVRecord;
@@ -24,28 +25,8 @@ public class JSONMessageConverter extends ReceiveConverter {
 
     private final static Logger logger = LoggerFactory.getLogger(JSONMessageConverter.class);
 
-    private final static String DEFAULT_MESSAGE_ID = "message_id";
-    private final static String DEFAULT_MESSAGE_KEY = "message_key";
-
-    private final static String KEY_MESSAGE_ID = "messageId";
-    private final static String KEY_MESSAGE_KEY = "messageKey";
-
-    private String messageId = DEFAULT_MESSAGE_ID;
-    private String messageKey = DEFAULT_MESSAGE_KEY;
-
     public JSONMessageConverter(Map<String, Object> configMap) {
         super(configMap);
-    }
-
-    @Override
-    public boolean init() {
-        logger.info("json message converter is init ...");
-        messageId = configMap.containsKey(KEY_MESSAGE_ID) ?
-                (String) configMap.get(KEY_MESSAGE_ID) : DEFAULT_MESSAGE_ID;
-        messageKey = configMap.containsKey(KEY_MESSAGE_KEY) ?
-                (String) configMap.get(KEY_MESSAGE_KEY) : DEFAULT_MESSAGE_KEY;
-        logger.info("json message converter init success");
-        return true;
     }
 
     @Override
@@ -55,16 +36,22 @@ public class JSONMessageConverter extends ReceiveConverter {
             return null;
         }
         Message message = (Message) object;
-        context.put(messageId, message.getMsgID());
-        if (!StringUtils.isEmpty(message.getKey())) context.put(messageKey, message.getKey());
+        context.put(StreamConstants.STREAM_MESSAGE_ID, message.getMsgID());
+        context.put(StreamConstants.STREAM_MESSAGE_TOPIC, message.getTopic());
+        context.put(StreamConstants.STREAM_MESSAGE_TIMESTAMP, message.getBornTimestamp());
+        if (!StringUtils.isEmpty(message.getKey())) context.put(StreamConstants.STREAM_MESSAGE_KEY, message.getKey());
+        if (!StringUtils.isEmpty(message.getTag())) context.put(StreamConstants.STREAM_MESSAGE_TAG, message.getTag());
         String content = new String(message.getBody(), Charset.forName("UTF-8"));
         JSONObject jsonMessage = JSON.parseObject(content);
         KVRecord kvRecord = new KVRecord();
         for (Map.Entry<String, Object> entry : jsonMessage.entrySet()) {
             kvRecord.put(entry.getKey(), entry.getValue());
         }
-        kvRecord.put(messageId, message.getMsgID());
-        if (!StringUtils.isEmpty(message.getKey())) kvRecord.put(messageKey, message.getKey());
+        kvRecord.put(StreamConstants.STREAM_MESSAGE_ID, message.getMsgID());
+        kvRecord.put(StreamConstants.STREAM_MESSAGE_TOPIC, message.getTopic());
+        kvRecord.put(StreamConstants.STREAM_MESSAGE_TIMESTAMP, message.getBornTimestamp());
+        if (!StringUtils.isEmpty(message.getKey())) kvRecord.put(StreamConstants.STREAM_MESSAGE_KEY, message.getKey());
+        if (!StringUtils.isEmpty(message.getTag())) kvRecord.put(StreamConstants.STREAM_MESSAGE_TAG, message.getTag());
         KVRecords kvRecords = new KVRecords();
         kvRecords.addRecord(kvRecord);
         return kvRecords;

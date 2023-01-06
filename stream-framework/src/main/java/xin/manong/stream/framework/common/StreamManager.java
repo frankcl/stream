@@ -103,6 +103,13 @@ public class StreamManager {
         baseLoggerKeys.add(StreamConstants.STREAM_RECORD_TYPE);
         baseLoggerKeys.add(StreamConstants.STREAM_RECORD_ID);
         baseLoggerKeys.add(StreamConstants.STREAM_TRACE_ID);
+        baseLoggerKeys.add(StreamConstants.STREAM_MESSAGE_ID);
+        baseLoggerKeys.add(StreamConstants.STREAM_MESSAGE_KEY);
+        baseLoggerKeys.add(StreamConstants.STREAM_MESSAGE_TOPIC);
+        baseLoggerKeys.add(StreamConstants.STREAM_MESSAGE_TAG);
+        baseLoggerKeys.add(StreamConstants.STREAM_MESSAGE_PARTITION);
+        baseLoggerKeys.add(StreamConstants.STREAM_MESSAGE_OFFSET);
+        baseLoggerKeys.add(StreamConstants.STREAM_MESSAGE_TIMESTAMP);
         return baseLoggerKeys;
     }
 }

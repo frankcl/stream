@@ -36,4 +36,11 @@ public class StreamConstants {
     public final static String STREAM_BIRTH_PROCESSOR = "__STREAM_BIRTH_PROCESSOR__";
     /* 流程跟踪数据集合 */
     public final static String STREAM_KEEP_WATCH = "__STREAM_KEEP_WATCH__";
+    public final static String STREAM_MESSAGE_ID = "__STREAM_MESSAGE_ID__";
+    public final static String STREAM_MESSAGE_KEY = "__STREAM_MESSAGE_KEY__";
+    public final static String STREAM_MESSAGE_TOPIC = "__STREAM_MESSAGE_TOPIC__";
+    public final static String STREAM_MESSAGE_TAG = "__STREAM_MESSAGE_TAG__";
+    public final static String STREAM_MESSAGE_PARTITION = "__STREAM_MESSAGE_PARTITION__";
+    public final static String STREAM_MESSAGE_OFFSET = "__STREAM_MESSAGE_OFFSET__";
+    public final static String STREAM_MESSAGE_TIMESTAMP = "__STREAM_MESSAGE_TIMESTAMP__";
 }

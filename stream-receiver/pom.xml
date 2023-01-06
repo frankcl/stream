@@ -42,6 +42,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>com.aliyun.openservices</groupId>
             <artifactId>ons-client</artifactId>
             <optional>true</optional>
