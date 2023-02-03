@@ -80,7 +80,7 @@ public class StreamRunner {
         if (!receiveManager.start()) return false;
         if (alarmSender != null) {
             alarmSender.send(new Alarm(String.format("stream app[%s] has been started",
-                    config.name), AlarmStatus.INFO).setAppName(config.name).setTitle("应用启动通知"));
+                    config.name), AlarmStatus.INFO).setAppName(config.name).setTitle("stream应用启动通知"));
         }
         logger.info("stream[{}] has been started", config.name);
         return true;
@@ -96,7 +96,7 @@ public class StreamRunner {
         ResourceManager.unregisterAllResources();
         if (alarmSender != null) {
             alarmSender.send(new Alarm(String.format("stream app[%s] has been stopped",
-                    config.name), AlarmStatus.INFO).setAppName(config.name).setTitle("应用停止通知"));
+                    config.name), AlarmStatus.INFO).setAppName(config.name).setTitle("stream应用停止通知"));
             alarmSender.stop();
         }
         logger.info("stream[{}] has been stopped", config.name);
