@@ -7,9 +7,11 @@ import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.receiver.Receiver;
 import xin.manong.weapon.aliyun.ons.ONSConsumer;
 import xin.manong.weapon.aliyun.ons.ONSConsumerConfig;
+import xin.manong.weapon.aliyun.ons.Subscribe;
 import xin.manong.weapon.base.rebuild.RebuildListener;
 import xin.manong.weapon.base.rebuild.Rebuildable;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +31,16 @@ public class ONSReceiver extends Receiver implements RebuildListener {
         super(configMap);
     }
 
+    /**
+     * 填充消息监听器
+     *
+     * @param consumerConfig 消费配置
+     */
+    private void fillMessageListeners(ONSConsumerConfig consumerConfig) {
+        if (consumerConfig.subscribes == null || consumerConfig.subscribes.isEmpty()) return;
+        for (Subscribe subscribe : consumerConfig.subscribes) subscribe.listener = processor;
+    }
+
     @Override
     public boolean start() {
         logger.info("ONS receiver is starting ...");
@@ -37,13 +49,14 @@ public class ONSReceiver extends Receiver implements RebuildListener {
             logger.error("parse ONS consumer config failed");
             return false;
         }
-        if (!consumerConfig.check()) return false;
         if (receiveProcessor == null) {
             logger.error("receive processor is null");
             return false;
         }
         processor = new ONSProcessor(receiveProcessor);
-        consumer = new ONSConsumer(consumerConfig, processor);
+        fillMessageListeners(consumerConfig);
+        if (!consumerConfig.check()) return false;
+        consumer = new ONSConsumer(consumerConfig);
         if (!consumer.start()) return false;
         consumer.addRebuildListener(this);
         logger.info("ONS receiver has been started");
