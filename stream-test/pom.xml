@@ -3,7 +3,7 @@
     <parent>
         <artifactId>stream</artifactId>
         <groupId>xin.manong</groupId>
-        <version>0.0.6</version>
+        <version>0.0.7</version>
     </parent>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>

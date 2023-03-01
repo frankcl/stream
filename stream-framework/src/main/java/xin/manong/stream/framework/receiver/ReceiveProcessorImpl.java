@@ -117,6 +117,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
         Context context = new Context();
         try {
             context.put(StreamConstants.STREAM_TRACE_ID, RandomID.build());
+            context.put(StreamConstants.STREAM_RECEIVER, name);
             kvRecord.put(StreamConstants.STREAM_RECEIVER, name);
             kvRecord.put(StreamConstants.STREAM_START_PROCESS_TIME, startProcessTime);
             KVRecords kvRecords = new KVRecords();

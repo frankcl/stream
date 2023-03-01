@@ -2,7 +2,9 @@ package xin.manong.stream.boost.receiver.memory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xin.manong.stream.framework.common.StreamManager;
 import xin.manong.stream.sdk.receiver.ReceiveProcessor;
+import xin.manong.weapon.base.record.KVRecord;
 import xin.manong.weapon.base.record.KVRecords;
 
 import java.util.concurrent.BlockingQueue;
@@ -38,6 +40,10 @@ public class MemoryReceiveHandler implements Runnable {
             try {
                 KVRecords kvRecords = recordQueue.poll(1, TimeUnit.SECONDS);
                 if (kvRecords == null) continue;
+                for (int i = 0; i < kvRecords.getRecordCount(); i++) {
+                    KVRecord kvRecord = kvRecords.getRecord(i);
+                    StreamManager.removeStreamHistory(kvRecord);
+                }
                 receiveProcessor.process(kvRecords);
             } catch (InterruptedException e) {
                 logger.warn(e.getMessage(), e);

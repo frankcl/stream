@@ -8,6 +8,8 @@ package xin.manong.stream.sdk.common;
  */
 public class StreamConstants {
 
+    /* stream保留字段前缀 */
+    public final static String STREAM_PREFIX = "__STREAM_";
     /* 数据接收器 */
     public final static String STREAM_RECEIVER = "__STREAM_RECEIVER__";
     /* 当前数据处理器 */
@@ -36,11 +38,20 @@ public class StreamConstants {
     public final static String STREAM_BIRTH_PROCESSOR = "__STREAM_BIRTH_PROCESSOR__";
     /* 流程跟踪数据集合 */
     public final static String STREAM_KEEP_WATCH = "__STREAM_KEEP_WATCH__";
+    /* 数据历史信息 记录同一条数据被多条链路处理信息 */
+    public final static String STREAM_HISTORY = "__STREAM_HISTORY__";
+    /* 消息ID */
     public final static String STREAM_MESSAGE_ID = "__STREAM_MESSAGE_ID__";
+    /* 消息key */
     public final static String STREAM_MESSAGE_KEY = "__STREAM_MESSAGE_KEY__";
+    /* 消息topic */
     public final static String STREAM_MESSAGE_TOPIC = "__STREAM_MESSAGE_TOPIC__";
+    /* 消息TAG */
     public final static String STREAM_MESSAGE_TAG = "__STREAM_MESSAGE_TAG__";
+    /* 消息所属分区 */
     public final static String STREAM_MESSAGE_PARTITION = "__STREAM_MESSAGE_PARTITION__";
+    /* 消息偏移 */
     public final static String STREAM_MESSAGE_OFFSET = "__STREAM_MESSAGE_OFFSET__";
+    /* 消息产生时间戳 */
     public final static String STREAM_MESSAGE_TIMESTAMP = "__STREAM_MESSAGE_TIMESTAMP__";
 }

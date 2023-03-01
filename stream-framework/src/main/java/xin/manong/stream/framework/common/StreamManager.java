@@ -1,5 +1,8 @@
 package xin.manong.stream.framework.common;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import xin.manong.stream.sdk.common.StreamConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -76,11 +79,83 @@ public class StreamManager {
         if (watchRecords.contains(kvRecord)) return;
         String traceId = (String) context.get(StreamConstants.STREAM_TRACE_ID);
         String processor = (String) context.get(StreamConstants.STREAM_PROCESSOR);
+        String receiver = (String) context.get(StreamConstants.STREAM_RECEIVER);
         if (!StringUtils.isEmpty(traceId)) kvRecord.put(StreamConstants.STREAM_TRACE_ID, traceId);
         if (!StringUtils.isEmpty(processor)) kvRecord.put(StreamConstants.STREAM_BIRTH_PROCESSOR, processor);
+        if (!StringUtils.isEmpty(receiver) && !kvRecord.has(StreamConstants.STREAM_RECEIVER)) {
+            kvRecord.put(StreamConstants.STREAM_RECEIVER, receiver);
+        }
+        appendStreamHistory(kvRecord, context);
         watchRecords.add(kvRecord);
         if (!context.contains(StreamConstants.STREAM_KEEP_WATCH)) {
             context.put(StreamConstants.STREAM_KEEP_WATCH, watchRecords);
+        }
+    }
+
+    /**
+     * 抹除stream历史信息，所有__STREAM_开头的字段
+     * 例外：__STREAM_HISTORY__
+     *
+     * @param kvRecord 数据
+     */
+    public static void removeStreamHistory(KVRecord kvRecord) {
+        if (kvRecord == null || kvRecord.isEmpty()) return;
+        Iterator<Map.Entry<String, Object>> iterator = kvRecord.getFieldMap().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Object> entry = iterator.next();
+            String key = entry.getKey();
+            if (key.equals(StreamConstants.STREAM_HISTORY)) continue;
+            if (key.startsWith(StreamConstants.STREAM_PREFIX)) iterator.remove();
+        }
+    }
+
+    /**
+     * 添加stream历史信息
+     *
+     * @param kvRecord 数据
+     * @param context 上下文
+     */
+    private static void appendStreamHistory(KVRecord kvRecord, Context context) {
+        String receiver = (String) context.get(StreamConstants.STREAM_RECEIVER);
+        if (StringUtils.isEmpty(receiver)) {
+            logger.warn("receiver name is not found from context");
+            return;
+        }
+        String traceId = kvRecord.has(StreamConstants.STREAM_TRACE_ID) ?
+                (String) kvRecord.get(StreamConstants.STREAM_TRACE_ID) : null;
+        String birthProcessor = kvRecord.has(StreamConstants.STREAM_BIRTH_PROCESSOR) ?
+                (String) kvRecord.get(StreamConstants.STREAM_BIRTH_PROCESSOR) : null;
+        if (StringUtils.isEmpty(traceId) && StringUtils.isEmpty(birthProcessor)) {
+            logger.warn("missing fields[{}] and [{}]", StreamConstants.STREAM_TRACE_ID,
+                    StreamConstants.STREAM_BIRTH_PROCESSOR);
+            return;
+        }
+        JSONObject history = new JSONObject();
+        history.put(StreamConstants.STREAM_RECEIVER, receiver);
+        if (!StringUtils.isEmpty(traceId)) history.put(StreamConstants.STREAM_TRACE_ID, traceId);
+        if (!StringUtils.isEmpty(birthProcessor)) history.put(StreamConstants.STREAM_BIRTH_PROCESSOR, birthProcessor);
+        JSONArray streamHistory = getStreamHistory(kvRecord);
+        streamHistory.add(history);
+        kvRecord.put(StreamConstants.STREAM_HISTORY, streamHistory);
+    }
+
+    /**
+     * 获取stream历史信息
+     *
+     * @param kvRecord 数据
+     * @return 存在返回历史信息，否则返回空列表
+     */
+    private static JSONArray getStreamHistory(KVRecord kvRecord) {
+        try {
+            Object object = kvRecord.has(StreamConstants.STREAM_HISTORY) ?
+                    kvRecord.get(StreamConstants.STREAM_HISTORY) : new JSONArray();
+            if (object instanceof String) object = JSON.parseArray((String) object);
+            if (object instanceof JSONArray) return (JSONArray) object;
+            throw new Exception(String.format("invalid type[%s] for %s",
+                    object.getClass().getName(), StreamConstants.STREAM_HISTORY));
+        } catch (Exception e) {
+            logger.warn(e.getMessage(), e);
+            return new JSONArray();
         }
     }
 
