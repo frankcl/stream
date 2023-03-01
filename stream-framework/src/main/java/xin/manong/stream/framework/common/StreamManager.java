@@ -174,6 +174,7 @@ public class StreamManager {
         baseLoggerKeys.add(StreamConstants.STREAM_PROCESSOR_TIME);
         baseLoggerKeys.add(StreamConstants.STREAM_START_PROCESS_TIME);
         baseLoggerKeys.add(StreamConstants.STREAM_EXCEPTION_RECEIVER);
+        baseLoggerKeys.add(StreamConstants.STREAM_HISTORY);
         baseLoggerKeys.add(StreamConstants.STREAM_BIRTH_PROCESSOR);
         baseLoggerKeys.add(StreamConstants.STREAM_RECORD_TYPE);
         baseLoggerKeys.add(StreamConstants.STREAM_RECORD_ID);
