@@ -45,6 +45,7 @@ public class ResourceFactory implements PooledObjectFactory<Resource> {
                     resourceConfig.name, resourceConfig.className);
             return null;
         }
+        ResourceInjector.inject(resource, resourceConfig.configMap);
         resource.build(resourceConfig.configMap);
         if (resource.get() == null) {
             logger.error("build resource[{}] failed", resourceConfig.name);

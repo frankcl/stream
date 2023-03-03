@@ -56,6 +56,11 @@
             <artifactId>kafka-clients</artifactId>
             <optional>true</optional>
         </dependency>
+1        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>com.aliyun.openservices</groupId>
             <artifactId>ons-client</artifactId>
@@ -79,6 +84,12 @@
             <groupId>xin.manong</groupId>
             <artifactId>stream-sdk</artifactId>
             <version>${stream.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>xin.manong</groupId>
+            <artifactId>stream-framework</artifactId>
+            <version>${stream.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
