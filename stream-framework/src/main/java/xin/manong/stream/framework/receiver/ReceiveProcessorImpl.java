@@ -1,6 +1,7 @@
 package xin.manong.stream.framework.receiver;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xin.manong.stream.framework.common.StreamManager;
@@ -36,6 +37,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
     private final static Logger logger = LoggerFactory.getLogger(ReceiveProcessorImpl.class);
 
     private String name;
+    private String appName;
     private List<String> processors;
     private List<ProcessorConfig> processorGraphConfig;
     private Queue<String> processorGraphIds;
@@ -63,6 +65,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             context.put(StreamConstants.STREAM_EXCEPTION_RECEIVER, name);
+            context.put(StreamConstants.STREAM_EXCEPTION_STACK, ExceptionUtils.getStackTrace(e));
             context.put(StreamConstants.STREAM_DEBUG_MESSAGE, String.format("数据转换异常[%s]", e.getMessage()));
             StreamManager.commitLog(context);
             return;
@@ -96,9 +99,11 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
                     AlarmStatus.FATAL : AlarmStatus.ERROR;
             Alarm alarm = new Alarm(String.format(alarmStatus == AlarmStatus.FATAL ?
                     "严重错误发生[%s]" : "链路异常发生[%s]", e.getMessage()), alarmStatus);
+            alarm.setAppName(appName).setTitle("应用异常报警");
             alarmSender.submit(alarm);
         }
         kvRecord.put(StreamConstants.STREAM_DEBUG_MESSAGE, e.getMessage());
+        kvRecord.put(StreamConstants.STREAM_EXCEPTION_STACK, ExceptionUtils.getStackTrace(e));
         logger.error(e.getMessage(), e);
         logger.error("process record exception for receiver[{}]", name);
     }
@@ -163,5 +168,14 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
      */
     public void setAlarmSender(AlarmSender alarmSender) {
         this.alarmSender = alarmSender;
+    }
+
+    /**
+     * 设置应用名
+     *
+     * @param appName 应用名
+     */
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 }

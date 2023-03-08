@@ -7,7 +7,7 @@
     <groupId>xin.manong</groupId>
     <artifactId>stream</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.7</version>
+    <version>0.0.8</version>
     <name>stream</name>
     <description>framework for building data stream</description>
     <url>https://github.com/frankcl/stream</url>
@@ -55,8 +55,8 @@
         <oss.version>3.15.0</oss.version>
         <ons-client.version>1.8.0.Final</ons-client.version>
         <tablestore.version>5.13.10</tablestore.version>
-        <weapon.version>0.1.0</weapon.version>
-        <stream.version>0.0.7</stream.version>
+        <weapon.version>0.1.1</weapon.version>
+        <stream.version>0.0.8</stream.version>
     </properties>
 
     <profiles>

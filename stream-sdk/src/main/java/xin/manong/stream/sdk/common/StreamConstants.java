@@ -26,6 +26,7 @@ public class StreamConstants {
     public final static String STREAM_EXCEPTION_PROCESSOR = "__STREAM_EXCEPTION_PROCESSOR__";
     /* 异常发生数据接收器 */
     public final static String STREAM_EXCEPTION_RECEIVER = "__STREAM_EXCEPTION_RECEIVER__";
+    public final static String STREAM_EXCEPTION_STACK = "__STREAM_EXCEPTION_STACK__";
     /* 调试信息 */
     public final static String STREAM_DEBUG_MESSAGE = "__STREAM_DEBUG_MESSAGE__";
     /* 数据轨迹ID */

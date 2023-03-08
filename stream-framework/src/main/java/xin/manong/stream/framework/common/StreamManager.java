@@ -168,6 +168,7 @@ public class StreamManager {
         Set<String> baseLoggerKeys = new HashSet<>();
         baseLoggerKeys.add(StreamConstants.STREAM_DEBUG_MESSAGE);
         baseLoggerKeys.add(StreamConstants.STREAM_EXCEPTION_PROCESSOR);
+        baseLoggerKeys.add(StreamConstants.STREAM_EXCEPTION_STACK);
         baseLoggerKeys.add(StreamConstants.STREAM_PROCESS_TIME);
         baseLoggerKeys.add(StreamConstants.STREAM_RECEIVER);
         baseLoggerKeys.add(StreamConstants.STREAM_PROCESS_TRACE);

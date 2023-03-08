@@ -51,6 +51,7 @@ public class ReceiveController {
         if (!initReceiver() || !initConverter()) return false;
         receiveProcessor = new ReceiveProcessorImpl(name, config.processors, processorGraphConfig, converter);
         ((ReceiveProcessorImpl) receiveProcessor).setAlarmSender(alarmSender);
+        ((ReceiveProcessorImpl) receiveProcessor).setAppName(appName);
         ReflectUtil.setFieldValue(receiver, "receiveProcessor", receiveProcessor);
         logger.info("init receiver[{}] success", name);
         return true;
