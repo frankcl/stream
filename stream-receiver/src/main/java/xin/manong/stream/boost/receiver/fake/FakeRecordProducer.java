@@ -15,10 +15,8 @@ import xin.manong.weapon.base.record.KVRecords;
 public class FakeRecordProducer implements Runnable {
     private final static Logger logger = LoggerFactory.getLogger(FakeRecordProducer.class);
 
-    private final static Long DEFAULT_TIME_INTERVAL_MS = 1000L;
-
     private boolean running;
-    private Long timeIntervalMs = DEFAULT_TIME_INTERVAL_MS;
+    private Long timeIntervalMs;
     private String name;
     private Thread workThread;
     private ReceiveProcessor receiveProcessor;
@@ -78,6 +76,6 @@ public class FakeRecordProducer implements Runnable {
      * @param timeIntervalMs 事件间隔（毫秒）
      */
     public void setTimeIntervalMs(Long timeIntervalMs) {
-        this.timeIntervalMs = timeIntervalMs == null || timeIntervalMs < 0L ? DEFAULT_TIME_INTERVAL_MS : timeIntervalMs;
+        this.timeIntervalMs = timeIntervalMs;
     }
 }

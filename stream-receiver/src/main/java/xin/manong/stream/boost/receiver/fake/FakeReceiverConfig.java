@@ -21,7 +21,6 @@ public class FakeReceiverConfig {
      */
     boolean check() {
         if (threadNum <= 0) threadNum = DEFAULT_THREAD_NUM;
-        if (timeIntervalMs < 0L) timeIntervalMs = DEFAULT_TIME_INTERVAL_MS;
         return true;
     }
 }
