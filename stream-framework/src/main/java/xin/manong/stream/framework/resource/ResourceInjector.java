@@ -48,18 +48,16 @@ public class ResourceInjector {
      * 1. 根据资源名获取
      * 2. 根据资源类型获取
      *
+     * @param resourceName 资源名
      * @param field 字段
-     * @param configMap 配置信息
      * @return 成功返回资源实例，否则返回null；如果存在多个资源抛出异常
      */
-    private static Object getResource(Field field, Map<String, Object> configMap) {
-        Resource resource = field.getAnnotation(Resource.class);
+    private static Object getResource(String resourceName, Field field) {
         Class fieldClass = field.getType();
-        if (StringUtils.isEmpty(resource.name())) {
+        if (StringUtils.isEmpty(resourceName)) {
             return ResourceManager.getResource(fieldClass);
         } else {
-            String name = parseResourceName(resource, configMap);
-            return ResourceManager.getResource(name, fieldClass);
+            return ResourceManager.getResource(resourceName, fieldClass);
         }
     }
 
@@ -76,7 +74,7 @@ public class ResourceInjector {
             Resource resource = field.getAnnotation(Resource.class);
             if (resource == null) continue;
             String name = parseResourceName(resource, configMap);
-            Object resourceObject = getResource(field, configMap);
+            Object resourceObject = getResource(name, field);
             if (resourceObject == null && resource.required()) {
                 String message = String.format("resource[%s] is not found for field[%s] of object[%s]",
                         StringUtils.isEmpty(name) ? field.getType().getName() : name, field.getName(),
