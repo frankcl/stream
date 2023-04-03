@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.resource.Resource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,6 +21,40 @@ public class ResourceManager {
     private final static Logger logger = LoggerFactory.getLogger(ResourceManager.class);
 
     private static Map<String, ResourcePool> resourcePoolMap = new HashMap<>();
+
+    /**
+     * 根据资源类型获取资源实例
+     * 资源归还资源池
+     *
+     * @param clazz 资源实例class
+     * @return 获取成功返回资源实例，否则返回null；如果存在多个类型相同资源抛出异常
+     * @param <T>
+     */
+    public static <T> T getResource(Class<T> clazz) {
+        synchronized (resourcePoolMap) {
+            List<Object> resources = new ArrayList<>();
+            for (ResourcePool resourcePool : resourcePoolMap.values()) {
+                Resource resource = null;
+                try {
+                    resource = resourcePool.borrowObject();
+                    Object object = resource.get();
+                    if (!clazz.isAssignableFrom(object.getClass())) continue;
+                    resources.add(object);
+                } catch (Exception e) {
+                    logger.warn(e.getMessage(), e);
+                } finally {
+                    if (resource != null) returnResource(resource);
+                }
+            }
+            if (resources.isEmpty()) return null;
+            if (resources.size() > 1) {
+                logger.error("more than one candidate resource for class[{}]", clazz.getName());
+                throw new RuntimeException(String.format(
+                        "more than one candidate resource for class[%s]", clazz.getName()));
+            }
+            return clazz.cast(resources.get(0));
+        }
+    }
 
     /**
      * 获取资源实例，资源归还资源池

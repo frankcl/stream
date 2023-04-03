@@ -1,7 +1,5 @@
 package xin.manong.stream.sdk.prepare;
 
-import xin.manong.stream.sdk.annotation.Import;
-
 import java.lang.annotation.Annotation;
 
 /**

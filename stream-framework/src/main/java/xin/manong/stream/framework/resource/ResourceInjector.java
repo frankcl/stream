@@ -44,6 +44,26 @@ public class ResourceInjector {
     }
 
     /**
+     * 根据资源名或类型获取资源，获取资源方式如下
+     * 1. 根据资源名获取
+     * 2. 根据资源类型获取
+     *
+     * @param field 字段
+     * @param configMap 配置信息
+     * @return 成功返回资源实例，否则返回null；如果存在多个资源抛出异常
+     */
+    private static Object getResource(Field field, Map<String, Object> configMap) {
+        Resource resource = field.getAnnotation(Resource.class);
+        Class fieldClass = field.getType();
+        if (StringUtils.isEmpty(resource.name())) {
+            return ResourceManager.getResource(fieldClass);
+        } else {
+            String name = parseResourceName(resource, configMap);
+            return ResourceManager.getResource(name, fieldClass);
+        }
+    }
+
+    /**
      * 注入资源
      *
      * @param object 注入对象
@@ -55,17 +75,12 @@ public class ResourceInjector {
             Field field = fields[i];
             Resource resource = field.getAnnotation(Resource.class);
             if (resource == null) continue;
-            if (StringUtils.isEmpty(resource.name())) {
-                String message = String.format("resource name is empty for field[%s] in object[%s]",
-                        field.getName(), object.getClass().getName());
-                logger.error(message);
-                throw new RuntimeException(message);
-            }
             String name = parseResourceName(resource, configMap);
-            Object resourceObject = ResourceManager.getResource(name, field.getType());
+            Object resourceObject = getResource(field, configMap);
             if (resourceObject == null && resource.required()) {
                 String message = String.format("resource[%s] is not found for field[%s] of object[%s]",
-                        name, field.getName(), object.getClass().getName());
+                        StringUtils.isEmpty(name) ? field.getType().getName() : name, field.getName(),
+                        object.getClass().getName());
                 logger.error(message);
                 throw new RuntimeException(message);
             }
@@ -73,7 +88,8 @@ public class ResourceInjector {
                 ReflectUtil.setFieldValue(object, field.getName(), resourceObject);
             } catch (Exception e) {
                 String message = String.format("inject resource[%s] failed for field[%s] of object[%s]",
-                        name, field.getName(), object.getClass().getName());
+                        StringUtils.isEmpty(name) ? field.getType().getName() : name, field.getName(),
+                        object.getClass().getName());
                 logger.error(message);
                 logger.error(e.getMessage(), e);
                 throw new RuntimeException(message);

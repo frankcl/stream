@@ -69,4 +69,9 @@ public class ResourceManagerSuite {
         }
     }
 
+    @Test(expected = RuntimeException.class)
+    public void testGetResourceAndException() {
+        ResourceManager.getResource(AtomicInteger.class);
+    }
+
 }
