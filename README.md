@@ -2,12 +2,33 @@
 
 ## 模块
 
-> * stream-sdk: stream基础开发工具及接口，stream应用开发者基于此实现应用插件、资源和接收器
-> * stream-framework: stream框架，实现流程编排、资源管理及应用生命周期管理
-> * stream-receiver: 通用stream接收器实现，首发版本实现了阿里云RocketMQ接收器，阿里云OTS通道接收器，以及内存队列接收器
-> * stream-plugin: 通用stream插件实现，首发版本仅实现了速度控制插件
-> * stream-resource: 通用stream资源实现，首发版本实现了阿里云OTS相关资源、阿里云ONS相关资源及阿里云OSS客户端资源等
-> * stream-test: stream测试相关套件
+### 1. stream-sdk 基础开发SDK
+  - [x] 数据接收器SDK定义
+  - [x] 数据处理插件SDK定义
+  - [x] 资源SDK定义
+  - [x] 预处理器SDK定义
+  - [x] 开发注解定义
+### 2. stream-framework 框架实现
+  - [x] 流程编排及调度
+  - [x] 资源管理：注册，获取，归还及销毁
+### 3. stream-receiver 通用接收器实现
+  - [x] 阿里云ONS数据消费实现
+  - [x] 阿里云OTS数据通道消费实现
+  - [x] Kafka数据消费实现
+  - [x] 基于内存阻塞队列的数据消费实现：用于流程内部数据流转
+  - [x] Fake数据消费：周期性触发伪数据消费
+### 4. stream-plugin 通用插件实现
+  - [x] 速度控制插件
+### 5. stream-resource 通用资源实现
+  - [x] 阿里云ONS数据生产实现
+  - [x] 阿里云OSS客户端实现
+  - [x] 阿里云OTS客户端实现
+  - [x] Kafka数据生产实现
+  - [x] Redis客户端实现
+  - [x] 单进程速度控制器
+  - [x] 分布式速度控制器
+  - [x] 内存阻塞队列
+### 6. stream-test 测试相关套件
 
 ## 使用
 
