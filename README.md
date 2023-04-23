@@ -36,6 +36,10 @@
   - [x] 内存阻塞队列
 ### 6. stream-test 测试相关套件
 
+## stream流程拓扑示例
+
+![stream_flow](https://github.com/frankcl/stream/tree/main/image/stream_flow.png)
+
 ## 使用
 
 stream应用开发请引入sdk和framework artifacts
