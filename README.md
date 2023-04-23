@@ -38,7 +38,7 @@
 
 ## stream流程拓扑示例
 
-![stream_flow](https://github.com/frankcl/stream/tree/main/image/stream_flow.png)
+![stream_flow](https://github.com/frankcl/stream/blob/main/image/stream_flow.png)
 
 ## 使用
 
