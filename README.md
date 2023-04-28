@@ -87,3 +87,20 @@ stream应用开发请引入sdk和framework artifacts
 </dependency>
 ```
 
+## 依赖三方库信息
+
+| 工件             | 分组                      |     版本      | optional |
+|:---------------|:------------------------|:-----------:|:--------:|
+| aliyun-sdk-oss | com.aliyun.oss          |   3.15.0    |   true   |
+| commons-cli    | commons-cli             |     1.3     |  false   |
+| commons-pool2  | org.apache.commons      |   2.11.1    |  false   |
+| guava          | com.google.guava        |  31.1-jre   |   true   |
+| kafka-clients  | org.apache.kafka        |    3.3.1    |   true   |
+| ons-client     | com.aliyun.openservices | 1.8.0.Final |   true   |
+| redisson       | org.redisson            |   3.19.0    |   true   | 
+| slf4j-log4j12  | org.slf4j               |   1.7.25    |   true   |
+| tablestore     | com.aliyun.openservices |   5.13.10   |   true   |
+| weapon-alarm   | xin.manong              |    0.1.2    |  false   |
+| weapon-aliyun  | xin.manong              |    0.1.2    |  false   |
+| weapon-base    | xin.manong              |    0.1.2    |  false   |
+
