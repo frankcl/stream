@@ -31,3 +31,17 @@
 ## stream启动时序
 ![stream_bootstrap_timeline](https://github.com/frankcl/stream/blob/main/image/stream_bootstrap_timeline.png)
 
+* 解析main入口类注解，执行预处理逻辑
+* 解析配置文件，生成StreamRunnerConfig
+* 根据配置构建和启动报警发送
+* 根据配置构建和注册Resource
+* 根据配置检测插件拓扑是否合法
+  * 构建插件拓扑图ProcessorGraph
+  * 检测ProcessorGraph：是否存在同名插件，是否存在环等
+  * 初始化插件，为插件注入Resource
+  * 销毁插件拓扑图ProcessorGraph
+* 根据配置构建数据接收器：委托ReceiveManager完成，构建ReceiveController(包含Receiver和ReceiveConverter)
+  * 根据配置构建Receiver：注入Resource
+  * 根据配置构建ReceiveConverter：注入Resource及初始化
+  * 启动Receiver
+
