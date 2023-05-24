@@ -8,7 +8,7 @@
 
 ## 模块
 
-### 1. stream-sdk 基础开发SDK [指南](https://github.com/frankcl/stream/stream-sdk/README.md)
+### 1. stream-sdk 基础开发SDK [指南](https://github.com/frankcl/stream/blob/main/stream-sdk/README.md)
   - [x] 数据接收器SDK定义
   - [x] 数据处理插件SDK定义
   - [x] 资源SDK定义
