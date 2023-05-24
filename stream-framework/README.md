@@ -27,3 +27,7 @@
     * 插件拓扑检测：解析和构建插件拓扑图，检测拓扑图有效性
   * 启动数据接收器，数据处理线程开始接收数据，并向下游插件分发数据
   * 以数据驱动的方式按需创建插件拓扑图（保证每个线程一个插件拓扑图），进行数据处理和流转
+
+## stream启动时序
+![stream_bootstrap_timeline](https://github.com/frankcl/stream/blob/main/image/stream_bootstrap_timeline.png)
+
