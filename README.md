@@ -14,7 +14,7 @@
   - [x] 资源SDK定义
   - [x] 预处理器SDK定义
   - [x] 开发注解定义
-### 2. stream-framework 框架实现
+### 2. stream-framework 框架实现 [指南](https://github.com/frankcl/stream/blob/main/stream-framework/README.md)
   - [x] 流程编排及调度
   - [x] 资源管理：注册，获取，归还及销毁
 ### 3. stream-receiver 通用接收器实现
