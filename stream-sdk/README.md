@@ -215,8 +215,27 @@ public abstract class Plugin {
 }
 ```
 
-## 4. 关于stream数据
-### 4.1. 传输及处理数据KVRecord
+## 4. 预处理器Preprocessor
+* 启动时机：stream应用启动前被框架调用
+* 依赖注解xin.manong.stream.sdk.annotation.Import进行导入
+
+### 4.1. 如何实现自己的Preprocessor？
+* 集成抽象类xin.manong.stream.sdk.prepare.Preprocessor
+* 实现process方法：预处理逻辑
+
+```java
+package xin.manong.stream.sdk.prepare;
+public abstract class Preprocessor {
+
+  /**
+   * 预处理
+   */
+  public abstract void process();
+}
+```
+
+## 5. 关于stream数据
+### 5.1. 传输及处理数据KVRecord
 * 本质为Map封装，将数据用keyValue对表示
 * 定义数据类型RecordType：PUT新增、UPDATE更新、DELETE删除
 * 每个KVRecord有唯一ID
@@ -232,7 +251,7 @@ public class KVRecord implements Serializable {
     private final Map<String, Object> fieldMap;
 }
 ```
-### 4.2. 分发数据ProcessResult
+### 5.2. 分发数据ProcessResult
 * 定义分发结果，本质为Map封装，Map key代表分支，Map value代表分支数据列表
 * 分支数据使用KVRecords封装，KVRecords本质为KVRecord列表
 

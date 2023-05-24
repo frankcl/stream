@@ -11,6 +11,10 @@ import java.lang.annotation.Annotation;
  */
 public abstract class Preprocessor {
 
+    /**
+     * Import注解外层引用注解
+     * 用户可通过outerAnnotation获取信息
+     */
     protected Annotation outerAnnotation;
 
     public Preprocessor(Annotation outerAnnotation) {
