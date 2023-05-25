@@ -41,7 +41,7 @@ public class MemoryReceiverSuite {
         List<ProcessorConfig> processorGraphConfig = new ArrayList<>();
         ProcessorConfig processorConfig = new ProcessorConfig();
         processorConfig.name = "processor";
-        processorConfig.className = "xin.manong.stream.test.plugin.TestPlugin";
+        processorConfig.className = "xin.manong.stream.boost.receiver.plugin.DummyHandler";
         processorGraphConfig.add(processorConfig);
         ReceiveProcessor receiveProcessor = new ReceiveProcessorImpl(
                 "memory_receive_processor", processors, processorGraphConfig, null);

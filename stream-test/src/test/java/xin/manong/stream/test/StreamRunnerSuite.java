@@ -1,9 +1,9 @@
-package xin.manong.stream.framework.runner;
+package xin.manong.stream.test;
 
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xin.manong.stream.framework.app.TestApplication;
+import xin.manong.stream.framework.runner.StreamRunner;
 
 /**
  * @author frankcl
@@ -23,19 +23,6 @@ public class StreamRunnerSuite {
             try {
                 String[] args = new String[] {"-c", streamSchedulerFile};
                 StreamRunner.run(null, args);
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-            }
-        });
-        thread.start();
-        Thread.sleep(5000);
-    }
-
-    @Test
-    public void testRunWithApplication() throws Exception {
-        Thread thread = new Thread(() -> {
-            try {
-                StreamRunner.run(TestApplication.class, null);
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }

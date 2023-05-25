@@ -1,0 +1,51 @@
+{
+  "name": "fake_stream",
+  "loggerKeys": ["id"],
+  "resources": [
+    {
+      "name": "id_builder",
+      "className": "xin.manong.stream.test.resource.AutoIncreasedIDResource"
+    }
+  ],
+  "receivers": [
+    {
+      "name": "receiver",
+      "receiverClass": "xin.manong.stream.boost.receiver.fake.FakeReceiver",
+      "receiverConfig": {
+        "threadNum": 2
+      },
+      "processors": ["record_id_builder"]
+    }
+  ],
+  "processors": [
+    {
+      "name": "record_id_builder",
+      "className": "xin.manong.stream.test.plugin.RecordIDBuilder",
+      "pluginConfig": {
+        "idBuilder": "id_builder"
+      },
+      "processors": {
+        "success": "processor1",
+        "fail": "processor2"
+      }
+    },
+    {
+      "name": "processor1",
+      "className": "xin.manong.stream.test.plugin.DummyHandler",
+      "pluginConfig": {
+        "name": "processor1"
+      },
+      "processors": {
+      }
+    },
+    {
+      "name": "processor2",
+      "className": "xin.manong.stream.test.plugin.DummyHandler",
+      "pluginConfig": {
+        "name": "processor2"
+      },
+      "processors": {
+      }
+    }
+  ]
+}

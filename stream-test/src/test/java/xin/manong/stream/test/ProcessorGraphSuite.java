@@ -1,8 +1,11 @@
-package xin.manong.stream.framework.processor;
+package xin.manong.stream.test;
 
 import com.alibaba.fastjson.JSON;
 import org.junit.Assert;
 import org.junit.Test;
+import xin.manong.stream.framework.processor.ProcessorConfig;
+import xin.manong.stream.framework.processor.ProcessorGraph;
+import xin.manong.stream.framework.processor.ProcessorGraphFactory;
 import xin.manong.stream.sdk.common.UnacceptableException;
 import xin.manong.weapon.base.common.Context;
 import xin.manong.weapon.base.record.KVRecord;

@@ -67,12 +67,6 @@
         </dependency>
         <dependency>
             <groupId>xin.manong</groupId>
-            <artifactId>stream-test</artifactId>
-            <scope>test</scope>
-            <version>${stream.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>xin.manong</groupId>
             <artifactId>stream-framework</artifactId>
             <version>${stream.version}</version>
         </dependency>

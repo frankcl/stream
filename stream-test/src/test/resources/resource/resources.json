@@ -1,0 +1,11 @@
+[
+  {
+    "name": "idBuilder1",
+    "num": 2,
+    "className": "xin.manong.stream.test.resource.AutoIncreasedIDResource"
+  },
+  {
+    "name": "idBuilder2",
+    "className": "xin.manong.stream.test.resource.AutoIncreasedIDResource"
+  }
+]

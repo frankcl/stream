@@ -58,11 +58,5 @@
             <artifactId>stream-sdk</artifactId>
             <version>${stream.version}</version>
         </dependency>
-        <dependency>
-            <groupId>xin.manong</groupId>
-            <artifactId>stream-test</artifactId>
-            <version>${stream.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>

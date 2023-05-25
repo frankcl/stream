@@ -1,16 +1,18 @@
-package xin.manong.stream.framework.resource;
+package xin.manong.stream.test;
 
 import com.alibaba.fastjson.JSON;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import xin.manong.stream.framework.resource.ResourceConfig;
+import xin.manong.stream.framework.resource.ResourceManager;
 import xin.manong.stream.sdk.resource.Resource;
+import xin.manong.stream.test.resource.AutoIncreasedIDBuilder;
 import xin.manong.weapon.base.util.FileUtil;
 
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author frankcl
@@ -37,41 +39,42 @@ public class ResourceManagerSuite {
 
     @Test
     public void testBorrowAndReturn() throws Exception {
-        Resource resource = ResourceManager.borrowResource("counter2");
+        Resource resource = ResourceManager.borrowResource("idBuilder2");
         Assert.assertTrue(resource != null);
-        AtomicInteger counter = (AtomicInteger) resource.get();
-        Assert.assertEquals(10, counter.get());
-        counter.addAndGet(2);
+        AutoIncreasedIDBuilder idBuilder = (AutoIncreasedIDBuilder) resource.get();
+        Assert.assertEquals(0L, idBuilder.getNewID().longValue());
         Assert.assertTrue(ResourceManager.returnResource(resource));
 
-        resource = ResourceManager.borrowResource("counter2");
-        counter = (AtomicInteger) resource.get();
-        Assert.assertEquals(12, counter.get());
+        resource = ResourceManager.borrowResource("idBuilder2");
+        idBuilder = (AutoIncreasedIDBuilder) resource.get();
+        Assert.assertEquals(1L, idBuilder.getNewID().longValue());
         Assert.assertTrue(ResourceManager.returnResource(resource));
     }
 
     @Test
     public void testUnregister() {
-        ResourceManager.unregisterResource("counter1");
-        Resource resource = ResourceManager.borrowResource("counter1");
+        ResourceManager.unregisterResource("idBuilder1");
+        Resource resource = ResourceManager.borrowResource("idBuilder1");
         Assert.assertTrue(resource == null);
     }
 
     @Test
     public void testGetResource() {
         {
-            AtomicInteger counter = ResourceManager.getResource("counter1", AtomicInteger.class);
-            Assert.assertTrue(counter.get() == 0);
+            AutoIncreasedIDBuilder idBuilder = ResourceManager.getResource(
+                    "idBuilder1", AutoIncreasedIDBuilder.class);
+            Assert.assertTrue(idBuilder.getNewID().longValue() == 0L);
         }
         {
-            AtomicInteger counter = ResourceManager.getResource("counter", AtomicInteger.class);
-            Assert.assertTrue(counter == null);
+            AutoIncreasedIDBuilder idBuilder = ResourceManager.getResource(
+                    "idBuilder", AutoIncreasedIDBuilder.class);
+            Assert.assertTrue(idBuilder == null);
         }
     }
 
     @Test(expected = RuntimeException.class)
     public void testGetResourceAndException() {
-        ResourceManager.getResource(AtomicInteger.class);
+        ResourceManager.getResource(AutoIncreasedIDBuilder.class);
     }
 
 }

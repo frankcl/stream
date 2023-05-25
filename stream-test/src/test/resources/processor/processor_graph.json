@@ -1,0 +1,31 @@
+[
+  {
+    "name": "processor1",
+    "className": "xin.manong.stream.test.plugin.DummyHandler",
+    "pluginConfig": {
+      "name": "processor1"
+    },
+    "processors": {
+        "success": "processor2",
+        "fail": "processor3"
+    }
+  },
+  {
+    "name": "processor2",
+    "className": "xin.manong.stream.test.plugin.DummyHandler",
+    "pluginConfig": {
+      "name": "processor2"
+    },
+    "processors": {
+    }
+  },
+  {
+    "name": "processor3",
+    "className": "xin.manong.stream.test.plugin.DummyHandler",
+    "pluginConfig": {
+      "name": "processor3"
+    },
+    "processors": {
+    }
+  }
+]

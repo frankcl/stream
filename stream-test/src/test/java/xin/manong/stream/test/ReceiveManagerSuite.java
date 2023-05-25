@@ -1,4 +1,4 @@
-package xin.manong.stream.framework.receiver;
+package xin.manong.stream.test;
 
 import com.alibaba.fastjson.JSON;
 import org.junit.After;
@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import xin.manong.stream.framework.processor.ProcessorConfig;
+import xin.manong.stream.framework.receiver.ReceiveControllerConfig;
+import xin.manong.stream.framework.receiver.ReceiveManager;
 import xin.manong.weapon.base.util.FileUtil;
 
 import java.nio.charset.Charset;

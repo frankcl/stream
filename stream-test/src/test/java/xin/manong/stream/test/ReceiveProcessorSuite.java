@@ -1,4 +1,4 @@
-package xin.manong.stream.framework.receiver;
+package xin.manong.stream.test;
 
 import com.alibaba.fastjson.JSON;
 import org.junit.After;
@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import xin.manong.stream.framework.processor.ProcessorConfig;
+import xin.manong.stream.framework.receiver.ReceiveProcessorImpl;
 import xin.manong.stream.sdk.receiver.ReceiveProcessor;
 import xin.manong.weapon.base.record.KVRecord;
 import xin.manong.weapon.base.record.KVRecords;

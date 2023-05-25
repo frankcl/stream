@@ -36,8 +36,22 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
             <groupId>xin.manong</groupId>
             <artifactId>stream-sdk</artifactId>
+            <version>${stream.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>xin.manong</groupId>
+            <artifactId>stream-framework</artifactId>
+            <version>${stream.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>xin.manong</groupId>
+            <artifactId>stream-receiver</artifactId>
             <version>${stream.version}</version>
         </dependency>
     </dependencies>
