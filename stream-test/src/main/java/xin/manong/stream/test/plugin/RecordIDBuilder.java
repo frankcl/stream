@@ -29,7 +29,7 @@ public class RecordIDBuilder extends Plugin {
         ProcessResult processResult = new ProcessResult();
         Long id = builder.getNewID();
         kvRecord.put(Constants.ID, id);
-        processResult.addRecord(id % 2 == 0 ? FORK_SUCCESS : FORK_FAIL, kvRecord);
+        processResult.addRecord(id % 2 == 0 ? "even" : "odd", kvRecord);
         return processResult;
     }
 }

@@ -1,15 +1,44 @@
 # stream SDK
 
-## 1. 资源Resource
-* 对资源进行封装，提高复用性，避免资源重复创建开销，例如数据库客户端，消息队列发送客户端等
-* 采用对象池实现，满足相同资源多实例
-* 用户定义资源，stream管理资源的生命周期：创建、租借及销毁
-* 用户通过注解方式将资源注入其他组件中进行使用，注入目标包含
+## 1. stream数据抽象
+### 1.1. 传输及处理数据KVRecord
+* 本质为Map封装，将数据用keyValue对表示
+* 定义数据类型RecordType：PUT新增、UPDATE更新、DELETE删除
+* 每个KVRecord有唯一ID
+* 每个KVRecord定义主键，主键为列表集合
+
+```java
+package xin.manong.weapon.base.record;
+
+public class KVRecord implements Serializable {
+    private String id;
+    private RecordType recordType;
+    private final Set<String> keys;
+    private final Map<String, Object> fieldMap;
+}
+```
+### 1.2. 分发数据ProcessResult
+* 定义分发结果，本质为Map封装，Map key代表分支，Map value代表分支数据列表
+* 分支数据使用KVRecords封装，KVRecords本质为KVRecord列表
+
+```java
+package xin.manong.stream.sdk.common;
+
+public class ProcessResult implements Serializable { 
+    private Map<String, KVRecords> forkMap;
+}
+```
+
+## 2. 资源Resource
+* 对独立功能组件进行封装，提高复用性，避免组件重复开发，例如数据库客户端，消息队列发送客户端等
+* 采用对象池实现，避免资源实例野蛮生长，同时满足资源重复利用需求
+* 用户定义资源，stream框架管理资源：创建、租借及销毁
+* 用户通过注解标注资源，stream框架根据注解将资源注入其他组件，注入目标包含
   * 插件Plugin
   * 数据接收器Receiver
   * 资源Resource
 
-### 1.1. 如何实现自己的Resource？
+### 2.1. 如何实现自己的Resource？
 * 继承抽象资源类：xin.manong.stream.sdk.resource.Resource
 * 实现create和destroy方法
   * create：定义资源如何创建
@@ -45,7 +74,7 @@ public abstract class Resource<T> {
 }
 ```
 
-### 1.2. 如何定义Resource？
+### 2.2. 如何定义Resource？
 * 在哪里定义stream应用使用的资源？
   * stream应用配置文件中定义：默认application.json
   * 配置文件中resources部分定义资源
@@ -69,11 +98,11 @@ public abstract class Resource<T> {
 }
 ```
 
-## 2. 数据接收器Receiver
+## 3. 数据接收器Receiver
 * 对数据源进行封装，实现数据的接收及向下分发，例如ONS消息数据接收器、OTS通道数据接收器、Kafka消息数据接收器等
 * 对接收数据进行转换，生成stream处理数据KVRecord并向下游分发
 
-### 2.1. 如何实现自己的Receiver？
+### 3.1. 如何实现自己的Receiver？
 * 继承抽象数据接收器：xin.manong.stream.sdk.receiver.Receiver
 * 实现start和stop方法
   * start：定义如何启动数据接收器，接收和分发数据
@@ -99,7 +128,7 @@ public abstract class Receiver {
 }
 ```
 
-### 2.2. 如何实现自己的数据转换器？
+### 3.2. 如何实现自己的数据转换器？
 * 继承抽象数据转换器：xin.manong.stream.sdk.receiver.ReceiveConverter
 * 实现数据转换方法
   * convert：定义数据源转换为KVRecord方法
@@ -122,7 +151,7 @@ public abstract class ReceiveConverter {
 }
 ```
 
-### 2.3. 如何定义Receiver？
+### 3.3. 如何定义Receiver？
 * 在哪里定义stream应用使用的数据接收器？
   * stream应用配置文件中定义：默认application.json
   * 配置文件中receivers部分定义数据接收器
@@ -158,15 +187,15 @@ public abstract class ReceiveConverter {
 }
 ```
 
-## 3. 插件Plugin
-* 对应用流程处理逻辑进行拆分，模块化业务使用插件进行封装
-* 插件生命周期由stream框架进行管理，具体分为3个阶段
+## 4. 插件Plugin
+* 对应用流程处理逻辑进行拆分，独立业务逻辑使用插件进行封装
+* 插件生命周期由stream框架管理，插件生命周期分为3个阶段
   * 初始化：构建插件运行所需环境和参数，为插件注入所需资源Resource
   * 处理和分发数据：接收上游Receiver或Plugin分发数据，进行处理，并将结果分发到下游Plugin
   * 销毁：清理销毁运行现场，并销毁插件运行时创建的资源
 * 插件根据业务需求定义数据分发路径，例如类型1数据分发到下游分支1、类型2数据分发到下游分支2 ...
 
-### 3.1. 如何实现自己的Plugin？
+### 4.1. 如何实现自己的Plugin？
 * 继承抽象类Plugin：xin.manong.stream.sdk.plugin.Plugin
 * 实现和覆盖对应方法
   * handle：定义数据处理和分发逻辑
@@ -189,7 +218,7 @@ public abstract class Plugin {
 }
 ```
 
-### 3.2. 如何定义Plugin？
+### 4.2. 如何定义Plugin？
 * 在哪里定义stream应用使用的插件？
   * stream应用配置文件中定义：默认application.json
   * 配置文件中processors部分定义插件
@@ -215,11 +244,11 @@ public abstract class Plugin {
 }
 ```
 
-## 4. 预处理器Preprocessor
-* 启动时机：stream应用启动前被框架调用
+## 5. 预处理器Preprocessor
+* 调用时机：stream应用启动前被框架调用
 * 依赖注解xin.manong.stream.sdk.annotation.Import进行导入
 
-### 4.1. 如何实现自己的Preprocessor？
+### 5.1. 如何实现自己的Preprocessor？
 * 集成抽象类xin.manong.stream.sdk.prepare.Preprocessor
 * 实现process方法：预处理逻辑
 
@@ -234,33 +263,6 @@ public abstract class Preprocessor {
 }
 ```
 
-## 5. 关于stream数据
-### 5.1. 传输及处理数据KVRecord
-* 本质为Map封装，将数据用keyValue对表示
-* 定义数据类型RecordType：PUT新增、UPDATE更新、DELETE删除
-* 每个KVRecord有唯一ID
-* 每个KVRecord定义主键，主键为列表集合
-
-```java
-package xin.manong.weapon.base.record;
-
-public class KVRecord implements Serializable {
-    private String id;
-    private RecordType recordType;
-    private final Set<String> keys;
-    private final Map<String, Object> fieldMap;
-}
-```
-### 5.2. 分发数据ProcessResult
-* 定义分发结果，本质为Map封装，Map key代表分支，Map value代表分支数据列表
-* 分支数据使用KVRecords封装，KVRecords本质为KVRecord列表
-
-```java
-package xin.manong.stream.sdk.common;
-
-public class ProcessResult implements Serializable { 
-    private Map<String, KVRecords> forkMap;
-}
-```
-
-
+### 5.2. 如何使定义的预处理器生效
+* 定义预处理注解，在预处理注解之上声明Import注解，导入预处理器实现
+* 预处理器实现：可获取预处理注解信息，进行预处理逻辑定义

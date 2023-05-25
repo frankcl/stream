@@ -25,8 +25,8 @@
         "idBuilder": "id_builder"
       },
       "processors": {
-        "success": "processor1",
-        "fail": "processor2"
+        "even": "processor1",
+        "odd": "processor2"
       }
     },
     {
