@@ -34,7 +34,9 @@
   - [x] 单进程速度控制器
   - [x] 分布式速度控制器
   - [x] 内存阻塞队列
-### 6. stream-test 测试相关套件
+### 6. stream-test 测试应用样例 [指南](https://github.com/frankcl/stream/blob/main/stream-test/README.md)
+  - [x] 应用入口：xin.manong.stream.test.Application
+  - [x] 应用配置：src/main/resources/application.json
 
 ## stream流程拓扑示例
 
