@@ -63,10 +63,27 @@
 * 插件拓扑图ProcessorGraph检测
   * 解析和构建ProcessorGraph
   * 检测ProcessorGraph连通性和有效性：同名插件检测，DAG有效性检测等
-* 数据接收器Receiver解析和构建，并与ProcessorGraph对接组成完整stream链路流程
+* 数据接收器Receiver解析和构建，生成完整stream链路流程
+  * 解析和构建接收数据转换器
+  * 解析和构建数据接收器
+  * 对接ProcessorGraph组成完整stream链路流程
 * 启动数据接收器：数据处理线程开始接收数据，并向下游插件分发数据
 
 特殊说明
 * 以数据驱动的方式按需创建ProcessorGraph，ProcessorGraph进行数据处理、流转和落地（为保证并发安全性，每个线程独占一个ProcessorGraph）
 * 框架在资源、数据接收器及插件初始化之前，完成依赖资源的注入
+
+### 2.2. 停止流程
+
+![stream_stop_timeline](https://github.com/frankcl/stream/blob/main/image/stream_stop_timeline.png)
+
+停止流程为启动流程的逆向工程，主要完成现场清理和资源销毁工作
+* 切断数据源：停止所有数据接收器
+  * 停止和销毁数据接收器
+  * 销毁接收数据转换器
+* 清理ProcessorGraph：清理所有线程相关ProcessorGraph
+  * 找到ProcessorGraph入口插件
+  * 以入口插件为起点开始销毁插件
+* 资源清理：注销所有资源实例
+* 停止报警发送器
 

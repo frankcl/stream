@@ -52,7 +52,8 @@ public class ProcessorGraphFactory {
             logger.warn("processor graph[{}] is not found", processorGraphId);
             return;
         }
-        processorGraphMap.remove(processorGraphId);
+        ProcessorGraph processorGraph = processorGraphMap.remove(processorGraphId);
+        if (processorGraph != null) processorGraph.closeGraph();
         logger.info("clean processor graph[{}] success", processorGraphId);
     }
 
