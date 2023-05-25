@@ -35,59 +35,24 @@
   - [x] 分布式速度控制器
   - [x] 内存阻塞队列
 ### 6. stream-test 测试应用样例 [指南](https://github.com/frankcl/stream/blob/main/stream-test/README.md)
-  - [x] 应用入口：xin.manong.stream.test.Application
-  - [x] 应用配置：src/main/resources/application.json
 
 ## stream流程拓扑示例
 
 ![stream_flow](https://github.com/frankcl/stream/blob/main/image/stream_flow.png)
 
-## 使用
+## 如何搭建自己的stream应用？
 
-stream应用开发请引入sdk和framework artifacts
+* 依赖JAR包选择
 
-```xml
-<dependency>
-    <groupId>xin.manong</groupId>
-    <artifactId>stream-sdk</artifactId>
-    <version>按需参考release信息</version>
-</dependency>
-<dependency>
-    <groupId>xin.manong</groupId>
-    <artifactId>stream-framework</artifactId>
-    <version>按需参考release信息</version>
-</dependency>
-```
-
-使用通用stream通用资源实现，请引入以下artifact
-
-```xml
-<dependency>
-    <groupId>xin.manong</groupId>
-    <artifactId>stream-resource</artifactId>
-    <version>按需参考release信息</version>
-</dependency>
-```
-
-使用通用stream通用接收器实现，请引入以下artifact
-
-```xml
-<dependency>
-    <groupId>xin.manong</groupId>
-    <artifactId>stream-receiver</artifactId>
-    <version>按需参考release信息</version>
-</dependency>
-```
-
-使用通用stream通用插件实现，请引入以下artifact
-
-```xml
-<dependency>
-    <groupId>xin.manong</groupId>
-    <artifactId>stream-plugin</artifactId>
-    <version>按需参考release信息</version>
-</dependency>
-```
+ | 工件               | 分组         | 最新版本  | 是否必须 | 说明                  |
+|:-----------------|:-----------|:------|:-----|:--------------------|
+ | stream-sdk       | xin.manong | 0.0.8 | 是    | 开发SDK，定义数据接收器、插件和资源 |
+ | stream-framework | xin.manong | 0.0.8 | 是    | stream运行框架及环境       |
+ | stream-resource  | xin.manong | 0.0.8 | 否    | 通用资源组件实现，按需引入       |
+ | stream-receiver  | xin.manong | 0.0.8 | 否    | 通用数据接收器实现，按需引入      |
+ | stream-plugin    | xin.manong | 0.0.8 | 否    | 通用插件实现，按需引入         |
+  
+* stream应用搭建实例参见[链接](https://github.com/frankcl/stream/blob/main/stream-test/src/main/resources/application.json)
 
 ## 依赖三方库信息
 
