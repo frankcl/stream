@@ -11,9 +11,21 @@
 package xin.manong.weapon.base.record;
 
 public class KVRecord implements Serializable {
+    /**
+     * 数据唯一ID
+     */
     private String id;
+    /**
+     * 数据类型：新增PUT，更新UPDATE，删除DELETE
+     */
     private RecordType recordType;
+    /**
+     * 主键集合
+     */
     private final Set<String> keys;
+    /**
+     * 数据字段
+     */
     private final Map<String, Object> fieldMap;
 }
 ```
@@ -24,7 +36,10 @@ public class KVRecord implements Serializable {
 ```java
 package xin.manong.stream.sdk.common;
 
-public class ProcessResult implements Serializable { 
+public class ProcessResult implements Serializable {
+    /**
+     * 分支数据
+     */
     private Map<String, KVRecords> forkMap;
 }
 ```
@@ -148,6 +163,21 @@ public abstract class ReceiveConverter {
      * @return KVRecords
      */
     public abstract KVRecords convert(Context context, Object object) throws Exception;
+
+    /**
+     * 初始化
+     *
+     * @return 成功返回true，否则返回false
+     */
+    public boolean init() {
+      return true;
+    }
+  
+    /**
+     * 销毁
+     */
+    public void destroy() {
+    }
 }
 ```
 
@@ -215,6 +245,30 @@ public abstract class Plugin {
      * @throws Exception
      */
     public abstract ProcessResult handle(KVRecord kvRecord) throws Exception;
+
+    /**
+     * flush插件内部数据，保证数据落地
+     * 默认实现为空，用户可覆写此方法
+     */
+    public void flush() {
+    }
+  
+    /**
+     * 初始化插件
+     *
+     * @return 如果成功返回true，否则返回false
+     */
+    public boolean init() {
+      return true;
+    }
+  
+    /**
+     * 销毁插件
+     *
+     * @return 销毁成功返回true，否则返回false
+     */
+    public void destroy() {
+    }
 }
 ```
 
