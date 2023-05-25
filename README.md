@@ -52,7 +52,7 @@
  | stream-receiver  | xin.manong | 0.0.8 | 否    | 通用数据接收器实现，按需引入      |
  | stream-plugin    | xin.manong | 0.0.8 | 否    | 通用插件实现，按需引入         |
   
-* stream应用搭建实例参见[链接](https://github.com/frankcl/stream/blob/main/stream-test/src/main/resources/application.json)
+* stream应用搭建示例参见：[链接](https://github.com/frankcl/stream/blob/main/stream-test/src/main/resources/application.json)
 
 ## 依赖三方库信息
 
