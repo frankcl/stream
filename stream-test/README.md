@@ -1,4 +1,4 @@
-# stream test 测试应用样例
+# stream应用样例
 
 ## 1. 搭建stream应用需要做哪些事儿？
 

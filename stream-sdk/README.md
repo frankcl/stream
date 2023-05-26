@@ -1,4 +1,4 @@
-# stream SDK
+# 开发者SDK
 
 ## 1. stream数据抽象
 ### 1.1. 传输及处理数据KVRecord
