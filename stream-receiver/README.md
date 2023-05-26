@@ -83,7 +83,7 @@ Kafka消息拉取封装，配置定义示例如下
 ## 内存中转数据接收器
 用于应用流程内部数据中转及异步处理，例如数据需要重新执行部分逻辑可以通过该数据接收器进行数据扭转 
 
-注意：依赖数据队列资源，详见
+注意：依赖数据队列资源，详见[链接](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E5%86%85%E5%AD%98%E6%95%B0%E6%8D%AE%E9%98%9F%E5%88%97))
 ```json
 {
   "receivers": [

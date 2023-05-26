@@ -2,14 +2,14 @@
 
 ## 快速导航
 
-* 阿里云ONS消息发送
-* 阿里云OTS客户端
-* 阿里云OSS客户端
-* kafka消息生产客户端
-* redis客户端
-* 内存数据队列
-* 进程级速度控制器
-* 全局速度控制器
+* [阿里云ONS消息发送](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91ons%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81)
+* [阿里云OTS客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91ots%E5%AE%A2%E6%88%B7%E7%AB%AF)
+* [阿里云OSS客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91oss%E5%AE%A2%E6%88%B7%E7%AB%AF)
+* [kafka消息生产客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#kafka%E6%B6%88%E6%81%AF%E7%94%9F%E4%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AF)
+* [redis客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#redis%E5%AE%A2%E6%88%B7%E7%AB%AF)
+* [内存数据队列](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E5%86%85%E5%AD%98%E6%95%B0%E6%8D%AE%E9%98%9F%E5%88%97)
+* [进程级速度控制器](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E8%BF%9B%E7%A8%8B%E7%BA%A7%E9%80%9F%E5%BA%A6%E6%8E%A7%E5%88%B6%E5%99%A8)
+* [全局速度控制器](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E5%85%A8%E5%B1%80%E9%80%9F%E5%BA%A6%E6%8E%A7%E5%88%B6%E5%99%A8)
 
 ## 阿里云ONS消息发送
 阿里云开放消息通知服务数据发送客户端封装，配置定义示例如下
@@ -177,7 +177,7 @@ kafka消息生产客户端封装，配置定义示例如下
 ## 全局速度控制器
 控制应用级别数据处理速率，配置定义示例如下
 
-注意：依赖redis客户端资源，详见
+注意：依赖redis客户端资源，详见[链接](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#redis%E5%AE%A2%E6%88%B7%E7%AB%AF)
 ```json
 {
   "resources": [

@@ -21,6 +21,8 @@
 
 ## 如何搭建自己的stream应用？
 
+* stream应用搭建示例参见：[链接](https://github.com/frankcl/stream/blob/main/stream-test/src/main/resources/application.json)
+
 * 依赖JAR包选择
 
  | 工件               | 分组         | 最新版本  | 是否必须 | 说明                  |
@@ -30,8 +32,6 @@
  | stream-resource  | xin.manong | 0.0.8 | 否    | 通用资源组件实现，按需引入       |
  | stream-receiver  | xin.manong | 0.0.8 | 否    | 通用数据接收器实现，按需引入      |
  | stream-plugin    | xin.manong | 0.0.8 | 否    | 通用插件实现，按需引入         |
-  
-* stream应用搭建示例参见：[链接](https://github.com/frankcl/stream/blob/main/stream-test/src/main/resources/application.json)
 
 ## 依赖三方库信息
 
