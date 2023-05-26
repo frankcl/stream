@@ -1,4 +1,4 @@
-# 通用数据接收器
+# 通用数据接收器实现
 
 ## 快速导航
 * [阿里云ONS数据接收器](https://github.com/frankcl/stream/blob/main/stream-receiver/README.md#%E9%98%BF%E9%87%8C%E4%BA%91ons%E6%95%B0%E6%8D%AE%E6%8E%A5%E6%94%B6%E5%99%A8)

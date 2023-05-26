@@ -21,7 +21,7 @@
 
 ## 如何搭建自己的stream应用？
 
-* stream应用搭建示例参见：[链接](https://github.com/frankcl/stream/blob/main/stream-test/src/main/resources/application.json)
+* stream应用搭建示例参见：[链接](https://github.com/frankcl/stream/blob/main/stream-test/README.md)
 
 * 依赖JAR包选择
 
