@@ -11,7 +11,7 @@
  - [x] stream开发SDK：[链接](https://github.com/frankcl/stream/blob/main/stream-sdk/README.md)
  - [x] stream架构原理：[链接](https://github.com/frankcl/stream/blob/main/stream-framework/README.md)
  - [x] stream通用数据接收器：[链接](https://github.com/frankcl/stream/blob/main/stream-receiver/README.md)
- - [x] stream通用资源
+ - [x] stream通用资源：[链接](https://github.com/frankcl/stream/blob/main/stream-resource/README.md)
  - [x] stream通用插件
  - [x] stream测试应用样例：[链接](https://github.com/frankcl/stream/blob/main/stream-test/README.md)
 

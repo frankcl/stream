@@ -11,6 +11,7 @@
       "converterClass": "xin.manong.stream.boost.receiver.ons.JSONMessageConverter",      //JSON消息转换器全限定类名
       "receiverConfigMap": {                                                              //数据接收器配置信息
         "consumeThreadNum": 16,                                                           //消费线程数，默认为1
+        "maxCachedMessageNum": 1000,                                                      //最大缓存记录数，默认1000
         "consumeId": "GID_TOPIC_XXX",                                                     //consumer id
         "serverURL": "http://onsaddr.cn-hangzhou.mq-internal.aliyuncs.com:8080",          //endpoint
         "subscribes": [                                                                   //订阅列表
@@ -66,7 +67,12 @@ Kafka消息拉取封装，配置定义示例如下
         "servers": "endpoint1,endpoint2",                                                 //kafka endpoint
         "groupId": "GID_XXX",                                                             //消费group id
         "topics": ["TOPIC_XXX"],                                                          //订阅topic列表
-        "consumeThreadNum": 1                                                             //消费线程数，默认为1
+        "consumeThreadNum": 1,                                                            //消费线程数，默认为1
+        "authConfig": {                                                                   //kafka认证配置
+          "securityProtocol": "xxx",                                                      //安全协议
+          "saslMechanism": "xxx",                                                         //SASL机制
+          "saslJaasConfig": "xxx"                                                         //JAAS配置
+        }
       },
       "processors": ["xxx_processor"]                                                     //分发插件列表
     }
