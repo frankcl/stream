@@ -10,6 +10,9 @@
 
 ## 2. stream应用样例：fake_stream
 
+ - [x] 应用程序入口：[Application](https://github.com/frankcl/stream/blob/main/stream-test/src/main/java/xin/manong/stream/test/Application.java)
+ - [x] 应用配置文件：[application.json](https://github.com/frankcl/stream/blob/main/stream-test/src/main/resources/application.json)
+
 ![fake_stream](https://github.com/frankcl/stream/blob/main/image/fake_stream.png)
 
  * fake_receiver周期性生产数据并分发下游插件record_id_builder
