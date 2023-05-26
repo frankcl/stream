@@ -52,6 +52,7 @@ public class ProcessResult implements Serializable {
   * 插件Plugin
   * 数据接收器Receiver
   * 资源Resource
+* 通用资源实现：[链接](https://github.com/frankcl/stream/blob/main/stream-resource/README.md)
 
 ### 2.1. 如何实现自己的Resource？
 * 继承抽象资源类：xin.manong.stream.sdk.resource.Resource
@@ -103,9 +104,9 @@ public abstract class Resource<T> {
 {
   "resources": [
     {
-      "name": "producer",
-      "className": "xin.manong.stream.boost.resource.ons.ONSProducerResource",
-      "configMap": {
+      "name": "producer",                                                             //资源名称
+      "className": "xin.manong.stream.boost.resource.ons.ONSProducerResource",        //资源全限定类名
+      "configMap": {                                                                  //资源配置信息
         "serverURL": "http://onsaddr.cn-hangzhou.mq-internal.aliyuncs.com:8080"
       }
     }
@@ -116,6 +117,7 @@ public abstract class Resource<T> {
 ## 3. 数据接收器Receiver
 * 对数据源进行封装，实现数据的接收及向下分发，例如ONS消息数据接收器、OTS通道数据接收器、Kafka消息数据接收器等
 * 对接收数据进行转换，生成stream处理数据KVRecord并向下游分发
+* 通用数据接收器实现：[链接](https://github.com/frankcl/stream/blob/main/stream-receiver/README.md)
 
 ### 3.1. 如何实现自己的Receiver？
 * 继承抽象数据接收器：xin.manong.stream.sdk.receiver.Receiver
@@ -197,21 +199,14 @@ public abstract class ReceiveConverter {
 {
   "receivers": [
     {
-      "name": "dummy_receiver",
-      "receiverClass": "xin.manong.stream.boost.receiver.ons.ONSReceiver",
-      "converterClass": "xin.manong.stream.boost.receiver.ons.JSONMessageConverter",
-      "receiverConfigMap": {
-        "consumeThreadNum": 16,
-        "consumeId": "GID_TEST_TOPIC",
-        "serverURL": "http://onsaddr.cn-hangzhou.mq-internal.aliyuncs.com:8080",
-        "subscribes": [
-          {
-            "topic": "TEST_TOPIC",
-            "tags": "*"
-          }
-        ]
+      "name": "dummy_receiver",                                                               //数据接收器名称
+      "receiverClass": "xin.manong.stream.boost.receiver.ons.ONSReceiver",                    //数据接收器全限定类名
+      "converterClass": "xin.manong.stream.boost.receiver.ons.JSONMessageConverter",          //数据转换器全限定类名
+      "receiverConfigMap": {                                                                  //数据接收器配置
       },
-      "processors": ["dummy_processor"]
+      "converterConfigMap": {                                                                 //数据转换器配置
+      },
+      "processors": ["dummy_processor"]                                                       //分发插件列表
     }
   ]
 }
@@ -224,6 +219,7 @@ public abstract class ReceiveConverter {
   * 处理和分发数据：接收上游Receiver或Plugin分发数据，进行处理，并将结果分发到下游Plugin
   * 销毁：清理销毁运行现场，并销毁插件运行时创建的资源
 * 插件根据业务需求定义数据分发路径，例如类型1数据分发到下游分支1、类型2数据分发到下游分支2 ...
+* 通用插件实现：[链接](https://github.com/frankcl/stream/blob/main/stream-plugin/README.md)
 
 ### 4.1. 如何实现自己的Plugin？
 * 继承抽象类Plugin：xin.manong.stream.sdk.plugin.Plugin
@@ -286,11 +282,11 @@ public abstract class Plugin {
 {
   "processors": [
     {
-      "name": "data_checker",
-      "className": "xin.manong.stream.plugin.DataChecker",
-      "pluginConfig": {
+      "name": "data_checker",                                                 //插件名称
+      "className": "xin.manong.stream.plugin.DataChecker",                    //插件全限定类名
+      "pluginConfig": {                                                       //插件配置
       },
-      "processors": {
+      "processors": {                                                         //下游分支插件信息
         "next": "expired_filter"
       }
     }
@@ -318,5 +314,5 @@ public abstract class Preprocessor {
 ```
 
 ### 5.2. 如何使定义的预处理器生效
-* 定义预处理注解，在预处理注解之上声明Import注解，导入预处理器实现
+* 定义预处理注解，在预处理注解之上声明注解[Import](https://github.com/frankcl/stream/blob/main/stream-sdk/src/main/java/xin/manong/stream/sdk/annotation/Import.java)，导入预处理器实现
 * 预处理器实现：可获取预处理注解信息，进行预处理逻辑定义

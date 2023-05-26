@@ -1,5 +1,12 @@
 # 通用数据接收器
 
+## 快速导航
+* [阿里云ONS数据接收器](https://github.com/frankcl/stream/blob/main/stream-receiver/README.md#%E9%98%BF%E9%87%8C%E4%BA%91ons%E6%95%B0%E6%8D%AE%E6%8E%A5%E6%94%B6%E5%99%A8)
+* [阿里云OTS通道数据接收器](https://github.com/frankcl/stream/blob/main/stream-receiver/README.md#%E9%98%BF%E9%87%8C%E4%BA%91ots%E9%80%9A%E9%81%93%E6%95%B0%E6%8D%AE%E6%8E%A5%E6%94%B6%E5%99%A8)
+* [Kafka数据接收器](https://github.com/frankcl/stream/blob/main/stream-receiver/README.md#kafka%E6%95%B0%E6%8D%AE%E6%8E%A5%E6%94%B6%E5%99%A8)
+* [内存中转数据接收器](https://github.com/frankcl/stream/blob/main/stream-receiver/README.md#%E5%86%85%E5%AD%98%E4%B8%AD%E8%BD%AC%E6%95%B0%E6%8D%AE%E6%8E%A5%E6%94%B6%E5%99%A8)
+* [fake数据接收器](https://github.com/frankcl/stream/blob/main/stream-receiver/README.md#fake%E6%95%B0%E6%8D%AE%E6%8E%A5%E6%94%B6%E5%99%A8)
+
 ## 阿里云ONS数据接收器
 阿里云开放消息通知服务数据拉取封装，配置定义示例如下
 ```json
@@ -100,7 +107,7 @@ Kafka消息拉取封装，配置定义示例如下
 }
 ```
 
-## Fake数据接收器
+## fake数据接收器
 不对接任何数据源，周期性生产1条空数据向下游分发，触发数据流程
 ```json
 {

@@ -12,7 +12,7 @@
  - [x] stream架构原理：[链接](https://github.com/frankcl/stream/blob/main/stream-framework/README.md)
  - [x] stream通用数据接收器：[链接](https://github.com/frankcl/stream/blob/main/stream-receiver/README.md)
  - [x] stream通用资源：[链接](https://github.com/frankcl/stream/blob/main/stream-resource/README.md)
- - [x] stream通用插件
+ - [x] stream通用插件：[链接](https://github.com/frankcl/stream/blob/main/stream-plugin/README.md)
  - [x] stream测试应用样例：[链接](https://github.com/frankcl/stream/blob/main/stream-test/README.md)
 
 ## stream流程拓扑示例
