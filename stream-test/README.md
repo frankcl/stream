@@ -20,3 +20,14 @@
    * 如果ID为偶数分发给processor1
    * 如果ID为奇数分发给processor2
  * processor1和processor2工作：打印数据ID
+ * 组件如何引用资源请参考[RecordIDBuilder](https://github.com/frankcl/stream/blob/main/stream-test/src/main/java/xin/manong/stream/test/plugin/RecordIDBuilder.java)
+   * 如果应用中相同类型资源唯一，Resource注解可以省略name参数，框架会根据资源类型进行注入
+   * 资源名参数可以使用占位符${}进行填充，框架会根据占位符从插件configMap中获取真实的资源名称，然后进行注入
+
+```java
+public class RecordIDBuilder extends Plugin {
+
+   @Resource(name = "${idBuilder}")
+   private AutoIncreasedIDBuilder builder;
+}
+```

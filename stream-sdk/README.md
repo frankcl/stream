@@ -61,6 +61,7 @@ public class ProcessResult implements Serializable {
   * destroy：定义资源如何销毁
   * validate（可选）：定义资源可用性验证，默认返回true
 * 可选覆盖validate方法：验证资源是否有效，stream会对无效资源进行销毁和重建。此方法默认返回true
+* 资源内部可引用其他资源，使用注解[Resource](https://github.com/frankcl/stream/blob/main/stream-sdk/src/main/java/xin/manong/stream/sdk/annotation/Resource.java)对成员资源进行标注，框架自动注入
 
 ```java
 package xin.manong.stream.sdk.resource;
@@ -124,6 +125,7 @@ public abstract class Resource<T> {
 * 实现start和stop方法
   * start：定义如何启动数据接收器，接收和分发数据
   * stop：定义如何停止数据接收器，销毁资源
+* 数据接收器内部可引用其他资源，使用注解[Resource](https://github.com/frankcl/stream/blob/main/stream-sdk/src/main/java/xin/manong/stream/sdk/annotation/Resource.java)对成员资源进行标注，框架自动注入
 
 ```java
 package xin.manong.stream.sdk.receiver;
@@ -228,6 +230,7 @@ public abstract class ReceiveConverter {
   * init（可选）：初始化插件所需资源，默认返回true
   * destroy（可选）：销毁插件现场和创建资源，默认实现为空
   * flush（可选）：定义插件刷新逻辑，保证插件hold资源可以落地，stream框架定期调用flush方法，默认实现为空
+* 插件内部可引用其他资源，使用注解[Resource](https://github.com/frankcl/stream/blob/main/stream-sdk/src/main/java/xin/manong/stream/sdk/annotation/Resource.java)对成员资源进行标注，框架自动注入
 
 ```java
 package xin.manong.stream.sdk.plugin;
