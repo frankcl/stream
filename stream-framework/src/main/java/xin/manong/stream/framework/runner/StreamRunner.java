@@ -8,16 +8,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xin.manong.stream.framework.common.StreamManager;
 import xin.manong.stream.framework.prepare.PreprocessManager;
+import xin.manong.stream.framework.prepare.PreprocessParser;
 import xin.manong.stream.framework.processor.ProcessorGraph;
 import xin.manong.stream.framework.processor.ProcessorGraphFactory;
 import xin.manong.stream.framework.receiver.ReceiveControllerConfig;
 import xin.manong.stream.framework.receiver.ReceiveManager;
 import xin.manong.stream.framework.resource.ResourceConfig;
 import xin.manong.stream.framework.resource.ResourceManager;
-import xin.manong.stream.sdk.annotation.Import;
 import xin.manong.stream.sdk.annotation.StreamApplication;
 import xin.manong.stream.sdk.common.UnacceptableException;
-import xin.manong.stream.sdk.prepare.Preprocessor;
 import xin.manong.weapon.alarm.Alarm;
 import xin.manong.weapon.alarm.AlarmConfig;
 import xin.manong.weapon.alarm.AlarmSender;
@@ -29,7 +28,6 @@ import xin.manong.weapon.base.util.ReflectUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.nio.charset.Charset;
 import java.util.ServiceLoader;
 import java.util.concurrent.CountDownLatch;
@@ -245,58 +243,16 @@ public class StreamRunner {
     }
 
     /**
-     * 处理预处理器导入
-     *
-     * @param resourceClass 资源类
-     */
-    private static void processImports(Class resourceClass) {
-        if (resourceClass == null) return;
-        Annotation[] annotations = resourceClass.getAnnotations();
-        if (annotations == null || annotations.length == 0) return;
-        for (Annotation annotation : annotations) {
-            Annotation[] innerAnnotations = annotation.annotationType().getAnnotations();
-            for (Annotation innerAnnotation : innerAnnotations) {
-                if (innerAnnotation.annotationType() != Import.class) continue;
-                processImports((Import) innerAnnotation, annotation);
-            }
-        }
-    }
-
-    /**
-     * 处理预处理器导入
-     *
-     * @param importAnnotation 导入注解
-     * @param outerAnnotation 包含Import注解的注解
-     */
-    private static void processImports(Import importAnnotation, Annotation outerAnnotation) {
-        Class[] preprocessorClasses = importAnnotation.value();
-        if (preprocessorClasses == null || preprocessorClasses.length == 0) {
-            logger.warn("missing classes for {}", importAnnotation.getClass().getName());
-            return;
-        }
-        for (Class preprocessorClass : preprocessorClasses) {
-            if (!Preprocessor.class.isAssignableFrom(preprocessorClass)) {
-                logger.warn("import class[{}] is not an implementation of {}",
-                        preprocessorClass.getName(), Preprocessor.class.getName());
-                return;
-            }
-            ReflectParams params = new ReflectParams(new Class[]{Annotation.class}, new Object[]{outerAnnotation});
-            Preprocessor preprocessor = (Preprocessor) ReflectUtil.newInstance(preprocessorClass, params);
-            PreprocessManager.register(preprocessor);
-        }
-    }
-
-    /**
      * 数据流启动入口
      *
-     * @param resourceClass 资源配置类
+     * @param appClass 应用入口类
      * @param args 命令行参数
      * @throws Exception
      */
-    public static void run(Class resourceClass, String[] args) throws Exception {
+    public static void run(Class appClass, String[] args) throws Exception {
         JSON.DEFAULT_PARSER_FEATURE &= ~Feature.UseBigDecimal.getMask();
-        StreamRunnerConfig config = parseStreamConfig(resourceClass, args);
-        processImports(resourceClass);
+        StreamRunnerConfig config = parseStreamConfig(appClass, args);
+        PreprocessParser.parse(appClass);
         StreamRunner streamRunner = new StreamRunner(config);
         CountDownLatch countDownLatch = new CountDownLatch(1);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
