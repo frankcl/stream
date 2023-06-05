@@ -1,5 +1,6 @@
 package xin.manong.stream.framework.test;
 
+import xin.manong.stream.framework.prepare.PreprocessManager;
 import xin.manong.stream.framework.prepare.PreprocessParser;
 import xin.manong.weapon.base.secret.DynamicSecretListener;
 
@@ -27,6 +28,7 @@ public class StreamTest {
         synchronized (StreamTest.class) {
             if (flag) return;
             PreprocessParser.parse(appClass);
+            PreprocessManager.preprocess();
             ServiceLoader<DynamicSecretListener> serviceLoader = ServiceLoader.load(DynamicSecretListener.class);
             for (DynamicSecretListener listener : serviceLoader) listener.start();
             flag = true;
