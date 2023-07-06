@@ -5,6 +5,8 @@
 * [阿里云ONS消息发送](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91ons%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81)
 * [阿里云OTS客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91ots%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [阿里云OSS客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91oss%E5%AE%A2%E6%88%B7%E7%AB%AF)
+* [阿里云DataHub客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91oss%E5%AE%A2%E6%88%B7%E7%AB%AF)
+* [阿里云SLS日志客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91oss%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [kafka消息生产客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#kafka%E6%B6%88%E6%81%AF%E7%94%9F%E4%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [redis客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#redis%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [内存数据队列](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E5%86%85%E5%AD%98%E6%95%B0%E6%8D%AE%E9%98%9F%E5%88%97)
@@ -63,6 +65,39 @@
         "socketTimeoutMs": 10000,                                                         //socket超时，单位毫秒，默认10秒
         "connectionTimeoutMs": 5000,                                                      //连接超时，单位毫秒，默认5秒
         "retryCnt": 3                                                                     //发送重试次数，默认3次
+      }
+    }
+  ]
+}
+```
+
+## 阿里云DataHub客户端
+阿里云DataHub客户端封装，配置定义示例如下
+```json
+{
+  "resources": [
+    {
+      "name": "xxx_data_hub_client",                                                      //DataHub客户端名称
+      "className": "xin.manong.stream.boost.resource.datahub.DataHubClientResource",      //DataHub客户端资源全限定类名
+      "configMap": {                                                                      //DataHub客户端配置信息
+        "endpoint": "http://dh-cn-hangzhou-int-vpc.aliyuncs.com",                         //DataHub endpoint
+        "retryCnt": 3                                                                     //发送重试次数，默认3次
+      }
+    }
+  ]
+}
+```
+
+## 阿里云SLS日志客户端
+阿里云SLS日志客户端封装，配置定义示例如下
+```json
+{
+  "resources": [
+    {
+      "name": "xxx_log_client",                                                           //log客户端名称
+      "className": "xin.manong.stream.boost.resource.log.LogClientResource",              //log客户端资源全限定类名
+      "configMap": {                                                                      //log客户端配置信息
+        "endpoint": "http://cn-hangzhou.log.aliyuncs.com"                                 //log client endpoint
       }
     }
   ]

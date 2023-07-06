@@ -1,4 +1,4 @@
-package xin.manong.stream.boost.resource.oss;
+package xin.manong.stream.boost.resource.datahub;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,9 +8,9 @@ import java.util.Map;
 
 /**
  * @author frankcl
- * @date 2022-08-12 14:04:47
+ * @date 2023-07-06 15:29:33
  */
-public class OSSClientResourceSuite {
+public class DataHubClientResourceSuite {
 
     @Test
     public void testCreateSuccess() {
@@ -18,9 +18,9 @@ public class OSSClientResourceSuite {
         keySecret.put("accessKey", "ak");
         keySecret.put("secretKey", "sk");
         Map<String, Object> configMap = new HashMap<>();
+        configMap.put("endpoint", "https://dh-cn-hangzhou.aliyuncs.com");
         configMap.put("aliyunSecret", keySecret);
-        configMap.put("endpoint", "http://oss-cn-hangzhou.aliyuncs.com");
-        OSSClientResource resource = new OSSClientResource("oss_client");
+        DataHubClientResource resource = new DataHubClientResource("data_hub_client");
         resource.build(configMap);
         Assert.assertTrue(resource.get() != null);
         resource.destroy();
@@ -29,8 +29,8 @@ public class OSSClientResourceSuite {
     @Test
     public void testCreateFail() {
         Map<String, Object> configMap = new HashMap<>();
-        configMap.put("endpoint", "http://oss-cn-hangzhou.aliyuncs.com");
-        OSSClientResource resource = new OSSClientResource("oss_client");
+        configMap.put("endpoint", "https://dh-cn-hangzhou.aliyuncs.com");
+        DataHubClientResource resource = new DataHubClientResource("data_hub_client");
         resource.build(configMap);
         Assert.assertTrue(resource.get() == null);
         resource.destroy();

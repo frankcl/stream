@@ -19,7 +19,7 @@ public class ONSProducerResourceSuite {
         keySecret.put("secretKey", "sk");
         Map<String, Object> configMap = new HashMap<>();
         configMap.put("serverURL", "http://onsaddr.mq-internet-access.mq-internet.aliyuncs.com:80");
-        configMap.put("keySecret", keySecret);
+        configMap.put("aliyunSecret", keySecret);
         ONSProducerResource resource = new ONSProducerResource("ons_producer");
         resource.build(configMap);
         Assert.assertTrue(resource.get() != null);

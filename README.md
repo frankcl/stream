@@ -27,26 +27,29 @@
 
  | 工件               | 分组         | 最新版本  | 是否必须 | 说明                  |
 |:-----------------|:-----------|:------|:-----|:--------------------|
- | stream-sdk       | xin.manong | 0.0.9 | 是    | 开发SDK，定义数据接收器、插件和资源 |
- | stream-framework | xin.manong | 0.0.9 | 是    | stream运行框架及环境       |
- | stream-resource  | xin.manong | 0.0.9 | 否    | 通用资源组件实现，按需引入       |
- | stream-receiver  | xin.manong | 0.0.9 | 否    | 通用数据接收器实现，按需引入      |
- | stream-plugin    | xin.manong | 0.0.9 | 否    | 通用插件实现，按需引入         |
+ | stream-sdk       | xin.manong | 0.1.0 | 是    | 开发SDK，定义数据接收器、插件和资源 |
+ | stream-framework | xin.manong | 0.1.0 | 是    | stream运行框架及环境       |
+ | stream-resource  | xin.manong | 0.1.0 | 否    | 通用资源组件实现，按需引入       |
+ | stream-receiver  | xin.manong | 0.1.0 | 否    | 通用数据接收器实现，按需引入      |
+ | stream-plugin    | xin.manong | 0.1.0 | 否    | 通用插件实现，按需引入         |
 
 ## 依赖三方库信息
 
-| 工件             | 分组                      |     版本      | optional |
-|:---------------|:------------------------|:-----------:|:--------:|
-| aliyun-sdk-oss | com.aliyun.oss          |   3.15.0    |   true   |
-| commons-cli    | commons-cli             |     1.3     |  false   |
-| commons-pool2  | org.apache.commons      |   2.11.1    |  false   |
-| guava          | com.google.guava        |  31.1-jre   |   true   |
-| kafka-clients  | org.apache.kafka        |    3.3.1    |   true   |
-| ons-client     | com.aliyun.openservices | 1.8.0.Final |   true   |
-| redisson       | org.redisson            |   3.19.0    |   true   | 
-| slf4j-log4j12  | org.slf4j               |   1.7.25    |   true   |
-| tablestore     | com.aliyun.openservices |   5.13.10   |   true   |
-| weapon-alarm   | xin.manong              |    0.1.3    |  false   |
-| weapon-aliyun  | xin.manong              |    0.1.3    |  false   |
-| weapon-base    | xin.manong              |    0.1.3    |  false   |
+| 工件                  | 分组                      |      版本      | optional |
+|:--------------------|:------------------------|:------------:|:--------:|
+| aliyun-log          | com.aliyun.openservices |    0.6.82    |   true   |
+| aliyun-log-producer | com.aliyun.openservices |    0.3.12    |   true   |
+| aliyun-sdk-datahub  | com.aliyun.datahub      | 2.3.0-public |   true   |
+| aliyun-sdk-oss      | com.aliyun.oss          |    3.15.0    |   true   |
+| commons-cli         | commons-cli             |     1.3      |  false   |
+| commons-pool2       | org.apache.commons      |    2.11.1    |  false   |
+| guava               | com.google.guava        |   31.1-jre   |   true   |
+| kafka-clients       | org.apache.kafka        |    3.3.1     |   true   |
+| ons-client          | com.aliyun.openservices | 1.8.0.Final  |   true   |
+| redisson            | org.redisson            |    3.19.0    |   true   | 
+| slf4j-log4j12       | org.slf4j               |    1.7.25    |   true   |
+| tablestore          | com.aliyun.openservices |   5.13.10    |   true   |
+| weapon-alarm        | xin.manong              |    0.1.4     |  false   |
+| weapon-aliyun       | xin.manong              |    0.1.4     |  false   |
+| weapon-base         | xin.manong              |    0.1.4     |  false   |
 
