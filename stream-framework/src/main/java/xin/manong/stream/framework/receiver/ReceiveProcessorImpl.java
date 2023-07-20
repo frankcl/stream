@@ -66,7 +66,8 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             logger.error(e.getMessage(), e);
             context.put(StreamConstants.STREAM_EXCEPTION_RECEIVER, name);
             context.put(StreamConstants.STREAM_EXCEPTION_STACK, ExceptionUtils.getStackTrace(e));
-            context.put(StreamConstants.STREAM_DEBUG_MESSAGE, String.format("数据转换异常[%s]", e.getMessage()));
+            context.put(StreamConstants.STREAM_DEBUG_MESSAGE, String.format("数据转换异常[%s:%s]",
+                    e.getClass().getSimpleName(), e.getMessage()));
             StreamManager.commitLog(context);
             return;
         }
@@ -98,7 +99,8 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
             AlarmStatus alarmStatus = e instanceof UnacceptableException || e instanceof Error ?
                     AlarmStatus.FATAL : AlarmStatus.ERROR;
             Alarm alarm = new Alarm(String.format(alarmStatus == AlarmStatus.FATAL ?
-                    "严重错误发生[%s]" : "链路异常发生[%s]", e.getMessage()), alarmStatus);
+                    "严重错误发生[%s:%s]" : "链路异常发生[%s:%s]", e.getClass().getSimpleName(),
+                    e.getMessage()), alarmStatus);
             alarm.setAppName(appName).setTitle("应用异常报警");
             alarmSender.submit(alarm);
         }
