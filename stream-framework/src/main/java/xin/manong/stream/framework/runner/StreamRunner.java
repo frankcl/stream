@@ -23,7 +23,7 @@ import xin.manong.weapon.alarm.AlarmSender;
 import xin.manong.weapon.alarm.AlarmStatus;
 import xin.manong.weapon.base.secret.DynamicSecretListener;
 import xin.manong.weapon.base.util.FileUtil;
-import xin.manong.weapon.base.util.ReflectParams;
+import xin.manong.weapon.base.util.ReflectArgs;
 import xin.manong.weapon.base.util.ReflectUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -115,9 +115,9 @@ public class StreamRunner {
             return false;
         }
         try {
-            ReflectParams reflectParams = new ReflectParams(
+            ReflectArgs args = new ReflectArgs(
                     new Class[]{ AlarmConfig.class }, new Object[]{ config.alarmConfig });
-            alarmSender = (AlarmSender) ReflectUtil.newInstance(config.alarmConfig.alarmSenderClass, reflectParams);
+            alarmSender = (AlarmSender) ReflectUtil.newInstance(config.alarmConfig.alarmSenderClass, args);
             if (!alarmSender.start()) {
                 logger.error("start alarm sender[{}] failed", config.alarmConfig.alarmSenderClass);
                 return false;

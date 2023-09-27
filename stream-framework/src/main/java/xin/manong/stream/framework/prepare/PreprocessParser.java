@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.annotation.Import;
 import xin.manong.stream.sdk.prepare.Preprocessor;
-import xin.manong.weapon.base.util.ReflectParams;
+import xin.manong.weapon.base.util.ReflectArgs;
 import xin.manong.weapon.base.util.ReflectUtil;
 
 import java.lang.annotation.Annotation;
@@ -30,6 +30,10 @@ public class PreprocessParser {
         Annotation[] appAnnotations = appClass.getAnnotations();
         if (appAnnotations == null || appAnnotations.length == 0) return;
         for (Annotation appAnnotation : appAnnotations) {
+            if (appAnnotation.annotationType() == Import.class) {
+                registerPreprocessor((Import) appAnnotation, null);
+                continue;
+            }
             Annotation[] annotations = appAnnotation.annotationType().getAnnotations();
             for (Annotation annotation : annotations) {
                 if (annotation.annotationType() != Import.class) continue;
@@ -56,8 +60,8 @@ public class PreprocessParser {
                         preprocessorClass.getName(), Preprocessor.class.getName());
                 return;
             }
-            ReflectParams params = new ReflectParams(new Class[] { Annotation.class }, new Object[] { appAnnotation });
-            Preprocessor preprocessor = (Preprocessor) ReflectUtil.newInstance(preprocessorClass, params);
+            ReflectArgs args = new ReflectArgs(new Class[] { Annotation.class }, new Object[] { appAnnotation });
+            Preprocessor preprocessor = (Preprocessor) ReflectUtil.newInstance(preprocessorClass, args);
             PreprocessManager.register(preprocessor);
         }
     }

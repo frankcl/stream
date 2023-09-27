@@ -27,11 +27,11 @@
 
  | 工件               | 分组         | 最新版本  | 是否必须 | 说明                  |
 |:-----------------|:-----------|:------|:-----|:--------------------|
- | stream-sdk       | xin.manong | 0.1.0 | 是    | 开发SDK，定义数据接收器、插件和资源 |
- | stream-framework | xin.manong | 0.1.0 | 是    | stream运行框架及环境       |
- | stream-resource  | xin.manong | 0.1.0 | 否    | 通用资源组件实现，按需引入       |
- | stream-receiver  | xin.manong | 0.1.0 | 否    | 通用数据接收器实现，按需引入      |
- | stream-plugin    | xin.manong | 0.1.0 | 否    | 通用插件实现，按需引入         |
+ | stream-sdk       | xin.manong | 0.1.1 | 是    | 开发SDK，定义数据接收器、插件和资源 |
+ | stream-framework | xin.manong | 0.1.1 | 是    | stream运行框架及环境       |
+ | stream-resource  | xin.manong | 0.1.1 | 否    | 通用资源组件实现，按需引入       |
+ | stream-receiver  | xin.manong | 0.1.1 | 否    | 通用数据接收器实现，按需引入      |
+ | stream-plugin    | xin.manong | 0.1.1 | 否    | 通用插件实现，按需引入         |
 
 ## 依赖三方库信息
 
@@ -49,7 +49,7 @@
 | redisson            | org.redisson            |    3.19.0    |   true   | 
 | slf4j-log4j12       | org.slf4j               |    1.7.25    |   true   |
 | tablestore          | com.aliyun.openservices |   5.13.10    |   true   |
-| weapon-alarm        | xin.manong              |    0.1.4     |  false   |
-| weapon-aliyun       | xin.manong              |    0.1.4     |  false   |
-| weapon-base         | xin.manong              |    0.1.4     |  false   |
+| weapon-alarm        | xin.manong              |    0.1.8     |  false   |
+| weapon-aliyun       | xin.manong              |    0.1.8     |  false   |
+| weapon-base         | xin.manong              |    0.1.8     |  false   |
 

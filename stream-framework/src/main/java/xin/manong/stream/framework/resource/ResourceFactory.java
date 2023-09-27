@@ -6,7 +6,7 @@ import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.resource.Resource;
-import xin.manong.weapon.base.util.ReflectParams;
+import xin.manong.weapon.base.util.ReflectArgs;
 import xin.manong.weapon.base.util.ReflectUtil;
 
 /**
@@ -36,10 +36,10 @@ public class ResourceFactory implements PooledObjectFactory<Resource> {
      */
     @Override
     public PooledObject<Resource> makeObject() throws Exception {
-        ReflectParams params = new ReflectParams();
-        params.types = new Class[] { String.class };
-        params.values = new Object[] { resourceConfig.name };
-        Resource resource = (Resource) ReflectUtil.newInstance(resourceConfig.className, params);
+        ReflectArgs args = new ReflectArgs();
+        args.argTypes = new Class[] { String.class };
+        args.argValues = new Object[] { resourceConfig.name };
+        Resource resource = (Resource) ReflectUtil.newInstance(resourceConfig.className, args);
         if (resource == null) {
             logger.error("create resource[{}] failed for class[{}]",
                     resourceConfig.name, resourceConfig.className);

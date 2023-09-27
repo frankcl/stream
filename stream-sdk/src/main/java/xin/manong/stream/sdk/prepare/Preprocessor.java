@@ -12,13 +12,13 @@ import java.lang.annotation.Annotation;
 public abstract class Preprocessor {
 
     /**
-     * Import注解外层引用注解
-     * 用户可通过outerAnnotation获取信息
+     * 应用注解：引入Import注解的外层注解
+     * 用户可通过应用注解获取其他信息
      */
-    protected Annotation outerAnnotation;
+    protected Annotation appAnnotation;
 
-    public Preprocessor(Annotation outerAnnotation) {
-        this.outerAnnotation = outerAnnotation;
+    public Preprocessor(Annotation appAnnotation) {
+        this.appAnnotation = appAnnotation;
     }
 
     /**

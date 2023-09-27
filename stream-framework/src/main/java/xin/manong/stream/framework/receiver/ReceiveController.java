@@ -9,7 +9,7 @@ import xin.manong.stream.sdk.receiver.ReceiveConverter;
 import xin.manong.stream.sdk.receiver.ReceiveProcessor;
 import xin.manong.stream.sdk.receiver.Receiver;
 import xin.manong.weapon.alarm.AlarmSender;
-import xin.manong.weapon.base.util.ReflectParams;
+import xin.manong.weapon.base.util.ReflectArgs;
 import xin.manong.weapon.base.util.ReflectUtil;
 
 import java.util.List;
@@ -89,10 +89,10 @@ public class ReceiveController {
      * @return 成功返回true，否则返回false
      */
     private boolean initReceiver() {
-        ReflectParams params = new ReflectParams();
-        params.types = new Class[] { Map.class };
-        params.values = new Object[] { config.receiverConfigMap };
-        receiver = (Receiver) ReflectUtil.newInstance(config.receiverClass, params);
+        ReflectArgs args = new ReflectArgs();
+        args.argTypes = new Class[] { Map.class };
+        args.argValues = new Object[] { config.receiverConfigMap };
+        receiver = (Receiver) ReflectUtil.newInstance(config.receiverClass, args);
         ResourceInjector.inject(receiver, config.receiverConfigMap);
         receiver.setAppName(appName);
         return true;
@@ -105,10 +105,10 @@ public class ReceiveController {
      */
     private boolean initConverter() {
         if (StringUtils.isEmpty(config.converterClass)) return true;
-        ReflectParams params = new ReflectParams();
-        params.types = new Class[] { Map.class };
-        params.values = new Object[] { config.converterConfigMap };
-        converter = (ReceiveConverter) ReflectUtil.newInstance(config.converterClass, params);
+        ReflectArgs args = new ReflectArgs();
+        args.argTypes = new Class[] { Map.class };
+        args.argValues = new Object[] { config.converterConfigMap };
+        converter = (ReceiveConverter) ReflectUtil.newInstance(config.converterClass, args);
         ResourceInjector.inject(converter, config.converterConfigMap);
         if (!converter.init()) {
             logger.error("init receive converter[{}] failed", name);

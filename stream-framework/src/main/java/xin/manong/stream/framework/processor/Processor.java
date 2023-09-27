@@ -14,7 +14,7 @@ import xin.manong.stream.sdk.plugin.Plugin;
 import xin.manong.weapon.base.common.Context;
 import xin.manong.weapon.base.record.KVRecord;
 import xin.manong.weapon.base.record.KVRecords;
-import xin.manong.weapon.base.util.ReflectParams;
+import xin.manong.weapon.base.util.ReflectArgs;
 import xin.manong.weapon.base.util.ReflectUtil;
 
 import java.util.HashMap;
@@ -55,11 +55,11 @@ public class Processor {
         logger.info("init processor[{}] ...", config.name);
         if (config == null || !config.check()) return false;
         name = config.name;
-        ReflectParams params = new ReflectParams();
-        params.types = new Class[] { Map.class };
-        params.values = new Object[] { config.pluginConfig };
+        ReflectArgs args = new ReflectArgs();
+        args.argTypes = new Class[] { Map.class };
+        args.argValues = new Object[] { config.pluginConfig };
         try {
-            plugin = (Plugin) ReflectUtil.newInstance(config.className, params);
+            plugin = (Plugin) ReflectUtil.newInstance(config.className, args);
             ResourceInjector.inject(plugin, config.pluginConfig);
             if (!plugin.init()) {
                 logger.error("init plugin[{}] failed", name);

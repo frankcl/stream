@@ -7,7 +7,7 @@
     <groupId>xin.manong</groupId>
     <artifactId>stream</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <name>stream</name>
     <description>framework for building data stream</description>
     <url>https://github.com/frankcl/stream</url>
@@ -58,8 +58,8 @@
         <datahub.version>2.3.0-public</datahub.version>
         <aliyun-log.version>0.6.82</aliyun-log.version>
         <aliyun-log-producer.version>0.3.12</aliyun-log-producer.version>
-        <weapon.version>0.1.4</weapon.version>
-        <stream.version>0.1.0</stream.version>
+        <weapon.version>0.1.8</weapon.version>
+        <stream.version>0.1.1</stream.version>
     </properties>
 
     <profiles>
