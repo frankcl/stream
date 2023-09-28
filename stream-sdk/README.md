@@ -301,8 +301,36 @@ public abstract class Plugin {
 * 调用时机：stream应用启动前被框架调用
 * 通过注解xin.manong.stream.sdk.annotation.Import声明导入预处理器
   * 在应用入口类声明Import注解，直接导入Preprocessor
-  * 在应用入口类声明自定义注解，自定义注解上声明Import注解，间接导入Preprocessor(此方式Preprocessor可获取应用入口声明自定义注解信息)
+  ```java
+  @Import(value = {XXXPreprocessor.class})
+  @StreamApplication(name = "fake_stream")
+  public class Application {
 
+    public static void main(String[] args) throws Exception {
+        StreamRunner.run(Application.class, args);
+    }
+  }
+  ```
+  * 在应用入口类声明自定义注解，自定义注解上声明Import注解，间接导入Preprocessor(此方式Preprocessor可获取应用入口声明自定义注解信息)
+  ```java
+  @ShamanApplication(name = "fake_stream")
+  @StreamApplication(name = "fake_stream")
+  public class Application {
+
+    public static void main(String[] args) throws Exception {
+        StreamRunner.run(Application.class, args);
+    }
+  }
+  
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @Import({ ShamanApplicationProcessor.class })             //自定义Preprocessor
+  public @interface ShamanApplication {
+
+    String name();
+  }
+  ```
+  
 ### 5.1. 如何实现自己的Preprocessor？
 * 集成抽象类xin.manong.stream.sdk.prepare.Preprocessor
 * 实现process方法：预处理逻辑
