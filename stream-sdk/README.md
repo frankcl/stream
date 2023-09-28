@@ -322,6 +322,9 @@ public abstract class Plugin {
     }
   }
   
+  /**
+   * 自定义注解
+   */
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @Import({ ShamanApplicationProcessor.class })             //自定义Preprocessor
