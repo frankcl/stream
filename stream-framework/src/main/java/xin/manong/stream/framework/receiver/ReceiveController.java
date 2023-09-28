@@ -95,6 +95,7 @@ public class ReceiveController {
         receiver = (Receiver) ReflectUtil.newInstance(config.receiverClass, args);
         ResourceInjector.inject(receiver, config.receiverConfigMap);
         receiver.setAppName(appName);
+        receiver.setAlarmSender(alarmSender);
         return true;
     }
 

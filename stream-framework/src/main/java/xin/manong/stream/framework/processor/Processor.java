@@ -104,7 +104,7 @@ public class Processor {
             KVRecord kvRecord = kvRecords.getRecord(i);
             try {
                 StreamManager.keepWatchRecord(kvRecord, context);
-                commitProcessTrace(kvRecord);
+                submitProcessTrace(kvRecord);
                 ProcessResult result = plugin.handle(kvRecord);
                 if (result != null) processResult.addResult(result);
             } catch (Exception e) {
@@ -112,7 +112,7 @@ public class Processor {
                 throw e;
             } finally {
                 long processTime = System.currentTimeMillis() - startProcessTime;
-                commitProcessTime(kvRecord, processTime);
+                submitProcessTime(kvRecord, processTime);
             }
             if (++processCount % 1000 == 0) {
                 plugin.flush();
@@ -153,7 +153,7 @@ public class Processor {
      *
      * @param kvRecord 数据
      */
-    private void commitProcessTrace(KVRecord kvRecord) {
+    private void submitProcessTrace(KVRecord kvRecord) {
         if (!kvRecord.has(StreamConstants.STREAM_PROCESS_TRACE)) {
             kvRecord.put(StreamConstants.STREAM_PROCESS_TRACE, new JSONArray());
         }
@@ -167,7 +167,7 @@ public class Processor {
      * @param kvRecord 数据
      * @param processTime 处理时间
      */
-    private void commitProcessTime(KVRecord kvRecord, long processTime) {
+    private void submitProcessTime(KVRecord kvRecord, long processTime) {
         if (!kvRecord.has(StreamConstants.STREAM_PROCESSOR_TIME)) {
             kvRecord.put(StreamConstants.STREAM_PROCESSOR_TIME, new JSONObject());
         }
