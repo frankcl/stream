@@ -302,7 +302,7 @@ public abstract class Plugin {
 * 通过注解xin.manong.stream.sdk.annotation.Import声明导入预处理器
   * 在应用入口类声明Import注解，直接导入Preprocessor
   ```java
-  @Import(value = {XXXPreprocessor.class})
+  @Import(value = {XXXPreprocessor.class})                  //通过Import注解导入自定义Preprocessor
   @StreamApplication(name = "fake_stream")
   public class Application {
 
