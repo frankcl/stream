@@ -299,7 +299,9 @@ public abstract class Plugin {
 
 ## 5. 预处理器Preprocessor
 * 调用时机：stream应用启动前被框架调用
-* 依赖注解xin.manong.stream.sdk.annotation.Import进行导入
+* 通过注解xin.manong.stream.sdk.annotation.Import声明导入预处理器
+  * 在应用入口类声明Import注解，直接导入Preprocessor
+  * 在应用入口类声明自定义注解，自定义注解上声明Import注解，间接导入Preprocessor(此方式Preprocessor可获取应用入口声明自定义注解信息)
 
 ### 5.1. 如何实现自己的Preprocessor？
 * 集成抽象类xin.manong.stream.sdk.prepare.Preprocessor
@@ -315,7 +317,3 @@ public abstract class Preprocessor {
   public abstract void process();
 }
 ```
-
-### 5.2. 如何使定义的预处理器生效
-* 定义预处理注解，在预处理注解之上声明注解[Import](https://github.com/frankcl/stream/blob/main/stream-sdk/src/main/java/xin/manong/stream/sdk/annotation/Import.java)，导入预处理器实现
-* 预处理器实现：可获取预处理注解信息，进行预处理逻辑定义
