@@ -313,7 +313,7 @@ public abstract class Plugin {
   ```
   * 在应用入口类声明自定义注解，自定义注解上声明Import注解，间接导入Preprocessor(此方式Preprocessor可获取应用入口声明自定义注解信息)
   ```java
-  @ShamanApplication(name = "fake_stream")                  //声明自定义注解
+  @ShamanApplication(name = "fake-stream")                  //声明自定义注解
   @StreamApplication(name = "fake_stream")
   public class Application {
 
