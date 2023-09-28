@@ -43,6 +43,7 @@ public class StreamRunner {
     private final static Logger logger = LoggerFactory.getLogger(StreamRunner.class);
 
     private final static String CLASS_PATH_PREFIX = "classpath:";
+    private final static String CHARSET_UTF8 = "UTF-8";
 
     private StreamRunnerConfig config;
     private ReceiveManager receiveManager;
@@ -214,7 +215,7 @@ public class StreamRunner {
     private static StreamRunnerConfig parseStreamConfig(Class resourceClass, String[] args) throws Exception {
         try {
             String configFile = parseCommands(args);
-            String content = FileUtil.read(configFile, Charset.forName("UTF-8"));
+            String content = FileUtil.read(configFile, Charset.forName(CHARSET_UTF8));
             return JSON.toJavaObject(JSON.parseObject(content), StreamRunnerConfig.class);
         } catch (ParseException e) {
             if (resourceClass == null) throw e;
@@ -229,11 +230,11 @@ public class StreamRunner {
                 throw new RuntimeException(String.format("stream application config is not found for path[%s]",
                         configFile));
             }
-            int n;
-            byte[] bytes = new byte[4096];
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4096);
-            while ((n = inputStream.read(bytes, 0, bytes.length)) != -1) outputStream.write(bytes, 0, n);
-            String content = new String(outputStream.toByteArray(), Charset.forName("UTF-8"));
+            int n, bufferSize = 4096;
+            byte[] buffer = new byte[bufferSize];
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream(bufferSize);
+            while ((n = inputStream.read(buffer, 0, buffer.length)) != -1) outputStream.write(buffer, 0, n);
+            String content = new String(outputStream.toByteArray(), Charset.forName(CHARSET_UTF8));
             outputStream.close();
             inputStream.close();
             StreamRunnerConfig config = JSON.toJavaObject(JSON.parseObject(content), StreamRunnerConfig.class);
