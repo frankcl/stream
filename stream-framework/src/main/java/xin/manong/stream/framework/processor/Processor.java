@@ -85,6 +85,7 @@ public class Processor {
             plugin.flush();
             plugin.destroy();
         }
+        logger.info("process record count[{}] for processor[{}]", processCount, name);
         logger.info("processor[{}] has been destroyed", name);
     }
 
@@ -115,7 +116,7 @@ public class Processor {
             }
             if (++processCount % 1000 == 0) {
                 plugin.flush();
-                logger.info("process record count[{}]", processCount);
+                logger.info("process record count[{}] for processor[{}]", processCount, name);
             }
         }
         for (String fork : processResult.getForks()) {

@@ -15,7 +15,7 @@ public @interface StreamApplication {
     /**
      * 缺省配置文件路径
      */
-    final String DEFAULT_CONFIG_FILE = "classpath:application.json";
+    String DEFAULT_CONFIG_FILE = "classpath:application.json";
 
     /* 应用名 */
     String name();
