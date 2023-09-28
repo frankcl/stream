@@ -37,8 +37,8 @@ public class ResourceFactory implements PooledObjectFactory<Resource> {
     @Override
     public PooledObject<Resource> makeObject() throws Exception {
         ReflectArgs args = new ReflectArgs();
-        args.argTypes = new Class[] { String.class };
-        args.argValues = new Object[] { resourceConfig.name };
+        args.types = new Class[] { String.class };
+        args.values = new Object[] { resourceConfig.name };
         Resource resource = (Resource) ReflectUtil.newInstance(resourceConfig.className, args);
         if (resource == null) {
             logger.error("create resource[{}] failed for class[{}]",

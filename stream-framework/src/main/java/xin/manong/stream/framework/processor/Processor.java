@@ -56,8 +56,8 @@ public class Processor {
         if (config == null || !config.check()) return false;
         name = config.name;
         ReflectArgs args = new ReflectArgs();
-        args.argTypes = new Class[] { Map.class };
-        args.argValues = new Object[] { config.pluginConfig };
+        args.types = new Class[] { Map.class };
+        args.values = new Object[] { config.pluginConfig };
         try {
             plugin = (Plugin) ReflectUtil.newInstance(config.className, args);
             ResourceInjector.inject(plugin, config.pluginConfig);

@@ -90,8 +90,8 @@ public class ReceiveController {
      */
     private boolean initReceiver() {
         ReflectArgs args = new ReflectArgs();
-        args.argTypes = new Class[] { Map.class };
-        args.argValues = new Object[] { config.receiverConfigMap };
+        args.types = new Class[] { Map.class };
+        args.values = new Object[] { config.receiverConfigMap };
         receiver = (Receiver) ReflectUtil.newInstance(config.receiverClass, args);
         ResourceInjector.inject(receiver, config.receiverConfigMap);
         receiver.setAppName(appName);
@@ -107,8 +107,8 @@ public class ReceiveController {
     private boolean initConverter() {
         if (StringUtils.isEmpty(config.converterClass)) return true;
         ReflectArgs args = new ReflectArgs();
-        args.argTypes = new Class[] { Map.class };
-        args.argValues = new Object[] { config.converterConfigMap };
+        args.types = new Class[] { Map.class };
+        args.values = new Object[] { config.converterConfigMap };
         converter = (ReceiveConverter) ReflectUtil.newInstance(config.converterClass, args);
         ResourceInjector.inject(converter, config.converterConfigMap);
         if (!converter.init()) {
