@@ -15,7 +15,7 @@ import xin.manong.weapon.base.record.KVRecords;
 public class FakeRecordProducer implements Runnable {
     private final static Logger logger = LoggerFactory.getLogger(FakeRecordProducer.class);
 
-    private boolean running;
+    private volatile boolean running;
     private Long timeIntervalMs;
     private String name;
     private Thread workThread;

@@ -20,7 +20,7 @@ public class MemoryReceiveHandler implements Runnable {
 
     private final static Logger logger = LoggerFactory.getLogger(MemoryReceiveHandler.class);
 
-    private boolean running;
+    private volatile boolean running;
     private String name;
     private Thread workThread;
     private BlockingQueue<KVRecords> recordQueue;

@@ -18,7 +18,7 @@ public class FakeReceiver extends Receiver {
 
     private final static Logger logger = LoggerFactory.getLogger(FakeReceiver.class);
 
-    private boolean running = false;
+    private volatile boolean running = false;
     private Thread workThread;
 
     public FakeReceiver(Map<String, Object> configMap) {
