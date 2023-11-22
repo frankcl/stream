@@ -128,11 +128,7 @@ public class ProcessorGraph {
             logger.error("the same processor exists");
             throw new UnacceptableException("the same processor exists");
         }
-        Set<String> processorNames = new HashSet<>();
-        for (String processorName : processorConfigMap.keySet()) {
-            processorNames.addAll(checkGraph(processorName, processorConfigMap));
-            if (processorNames.size() == processorGraphConfig.size()) break;
-        }
+        for (String processorName : processorConfigMap.keySet()) checkGraph(processorName, processorConfigMap);
     }
 
     /**
@@ -142,13 +138,11 @@ public class ProcessorGraph {
      *
      * @param processorName 检测入口processor名称
      * @param processorConfigMap processor配置
-     * @return 合法返回true，否则返回false
+     * @throws UnacceptableException 检测失败抛出异常
      */
-    private Set<String> checkGraph(String processorName, Map<String, ProcessorConfig> processorConfigMap)
+    private void checkGraph(String processorName, Map<String, ProcessorConfig> processorConfigMap)
             throws UnacceptableException {
-        Set<String> processorNames = new HashSet<>();
         List<String> processorQueue = new LinkedList<>();
-        processorNames.add(processorName);
         processorQueue.add(processorName);
         while (!processorQueue.isEmpty()) {
             ProcessorConfig processorConfig = processorConfigMap.get(processorQueue.remove(0));
@@ -158,7 +152,7 @@ public class ProcessorGraph {
                     throw new UnacceptableException(String.format(
                             "processor[%s] is not found for building graph", name));
                 }
-                if (processorNames.contains(name)) {
+                if (name.equals(processorName)) {
                     logger.error("check graph failed, find cycle in graph for processor[{}]", name);
                     throw new UnacceptableException(String.format(
                             "check graph failed, find cycle in graph for processor[%s]", name));
@@ -166,7 +160,6 @@ public class ProcessorGraph {
                 processorQueue.add(name);
             }
         }
-        return processorNames;
     }
 
     /**
