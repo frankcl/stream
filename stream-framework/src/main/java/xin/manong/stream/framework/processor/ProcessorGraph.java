@@ -128,38 +128,40 @@ public class ProcessorGraph {
             logger.error("the same processor exists");
             throw new UnacceptableException("the same processor exists");
         }
-        for (String processorName : processorConfigMap.keySet()) checkGraph(processorName, processorConfigMap);
+        for (String processorName : processorConfigMap.keySet()) {
+            checkGraph(processorName, new HashSet<>(), processorConfigMap);
+        }
     }
 
     /**
      * 检测图的合法性，如果检测不通过抛出异常
-     * 图是否完整
-     * 图是否存在环
+     * 1. 图是否完整
+     * 2. 图是否存在环
      *
      * @param processorName 检测入口processor名称
+     * @param visitedProcessors 访问过processor名称
      * @param processorConfigMap processor配置
      * @throws UnacceptableException 检测失败抛出异常
      */
-    private void checkGraph(String processorName, Map<String, ProcessorConfig> processorConfigMap)
+    private void checkGraph(String processorName, Set<String> visitedProcessors,
+                            Map<String, ProcessorConfig> processorConfigMap)
             throws UnacceptableException {
-        List<String> processorQueue = new LinkedList<>();
-        processorQueue.add(processorName);
-        while (!processorQueue.isEmpty()) {
-            ProcessorConfig processorConfig = processorConfigMap.get(processorQueue.remove(0));
-            for (String name : processorConfig.processors.values()) {
-                if (!processorConfigMap.containsKey(name)) {
-                    logger.error("processor[{}] is not found for building graph", name);
-                    throw new UnacceptableException(String.format(
-                            "processor[%s] is not found for building graph", name));
-                }
-                if (name.equals(processorName)) {
-                    logger.error("check graph failed, find cycle in graph for processor[{}]", name);
-                    throw new UnacceptableException(String.format(
-                            "check graph failed, find cycle in graph for processor[%s]", name));
-                }
-                processorQueue.add(name);
-            }
+        if (visitedProcessors.contains(processorName)) {
+            logger.error("check graph failed, find cycle in graph for processor[{}]", processorName);
+            throw new UnacceptableException(String.format(
+                    "check graph failed, find cycle in graph for processor[%s]", processorName));
         }
+        visitedProcessors.add(processorName);
+        ProcessorConfig processorConfig = processorConfigMap.get(processorName);
+        for (String name : processorConfig.processors.values()) {
+            if (!processorConfigMap.containsKey(name)) {
+                logger.error("processor[{}] is not found for building graph", name);
+                throw new UnacceptableException(String.format(
+                        "processor[%s] is not found for building graph", name));
+            }
+            checkGraph(name, visitedProcessors, processorConfigMap);
+        }
+        visitedProcessors.remove(processorName);
     }
 
     /**

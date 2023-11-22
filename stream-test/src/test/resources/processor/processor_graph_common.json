@@ -17,6 +17,7 @@
       "name": "processor2"
     },
     "processors": {
+      "next": "processor4"
     }
   },
   {
@@ -26,6 +27,14 @@
       "name": "processor3"
     },
     "processors": {
+      "next": "processor4"
+    }
+  },
+  {
+    "name": "processor4",
+    "className": "xin.manong.stream.test.plugin.DummyHandler",
+    "pluginConfig": {
+      "name": "processor4"
     }
   }
 ]

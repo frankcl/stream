@@ -6,8 +6,8 @@
       "name": "processor1"
     },
     "processors": {
-        "success": "processor2",
-        "fail": "processor3"
+      "success": "processor2",
+      "fail": "processor3"
     }
   },
   {

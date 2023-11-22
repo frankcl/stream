@@ -23,6 +23,8 @@ public class ProcessorGraphSuite {
 
     private String processorGraphFile = this.getClass().getResource(
             "/processor/processor_graph.json").getPath();
+    private String processorGraphCommonFile = this.getClass().getResource(
+            "/processor/processor_graph_common.json").getPath();
     private String processorGraphCycleFile = this.getClass().getResource(
             "/processor/processor_graph_has_cycle.json").getPath();
     private String processorGraphNotFoundFile = this.getClass().getResource(
@@ -49,6 +51,16 @@ public class ProcessorGraphSuite {
             kvRecords.addRecord(kvRecord);
             processorGraph.process("processor1", kvRecords, new Context());
         }
+        ProcessorGraphFactory.sweep();
+    }
+
+    @Test
+    public void testMakeProcessorGraphCommon() throws Exception {
+        String content = FileUtil.read(processorGraphCommonFile, Charset.forName("UTF-8"));
+        List<ProcessorConfig> processorConfigList = JSON.parseArray(content, ProcessorConfig.class);
+        Assert.assertTrue(processorConfigList != null);
+        ProcessorGraph processorGraph = ProcessorGraphFactory.make(processorConfigList);
+        Assert.assertTrue(processorGraph != null);
         ProcessorGraphFactory.sweep();
     }
 
