@@ -125,8 +125,8 @@ public class ProcessorGraph {
         Map<String, ProcessorConfig> processorConfigMap = processorGraphConfig.stream().collect(
                 Collectors.toMap(processorConfig -> processorConfig.name, processorConfig -> processorConfig));
         if (processorConfigMap.size() != processorGraphConfig.size()) {
-            logger.error("the same processor exists");
-            throw new UnacceptableException("the same processor exists");
+            logger.error("duplicated processor exists");
+            throw new UnacceptableException("duplicated processor exists");
         }
         for (String processorName : processorConfigMap.keySet()) {
             checkGraph(processorName, new HashSet<>(), processorConfigMap);
