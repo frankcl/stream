@@ -3,7 +3,7 @@ package xin.manong.stream.framework.receiver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xin.manong.stream.framework.processor.ProcessorConfig;
-import xin.manong.weapon.alarm.AlarmSender;
+import xin.manong.weapon.alarm.AlarmProducer;
 
 import java.util.*;
 
@@ -21,7 +21,7 @@ public class ReceiveManager {
     private List<ReceiveControllerConfig> configList;
     private List<ProcessorConfig> processorGraphConfig;
     private List<ReceiveController> receiveControllers;
-    private AlarmSender alarmSender;
+    private AlarmProducer alarmProducer;
 
     public ReceiveManager(List<ReceiveControllerConfig> configList, List<ProcessorConfig> processorGraphConfig) {
         this.configList = configList;
@@ -48,7 +48,7 @@ public class ReceiveManager {
             }
             ReceiveController receiveController = new ReceiveController();
             receiveController.setAppName(appName);
-            receiveController.setAlarmSender(alarmSender);
+            receiveController.setAlarmProducer(alarmProducer);
             if (!receiveController.init(config, processorGraphConfig)) {
                 logger.error("init receiver[{}] failed", config.name);
                 return false;
@@ -88,10 +88,10 @@ public class ReceiveManager {
     /**
      * 设置报警发送器
      *
-     * @param alarmSender 报警发送器
+     * @param alarmProducer 报警发送器
      */
-    public void setAlarmSender(AlarmSender alarmSender) {
-        this.alarmSender = alarmSender;
+    public void setAlarmProducer(AlarmProducer alarmProducer) {
+        this.alarmProducer = alarmProducer;
     }
 
     /**

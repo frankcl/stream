@@ -8,7 +8,7 @@ import xin.manong.stream.framework.resource.ResourceInjector;
 import xin.manong.stream.sdk.receiver.ReceiveConverter;
 import xin.manong.stream.sdk.receiver.ReceiveProcessor;
 import xin.manong.stream.sdk.receiver.Receiver;
-import xin.manong.weapon.alarm.AlarmSender;
+import xin.manong.weapon.alarm.AlarmProducer;
 import xin.manong.weapon.base.util.ReflectArgs;
 import xin.manong.weapon.base.util.ReflectUtil;
 
@@ -31,7 +31,7 @@ public class ReceiveController {
     private Receiver receiver;
     private ReceiveConverter converter;
     private ReceiveProcessor receiveProcessor;
-    private AlarmSender alarmSender;
+    private AlarmProducer alarmProducer;
 
     /**
      * 初始化
@@ -50,7 +50,7 @@ public class ReceiveController {
         this.name = config.name;
         if (!initReceiver() || !initConverter()) return false;
         receiveProcessor = new ReceiveProcessorImpl(name, config.processors, processorGraphConfig, converter);
-        ((ReceiveProcessorImpl) receiveProcessor).setAlarmSender(alarmSender);
+        ((ReceiveProcessorImpl) receiveProcessor).setAlarmProducer(alarmProducer);
         ((ReceiveProcessorImpl) receiveProcessor).setAppName(appName);
         ReflectUtil.setFieldValue(receiver, "receiveProcessor", receiveProcessor);
         logger.info("init receiver[{}] success", name);
@@ -95,7 +95,7 @@ public class ReceiveController {
         receiver = (Receiver) ReflectUtil.newInstance(config.receiverClass, args);
         ResourceInjector.inject(receiver, config.receiverConfigMap);
         receiver.setAppName(appName);
-        receiver.setAlarmSender(alarmSender);
+        receiver.setAlarmProducer(alarmProducer);
         return true;
     }
 
@@ -121,10 +121,10 @@ public class ReceiveController {
     /**
      * 设置报警发送器
      *
-     * @param alarmSender 报警发送器
+     * @param alarmProducer 报警发送器
      */
-    public void setAlarmSender(AlarmSender alarmSender) {
-        this.alarmSender = alarmSender;
+    public void setAlarmProducer(AlarmProducer alarmProducer) {
+        this.alarmProducer = alarmProducer;
     }
 
     /**

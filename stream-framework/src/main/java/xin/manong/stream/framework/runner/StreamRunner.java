@@ -19,9 +19,9 @@ import xin.manong.stream.sdk.annotation.StreamApplication;
 import xin.manong.stream.sdk.common.UnacceptableException;
 import xin.manong.weapon.alarm.Alarm;
 import xin.manong.weapon.alarm.AlarmConfig;
-import xin.manong.weapon.alarm.AlarmSender;
-import xin.manong.weapon.alarm.AlarmStatus;
-import xin.manong.weapon.base.secret.DynamicSecretListener;
+import xin.manong.weapon.alarm.AlarmLevel;
+import xin.manong.weapon.alarm.AlarmProducer;
+import xin.manong.weapon.base.secret.Scanner;
 import xin.manong.weapon.base.util.FileUtil;
 import xin.manong.weapon.base.util.ReflectArgs;
 import xin.manong.weapon.base.util.ReflectUtil;
@@ -29,7 +29,6 @@ import xin.manong.weapon.base.util.ReflectUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.ServiceLoader;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -47,7 +46,7 @@ public class StreamRunner {
 
     private StreamRunnerConfig config;
     private ReceiveManager receiveManager;
-    private AlarmSender alarmSender;
+    private AlarmProducer alarmProducer;
 
     public StreamRunner(StreamRunnerConfig config) {
         if (config == null || !config.check()) throw new RuntimeException("check stream config failed");
@@ -62,9 +61,8 @@ public class StreamRunner {
     public boolean start() throws Exception {
         logger.info("stream[{}] is starting ...", config.name);
         PreprocessManager.preprocess();
-        ServiceLoader<DynamicSecretListener> serviceLoader = ServiceLoader.load(DynamicSecretListener.class);
-        for (DynamicSecretListener listener : serviceLoader) listener.start();
-        if (!startAlarmSender()) return false;
+        if (!Scanner.scan()) return false;
+        if (!startAlarmProducer()) return false;
         StreamManager.buildStreamLogger(config.loggerFile, config.loggerKeys);
         if (config.resources != null) {
             for (ResourceConfig resourceConfig : config.resources) {
@@ -74,12 +72,12 @@ public class StreamRunner {
         if (!checkProcessorGraph()) return false;
         receiveManager = new ReceiveManager(config.receivers, config.processors);
         receiveManager.setAppName(config.name);
-        receiveManager.setAlarmSender(alarmSender);
+        receiveManager.setAlarmProducer(alarmProducer);
         if (!receiveManager.init()) return false;
         if (!receiveManager.start()) return false;
-        if (alarmSender != null) {
-            alarmSender.send(new Alarm(String.format("stream app[%s] has been started",
-                    config.name), AlarmStatus.INFO).setAppName(config.name).setTitle("stream应用启动通知"));
+        if (alarmProducer != null) {
+            alarmProducer.send(new Alarm(String.format("stream app[%s] has been started",
+                    config.name), AlarmLevel.INFO).setAppName(config.name).setTitle("stream应用启动通知"));
         }
         logger.info("stream[{}] has been started", config.name);
         return true;
@@ -93,10 +91,10 @@ public class StreamRunner {
         if (receiveManager != null) receiveManager.destroy();
         ProcessorGraphFactory.sweep();
         ResourceManager.unregisterAllResources();
-        if (alarmSender != null) {
-            alarmSender.send(new Alarm(String.format("stream app[%s] has been stopped",
-                    config.name), AlarmStatus.INFO).setAppName(config.name).setTitle("stream应用停止通知"));
-            alarmSender.stop();
+        if (alarmProducer != null) {
+            alarmProducer.send(new Alarm(String.format("stream app[%s] has been stopped",
+                    config.name), AlarmLevel.INFO).setAppName(config.name).setTitle("stream应用停止通知"));
+            alarmProducer.stop();
         }
         logger.info("stream[{}] has been stopped", config.name);
     }
@@ -106,9 +104,9 @@ public class StreamRunner {
      *
      * @return 启动成功返回true，否则返回false
      */
-    private boolean startAlarmSender() {
+    private boolean startAlarmProducer() {
         if (config.alarmConfig == null) {
-            logger.info("alarm config is null, ignore start alarm sender request");
+            logger.info("alarm config is null");
             return true;
         }
         if (!config.alarmConfig.check()) {
@@ -118,16 +116,16 @@ public class StreamRunner {
         try {
             ReflectArgs args = new ReflectArgs(
                     new Class[]{ AlarmConfig.class }, new Object[]{ config.alarmConfig });
-            alarmSender = (AlarmSender) ReflectUtil.newInstance(config.alarmConfig.alarmSenderClass, args);
-            if (!alarmSender.start()) {
-                logger.error("start alarm sender[{}] failed", config.alarmConfig.alarmSenderClass);
+            alarmProducer = (AlarmProducer) ReflectUtil.newInstance(config.alarmConfig.producerClass, args);
+            if (!alarmProducer.start()) {
+                logger.error("start alarm producer[{}] failed", config.alarmConfig.producerClass);
                 return false;
             }
-            logger.info("start alarm sender[{}] success", config.alarmConfig.alarmSenderClass);
+            logger.info("start alarm producer[{}] success", config.alarmConfig.producerClass);
             return true;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            logger.error("start alarm sender[{}] failed", config.alarmConfig.alarmSenderClass);
+            logger.error("start alarm producer[{}] failed", config.alarmConfig.producerClass);
             return false;
         }
     }

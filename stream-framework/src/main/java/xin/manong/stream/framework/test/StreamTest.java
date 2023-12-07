@@ -2,9 +2,7 @@ package xin.manong.stream.framework.test;
 
 import xin.manong.stream.framework.prepare.PreprocessManager;
 import xin.manong.stream.framework.prepare.PreprocessParser;
-import xin.manong.weapon.base.secret.DynamicSecretListener;
-
-import java.util.ServiceLoader;
+import xin.manong.weapon.base.secret.Scanner;
 
 /**
  * stream测试：负责初始化stream测试环境
@@ -29,8 +27,7 @@ public class StreamTest {
             if (flag) return;
             PreprocessParser.parse(appClass);
             PreprocessManager.preprocess();
-            ServiceLoader<DynamicSecretListener> serviceLoader = ServiceLoader.load(DynamicSecretListener.class);
-            for (DynamicSecretListener listener : serviceLoader) listener.start();
+            if (!Scanner.scan()) throw new RuntimeException("scan and load dynamic secret listener failed");
             flag = true;
         }
     }

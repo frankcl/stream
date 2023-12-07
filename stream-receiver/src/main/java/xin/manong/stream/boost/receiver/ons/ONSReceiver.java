@@ -11,7 +11,6 @@ import xin.manong.weapon.aliyun.ons.Subscribe;
 import xin.manong.weapon.base.rebuild.RebuildListener;
 import xin.manong.weapon.base.rebuild.Rebuildable;
 
-import java.util.List;
 import java.util.Map;
 
 /**

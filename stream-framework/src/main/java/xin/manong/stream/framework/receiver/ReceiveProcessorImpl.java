@@ -13,8 +13,8 @@ import xin.manong.stream.sdk.common.UnacceptableException;
 import xin.manong.stream.sdk.receiver.ReceiveConverter;
 import xin.manong.stream.sdk.receiver.ReceiveProcessor;
 import xin.manong.weapon.alarm.Alarm;
-import xin.manong.weapon.alarm.AlarmSender;
-import xin.manong.weapon.alarm.AlarmStatus;
+import xin.manong.weapon.alarm.AlarmLevel;
+import xin.manong.weapon.alarm.AlarmProducer;
 import xin.manong.weapon.base.common.Context;
 import xin.manong.weapon.base.record.KVRecord;
 import xin.manong.weapon.base.record.KVRecords;
@@ -42,7 +42,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
     private List<ProcessorConfig> processorGraphConfig;
     private Queue<String> processorGraphIds;
     private ThreadLocal<ProcessorGraph> processorGraph;
-    private AlarmSender alarmSender;
+    private AlarmProducer alarmProducer;
 
     public ReceiveProcessorImpl(String name, List<String> processors,
                                 List<ProcessorConfig> processorGraphConfig,
@@ -95,14 +95,14 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
      * @param e 异常
      */
     private void handleException(KVRecord kvRecord, Throwable e) {
-        if (alarmSender != null) {
-            AlarmStatus alarmStatus = e instanceof UnacceptableException || e instanceof Error ?
-                    AlarmStatus.FATAL : AlarmStatus.ERROR;
-            Alarm alarm = new Alarm(String.format(alarmStatus == AlarmStatus.FATAL ?
+        if (alarmProducer != null) {
+            AlarmLevel level = e instanceof UnacceptableException || e instanceof Error ?
+                    AlarmLevel.FATAL : AlarmLevel.ERROR;
+            Alarm alarm = new Alarm(String.format(level == AlarmLevel.FATAL ?
                     "严重错误发生[%s:%s]" : "链路异常发生[%s:%s]", e.getClass().getSimpleName(),
-                    e.getMessage()), alarmStatus);
+                    e.getMessage()), level);
             alarm.setAppName(appName).setTitle("应用异常报警");
-            alarmSender.submit(alarm);
+            alarmProducer.submit(alarm);
         }
         kvRecord.put(StreamConstants.STREAM_DEBUG_MESSAGE, e.getMessage());
         kvRecord.put(StreamConstants.STREAM_EXCEPTION_STACK, ExceptionUtils.getStackTrace(e));
@@ -166,10 +166,10 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
     /**
      * 设置报警发送器
      *
-     * @param alarmSender 报警发送器
+     * @param alarmProducer 报警发送器
      */
-    public void setAlarmSender(AlarmSender alarmSender) {
-        this.alarmSender = alarmSender;
+    public void setAlarmProducer(AlarmProducer alarmProducer) {
+        this.alarmProducer = alarmProducer;
     }
 
     /**
