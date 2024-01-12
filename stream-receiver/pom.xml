@@ -57,6 +57,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>com.aliyun.mns</groupId>
+            <artifactId>aliyun-sdk-mns</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>xin.manong</groupId>
             <artifactId>weapon-aliyun</artifactId>
         </dependency>

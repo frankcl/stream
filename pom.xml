@@ -58,7 +58,8 @@
         <datahub.version>2.3.0-public</datahub.version>
         <aliyun-log.version>0.6.82</aliyun-log.version>
         <aliyun-log-producer.version>0.3.12</aliyun-log-producer.version>
-        <weapon.version>0.1.9</weapon.version>
+        <aliyun-mns.version>1.1.9.2</aliyun-mns.version>
+        <weapon.version>0.2.0</weapon.version>
         <stream.version>0.1.2</stream.version>
     </properties>
 
@@ -213,6 +214,11 @@
                 <groupId>com.aliyun.datahub</groupId>
                 <artifactId>aliyun-sdk-datahub</artifactId>
                 <version>${datahub.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun.mns</groupId>
+                <artifactId>aliyun-sdk-mns</artifactId>
+                <version>${aliyun-mns.version}</version>
             </dependency>
             <dependency>
                 <groupId>xin.manong</groupId>
