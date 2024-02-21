@@ -61,6 +61,26 @@
 }
 ```
 
+## 阿里云MNS数据接收器
+阿里云MNS消息服务数据拉取封装，配置定义示例如下（需引用资源MNSClient [详细参考](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91sls%E6%97%A5%E5%BF%97%E5%AE%A2%E6%88%B7%E7%AB%AF)）
+```json
+{
+  "receivers": [
+    {
+      "name": "xxx_receiver",                                                             //数据接收器名称
+      "receiverClass": "xin.manong.stream.boost.receiver.mns.MNSReceiver",                //MNSReceiver全限定类名
+      "converterClass": "xin.manong.stream.boost.receiver.mns.JSONMessageConverter",      //JSON消息转换器全限定类名
+      "receiverConfigMap": {                                                              //数据接收器配置信息
+        "threadNum": 16,                                                                  //消费线程数，默认为1
+        "queueName": "xxx",                                                               //MNS队列名称
+        "clientName": "mns_client",                                                       //mns客户端名称
+      },
+      "processors": ["xxx_processor"]                                                     //分发插件列表
+    }
+  ]
+}
+```
+
 ## Kafka数据接收器
 Kafka消息拉取封装，配置定义示例如下
 ```json

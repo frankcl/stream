@@ -7,6 +7,7 @@
 * [阿里云OSS客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91oss%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [阿里云DataHub客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91datahub%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [阿里云SLS日志客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91sls%E6%97%A5%E5%BF%97%E5%AE%A2%E6%88%B7%E7%AB%AF)
+* [阿里云MNS客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91sls%E6%97%A5%E5%BF%97%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [kafka消息生产客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#kafka%E6%B6%88%E6%81%AF%E7%94%9F%E4%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [redis客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#redis%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [内存数据队列](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E5%86%85%E5%AD%98%E6%95%B0%E6%8D%AE%E9%98%9F%E5%88%97)
@@ -82,6 +83,26 @@
       "configMap": {                                                                      //DataHub客户端配置信息
         "endpoint": "http://dh-cn-hangzhou-int-vpc.aliyuncs.com",                         //DataHub endpoint
         "retryCnt": 3                                                                     //发送重试次数，默认3次
+      }
+    }
+  ]
+}
+```
+
+## 阿里云MNS客户端
+阿里云MNS客户端封装，配置定义示例如下
+```json
+{
+  "resources": [
+    {
+      "name": "xxx_mns_client",                                                           //MNS客户端名称
+      "className": "xin.manong.stream.boost.resource.mns.MNSClientResource",              //MNS客户端资源全限定类名
+      "configMap": {                                                                      //MNS客户端配置信息
+        "endpoint": "http://<yourAccountId>.mns.cn-hangzhou.aliyuncs.com",                //MNS endpoint
+        "maxConnections": 200,                                                            //最大连接数，默认200
+        "maxConnectionsPerRoute": 200,                                                    //每个路由最大连接数，默认200
+        "socketTimeoutMs": 20000,                                                         //socket超时（单位：毫秒），默认20秒
+        "connectTimeoutMs": 20000                                                         //连接超时（单位：毫秒），默认20秒
       }
     }
   ]
