@@ -62,7 +62,7 @@
 ```
 
 ## 阿里云MNS数据接收器
-阿里云MNS消息服务数据拉取封装，配置定义示例如下（需引用资源MNSClient [详细参考](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91sls%E6%97%A5%E5%BF%97%E5%AE%A2%E6%88%B7%E7%AB%AF)）
+阿里云MNS消息服务数据拉取封装，配置定义示例如下（需引用资源MNSClient [详细参考](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91mns%E5%AE%A2%E6%88%B7%E7%AB%AF)）
 ```json
 {
   "receivers": [

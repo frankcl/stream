@@ -7,7 +7,7 @@
 * [阿里云OSS客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91oss%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [阿里云DataHub客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91datahub%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [阿里云SLS日志客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91sls%E6%97%A5%E5%BF%97%E5%AE%A2%E6%88%B7%E7%AB%AF)
-* [阿里云MNS客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91sls%E6%97%A5%E5%BF%97%E5%AE%A2%E6%88%B7%E7%AB%AF)
+* [阿里云MNS客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E9%98%BF%E9%87%8C%E4%BA%91mns%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [kafka消息生产客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#kafka%E6%B6%88%E6%81%AF%E7%94%9F%E4%BA%A7%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [redis客户端](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#redis%E5%AE%A2%E6%88%B7%E7%AB%AF)
 * [内存数据队列](https://github.com/frankcl/stream/blob/main/stream-resource/README.md#%E5%86%85%E5%AD%98%E6%95%B0%E6%8D%AE%E9%98%9F%E5%88%97)
