@@ -74,7 +74,7 @@
       "receiverConfigMap": {                                                              //数据接收器配置信息
         "threadNum": 16,                                                                  //消费线程数，默认为1
         "queueName": "xxx",                                                               //MNS队列名称
-        "clientName": "mns_client",                                                       //mns客户端名称
+        "clientName": "mns_client"                                                        //mns客户端资源名称
       },
       "processors": ["xxx_processor"]                                                     //分发插件列表
     }
