@@ -1,5 +1,6 @@
 package xin.manong.stream.framework.processor;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,9 @@ public class ProcessorGraph {
 
     private final static Logger logger = LoggerFactory.getLogger(ProcessorGraph.class);
 
-    private String id;
-    private List<ProcessorConfig> processorGraphConfig;
+    @Getter
+    private final String id;
+    private final List<ProcessorConfig> processorGraphConfig;
     private Map<String, Processor> processors;
 
     public ProcessorGraph(List<ProcessorConfig> processorGraphConfig) {
@@ -115,7 +117,6 @@ public class ProcessorGraph {
      * 2. 图是否存在环
      *
      * @throws UnacceptableException 不可接受异常
-     * @return 合法返回true，否则返回false
      */
     private void checkGraph() throws UnacceptableException {
         if (processorGraphConfig == null || processorGraphConfig.isEmpty()) {
@@ -178,14 +179,5 @@ public class ProcessorGraph {
             }
         }
         return new LinkedList<>(processorMap.values());
-    }
-
-    /**
-     * 获取插件图ID
-     *
-     * @return 插件图ID
-     */
-    public String getId() {
-        return id;
     }
 }

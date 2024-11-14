@@ -14,7 +14,7 @@ import java.util.Map;
  * ONS消息生产资源
  *
  * @author frankcl
- * @create 2019-09-04 16:13:07
+ * @date 2019-09-04 16:13:07
  */
 public class ONSProducerResource extends Resource<ONSProducer> {
 

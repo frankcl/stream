@@ -14,13 +14,13 @@ import java.util.Map;
  * 管理所有资源的生命周期
  *
  * @author frankcl
- * @create 2019-06-01 12:45
+ * @date 2019-06-01 12:45
  */
 public class ResourceManager {
 
     private final static Logger logger = LoggerFactory.getLogger(ResourceManager.class);
 
-    private static Map<String, ResourcePool> resourcePoolMap = new HashMap<>();
+    private static final Map<String, ResourcePool<?>> resourcePoolMap = new HashMap<>();
 
     /**
      * 根据资源类型获取资源实例
@@ -28,13 +28,13 @@ public class ResourceManager {
      *
      * @param clazz 资源实例class
      * @return 获取成功返回资源实例，否则返回null；如果存在多个类型相同资源抛出异常
-     * @param <T>
+     * @param <T> 资源类型
      */
     public static <T> T getResource(Class<T> clazz) {
         synchronized (resourcePoolMap) {
             List<Object> resources = new ArrayList<>();
-            for (ResourcePool resourcePool : resourcePoolMap.values()) {
-                Resource resource = null;
+            for (ResourcePool<?> resourcePool : resourcePoolMap.values()) {
+                Resource<?> resource = null;
                 try {
                     resource = resourcePool.borrowObject();
                     Object object = resource.get();
@@ -49,7 +49,7 @@ public class ResourceManager {
             if (resources.isEmpty()) return null;
             if (resources.size() > 1) {
                 logger.error("more than one candidate resource for class[{}]", clazz.getName());
-                throw new RuntimeException(String.format(
+                throw new IllegalStateException(String.format(
                         "more than one candidate resource for class[%s]", clazz.getName()));
             }
             return clazz.cast(resources.get(0));
@@ -66,7 +66,7 @@ public class ResourceManager {
      */
     public static <T> T getResource(String resourceName, Class<T> clazz) {
         synchronized (resourcePoolMap) {
-            Resource resource = borrowResource(resourceName);
+            Resource<?> resource = borrowResource(resourceName);
             if (resource == null) {
                 logger.warn("get resource failed for name[{}]", resourceName);
                 return null;
@@ -90,7 +90,7 @@ public class ResourceManager {
      * @param resource 待归还资源
      * @return 归还成功返回true，否则返回false
      */
-    public static boolean returnResource(Resource resource) {
+    public static boolean returnResource(Resource<?> resource) {
         synchronized (resourcePoolMap) {
             ResourcePool pool = resourcePoolMap.get(resource.getName());
             if (pool == null) {
@@ -115,9 +115,9 @@ public class ResourceManager {
      * @param resourceName 资源名
      * @return 如果资源不存在返回null，否则返回资源对象
      */
-    public static Resource borrowResource(String resourceName) {
+    public static Resource<?> borrowResource(String resourceName) {
         synchronized (resourcePoolMap) {
-            ResourcePool pool = resourcePoolMap.get(resourceName);
+            ResourcePool<?> pool = resourcePoolMap.get(resourceName);
             if (pool == null) {
                 logger.warn("resource[{}] is not found, ignore borrow", resourceName);
                 return null;
@@ -143,7 +143,7 @@ public class ResourceManager {
                 logger.info("resource[{}] has been registered, unregister it", resourceConfig.name);
                 unregisterResource(resourceConfig.name);
             }
-            ResourcePool pool = new ResourcePool(resourceConfig);
+            ResourcePool<?> pool = new ResourcePool<>(resourceConfig);
             resourcePoolMap.put(resourceConfig.name, pool);
             logger.info("register resource success for name[{}]", resourceConfig.name);
         }
@@ -160,7 +160,7 @@ public class ResourceManager {
             return;
         }
         synchronized (resourcePoolMap) {
-            ResourcePool resourcePool = resourcePoolMap.remove(resourceName);
+            ResourcePool<?> resourcePool = resourcePoolMap.remove(resourceName);
             if (resourcePool == null) {
                 logger.info("resource[{}] has been unregistered", resourceName);
                 return;
@@ -175,7 +175,7 @@ public class ResourceManager {
      */
     public static void unregisterAllResources() {
         synchronized (resourcePoolMap) {
-            for (ResourcePool pool : resourcePoolMap.values()) pool.close();
+            for (ResourcePool<?> pool : resourcePoolMap.values()) pool.close();
             resourcePoolMap.clear();
             logger.info("unregister all resources success");
         }

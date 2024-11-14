@@ -12,7 +12,7 @@ import java.util.Map;
  * 进程级别数据处理速度控制器
  *
  * @author frankcl
- * @create 2019-07-30 15:08:57
+ * @date 2019-07-30 15:08:57
  */
 public class SpeedController extends Plugin {
 

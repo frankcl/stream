@@ -20,7 +20,6 @@ public class KafkaReceiver extends Receiver {
 
     private final static Logger logger = LoggerFactory.getLogger(KafkaReceiver.class);
 
-    private KafkaProcessor processor;
     private KafkaConsumeGroup consumeGroup;
 
     public KafkaReceiver(Map<String, Object> configMap) {
@@ -40,7 +39,7 @@ public class KafkaReceiver extends Receiver {
             logger.error("receive processor is null");
             return false;
         }
-        processor = new KafkaProcessor(receiveProcessor);
+        KafkaProcessor processor = new KafkaProcessor(receiveProcessor);
         consumeGroup = new KafkaConsumeGroup(consumerConfig, processor);
         if (!consumeGroup.start()) {
             logger.error("start kafka consume group failed");

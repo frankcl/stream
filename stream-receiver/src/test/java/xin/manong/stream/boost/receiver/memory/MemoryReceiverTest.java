@@ -24,7 +24,7 @@ import java.util.Map;
  * @author frankcl
  * @date 2022-08-12 11:14:42
  */
-public class MemoryReceiverSuite {
+public class MemoryReceiverTest {
 
     private MemoryReceiver receiver;
 

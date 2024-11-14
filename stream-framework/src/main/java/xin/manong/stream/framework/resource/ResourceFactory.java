@@ -15,16 +15,16 @@ import xin.manong.weapon.base.util.ReflectUtil;
  * 2. 资源生命周期管理
  *
  * @author frankcl
- * @create 2019-06-01 12:00
+ * @date 2019-06-01 12:00
  */
-public class ResourceFactory implements PooledObjectFactory<Resource> {
+public class ResourceFactory<T> implements PooledObjectFactory<Resource<T>> {
 
     private final static Logger logger = LoggerFactory.getLogger(ResourceFactory.class);
 
-    private ResourceConfig resourceConfig;
+    private final ResourceConfig resourceConfig;
 
     public ResourceFactory(ResourceConfig resourceConfig) {
-        if (!resourceConfig.check()) throw new RuntimeException("resource config is invalid");
+        if (!resourceConfig.check()) throw new IllegalArgumentException("resource config is invalid");
         this.resourceConfig = resourceConfig;
     }
 
@@ -32,14 +32,15 @@ public class ResourceFactory implements PooledObjectFactory<Resource> {
      * 创建资源
      *
      * @return 池化资源
-     * @throws Exception
+     * @throws Exception 异常
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public PooledObject<Resource> makeObject() throws Exception {
+    public PooledObject<Resource<T>> makeObject() throws Exception {
         ReflectArgs args = new ReflectArgs();
         args.types = new Class[] { String.class };
         args.values = new Object[] { resourceConfig.name };
-        Resource resource = (Resource) ReflectUtil.newInstance(resourceConfig.className, args);
+        Resource<T> resource = (Resource<T>) ReflectUtil.newInstance(resourceConfig.className, args);
         if (resource == null) {
             logger.error("create resource[{}] failed for class[{}]",
                     resourceConfig.name, resourceConfig.className);
@@ -59,11 +60,11 @@ public class ResourceFactory implements PooledObjectFactory<Resource> {
      * 销毁资源
      *
      * @param pooledObject 待销毁池化资源
-     * @throws Exception
+     * @throws Exception 异常
      */
     @Override
-    public void destroyObject(PooledObject<Resource> pooledObject) throws Exception {
-        Resource resource = pooledObject.getObject();
+    public void destroyObject(PooledObject<Resource<T>> pooledObject) throws Exception {
+        Resource<?> resource = pooledObject.getObject();
         if (resource == null) {
             logger.warn("resource[{}] is null, ignore destroying", resourceConfig.name);
             return;
@@ -79,8 +80,8 @@ public class ResourceFactory implements PooledObjectFactory<Resource> {
      * @return 有效返回true，否则返回false
      */
     @Override
-    public boolean validateObject(PooledObject<Resource> pooledObject) {
-        Resource resource = pooledObject.getObject();
+    public boolean validateObject(PooledObject<Resource<T>> pooledObject) {
+        Resource<?> resource = pooledObject.getObject();
         if (resource == null) {
             logger.warn("resource[{}] is null, validate failed", resourceConfig.name);
             return false;
@@ -92,19 +93,19 @@ public class ResourceFactory implements PooledObjectFactory<Resource> {
      * 激活资源，暂无实现
      *
      * @param pooledObject 池化对象
-     * @throws Exception
+     * @throws Exception 异常
      */
     @Override
-    public void activateObject(PooledObject<Resource> pooledObject) throws Exception {
+    public void activateObject(PooledObject<Resource<T>> pooledObject) throws Exception {
     }
 
     /**
      * 钝化资源，暂无实现
      *
      * @param pooledObject 池化对象
-     * @throws Exception
+     * @throws Exception 异常
      */
     @Override
-    public void passivateObject(PooledObject<Resource> pooledObject) throws Exception {
+    public void passivateObject(PooledObject<Resource<T>> pooledObject) throws Exception {
     }
 }

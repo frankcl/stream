@@ -69,8 +69,8 @@ public class OTSTunnelReceiver extends Receiver implements RebuildListener {
     }
 
     @Override
-    public void notifyRebuildEvent(Rebuildable rebuildObject) {
-        if (rebuildObject == null || rebuildObject != tunnel) return;
+    public void onRebuild(Rebuildable rebuildTarget) {
+        if (rebuildTarget == null || rebuildTarget != tunnel) return;
         if (receiveProcessor == null) return;
         receiveProcessor.sweep();
     }

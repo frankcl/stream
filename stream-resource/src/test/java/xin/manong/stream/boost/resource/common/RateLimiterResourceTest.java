@@ -10,7 +10,7 @@ import java.util.Map;
  * @author frankcl
  * @date 2022-08-12 13:46:26
  */
-public class RateLimiterResourceSuite {
+public class RateLimiterResourceTest {
 
     @Test
     public void testBuildSuccess() {
@@ -18,7 +18,7 @@ public class RateLimiterResourceSuite {
         configMap.put("permitsPerSecond", 10d);
         RateLimiterResource resource = new RateLimiterResource("rate_limiter");
         resource.build(configMap);
-        Assert.assertTrue(resource.get() != null);
+        Assert.assertNotNull(resource.get());
         resource.destroy();
     }
 
@@ -27,7 +27,7 @@ public class RateLimiterResourceSuite {
         Map<String, Object> configMap = new HashMap<>();
         RateLimiterResource resource = new RateLimiterResource("rate_limiter");
         resource.build(configMap);
-        Assert.assertTrue(resource.get() == null);
+        Assert.assertNull(resource.get());
         resource.destroy();
     }
 }

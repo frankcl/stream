@@ -25,6 +25,7 @@ public class FakeReceiver extends Receiver {
         super(configMap);
     }
 
+    @SuppressWarnings("BusyWait")
     @Override
     public boolean start() {
         running = true;

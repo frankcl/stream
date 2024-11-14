@@ -1,4 +1,4 @@
-package xin.manong.stream.boost.resource.datahub;
+package xin.manong.stream.boost.resource.ots;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,9 +8,9 @@ import java.util.Map;
 
 /**
  * @author frankcl
- * @date 2023-07-06 15:29:33
+ * @date 2022-08-12 14:07:54
  */
-public class DataHubClientResourceSuite {
+public class OTSClientResourceTest {
 
     @Test
     public void testCreateSuccess() {
@@ -18,21 +18,23 @@ public class DataHubClientResourceSuite {
         keySecret.put("accessKey", "ak");
         keySecret.put("secretKey", "sk");
         Map<String, Object> configMap = new HashMap<>();
-        configMap.put("endpoint", "https://dh-cn-hangzhou.aliyuncs.com");
         configMap.put("aliyunSecret", keySecret);
-        DataHubClientResource resource = new DataHubClientResource("data_hub_client");
+        configMap.put("instance", "test");
+        configMap.put("endpoint", "http://newsDataTest-news-data-test.cn-hangzhou.vpc.ots.aliyuncs.com");
+        OTSClientResource resource = new OTSClientResource("ots_client");
         resource.build(configMap);
-        Assert.assertTrue(resource.get() != null);
+        Assert.assertNotNull(resource.get());
         resource.destroy();
     }
 
     @Test
     public void testCreateFail() {
         Map<String, Object> configMap = new HashMap<>();
-        configMap.put("endpoint", "https://dh-cn-hangzhou.aliyuncs.com");
-        DataHubClientResource resource = new DataHubClientResource("data_hub_client");
+        configMap.put("instance", "test");
+        configMap.put("endpoint", "http://newsDataTest-news-data-test.cn-hangzhou.vpc.ots.aliyuncs.com");
+        OTSClientResource resource = new OTSClientResource("ots_client");
         resource.build(configMap);
-        Assert.assertTrue(resource.get() == null);
+        Assert.assertNull(resource.get());
         resource.destroy();
     }
 }

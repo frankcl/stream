@@ -1,5 +1,6 @@
 package xin.manong.stream.boost.receiver.fake;
 
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.receiver.ReceiveProcessor;
@@ -16,10 +17,11 @@ public class FakeRecordProducer implements Runnable {
     private final static Logger logger = LoggerFactory.getLogger(FakeRecordProducer.class);
 
     private volatile boolean running;
+    @Setter
     private Long timeIntervalMs;
-    private String name;
+    private final String name;
     private Thread workThread;
-    private ReceiveProcessor receiveProcessor;
+    private final ReceiveProcessor receiveProcessor;
 
     public FakeRecordProducer(String name, ReceiveProcessor receiveProcessor) {
         this.running = false;
@@ -27,6 +29,7 @@ public class FakeRecordProducer implements Runnable {
         this.receiveProcessor = receiveProcessor;
     }
 
+    @SuppressWarnings("BusyWait")
     @Override
     public void run() {
         while (running) {
@@ -68,14 +71,5 @@ public class FakeRecordProducer implements Runnable {
             logger.error(e.getMessage(), e);
         }
         logger.info("fake record producer[{}] has been stopped", name);
-    }
-
-    /**
-     * 设置数据生产时间间隔
-     *
-     * @param timeIntervalMs 事件间隔（毫秒）
-     */
-    public void setTimeIntervalMs(Long timeIntervalMs) {
-        this.timeIntervalMs = timeIntervalMs;
     }
 }

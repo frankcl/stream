@@ -10,29 +10,30 @@ import xin.manong.stream.framework.receiver.ReceiveControllerConfig;
 import xin.manong.stream.framework.receiver.ReceiveManager;
 import xin.manong.weapon.base.util.FileUtil;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author frankcl
  * @date 2022-08-04 17:11:47
  */
-public class ReceiveManagerSuite {
+public class ReceiveManagerTest {
 
-    private String receiversFile = this.getClass().getResource(
-            "/receiver/receivers.json").getPath();
-    private String processorGraphFile = this.getClass().getResource(
-            "/processor/processor_graph.json").getPath();
+    private final String receiversFile = Objects.requireNonNull(this.getClass().
+            getResource("/receiver/receivers.json")).getPath();
+    private final String processorGraphFile = Objects.requireNonNull(this.getClass().
+            getResource("/processor/processor_graph.json")).getPath();
     private ReceiveManager receiveManager;
 
     @Before
     public void setUp() {
-        String content = FileUtil.read(processorGraphFile, Charset.forName("UTF-8"));
+        String content = FileUtil.read(processorGraphFile, StandardCharsets.UTF_8);
         List<ProcessorConfig> processorConfigList = JSON.parseArray(content, ProcessorConfig.class);
-        Assert.assertTrue(processorConfigList != null);
-        content = FileUtil.read(receiversFile, Charset.forName("UTF-8"));
+        Assert.assertNotNull(processorConfigList);
+        content = FileUtil.read(receiversFile, StandardCharsets.UTF_8);
         List<ReceiveControllerConfig> receiverConfigList = JSON.parseArray(content, ReceiveControllerConfig.class);
-        Assert.assertTrue(receiverConfigList != null);
+        Assert.assertNotNull(receiverConfigList);
         receiveManager = new ReceiveManager(receiverConfigList, processorConfigList);
         Assert.assertTrue(receiveManager.init());
     }

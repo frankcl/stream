@@ -11,7 +11,7 @@ import java.util.Map;
  * 资源配置
  *
  * @author frankcl
- * @create 2019-06-01 11:26
+ * @date 2019-06-01 11:26
  */
 public class ResourceConfig {
 

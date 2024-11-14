@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class AutoIncreasedIDBuilder {
 
-    private AtomicLong counter = new AtomicLong(0L);
+    private final AtomicLong counter = new AtomicLong(0L);
 
     /**
      * 获取新ID

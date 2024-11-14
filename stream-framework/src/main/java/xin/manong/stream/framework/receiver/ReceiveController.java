@@ -1,5 +1,6 @@
 package xin.manong.stream.framework.receiver;
 
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +27,13 @@ public class ReceiveController {
     private final static Logger logger = LoggerFactory.getLogger(ReceiveController.class);
 
     private String name;
+    @Setter
     private String appName;
     private ReceiveControllerConfig config;
     private Receiver receiver;
     private ReceiveConverter converter;
     private ReceiveProcessor receiveProcessor;
+    @Setter
     private AlarmProducer alarmProducer;
 
     /**
@@ -42,7 +45,7 @@ public class ReceiveController {
      */
     public final boolean init(ReceiveControllerConfig config, List<ProcessorConfig> processorGraphConfig) {
         logger.info("init receiver[{}] ...", config.name);
-        if (config == null || !config.check()) {
+        if (!config.check()) {
             logger.error("receive controller config is invalid");
             return false;
         }
@@ -116,23 +119,5 @@ public class ReceiveController {
             return false;
         }
         return true;
-    }
-
-    /**
-     * 设置报警发送器
-     *
-     * @param alarmProducer 报警发送器
-     */
-    public void setAlarmProducer(AlarmProducer alarmProducer) {
-        this.alarmProducer = alarmProducer;
-    }
-
-    /**
-     * 设置所属应用名
-     *
-     * @param appName 所属应用名
-     */
-    public void setAppName(String appName) {
-        this.appName = appName;
     }
 }

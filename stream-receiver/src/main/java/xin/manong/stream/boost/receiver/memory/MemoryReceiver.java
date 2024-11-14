@@ -50,7 +50,7 @@ public class MemoryReceiver extends Receiver {
     @Override
     public void stop() {
         logger.info("memory receiver is stopping ...");
-        for (int i = 0; i < handlers.length; i++) handlers[i].stop();
+        for (MemoryReceiveHandler handler : handlers) handler.stop();
         logger.info("memory receiver has been stopped");
     }
 }

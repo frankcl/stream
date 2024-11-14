@@ -8,13 +8,13 @@ import xin.manong.stream.sdk.resource.Resource;
  * 资源池化管理
  *
  * @author frankcl
- * @create 2019-06-01 11:08
+ * @date 2019-06-01 11:08
  */
-public class ResourcePool extends GenericObjectPool<Resource> {
+public class ResourcePool<T> extends GenericObjectPool<Resource<T>> {
 
     public ResourcePool(ResourceConfig resourceConfig) {
-        super(new ResourceFactory(resourceConfig));
-        GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+        super(new ResourceFactory<>(resourceConfig));
+        GenericObjectPoolConfig<Resource<T>> poolConfig = new GenericObjectPoolConfig<>();
         poolConfig.setMaxTotal(resourceConfig.num);
         poolConfig.setMaxIdle(resourceConfig.num);
         poolConfig.setMinIdle(0);
@@ -22,5 +22,4 @@ public class ResourcePool extends GenericObjectPool<Resource> {
         poolConfig.setTestOnBorrow(true);
         setConfig(poolConfig);
     }
-
 }

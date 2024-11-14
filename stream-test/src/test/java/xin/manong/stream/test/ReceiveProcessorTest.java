@@ -12,25 +12,26 @@ import xin.manong.weapon.base.record.KVRecord;
 import xin.manong.weapon.base.record.KVRecords;
 import xin.manong.weapon.base.util.FileUtil;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author frankcl
  * @date 2022-08-04 16:38:51
  */
-public class ReceiveProcessorSuite {
+public class ReceiveProcessorTest {
 
-    private String processorGraphFile = this.getClass().getResource(
-            "/processor/processor_graph.json").getPath();
+    private final String processorGraphFile = Objects.requireNonNull(this.getClass().
+            getResource("/processor/processor_graph.json")).getPath();
     private ReceiveProcessor receiveProcessor;
 
     @Before
     public void setUp() {
-        String content = FileUtil.read(processorGraphFile, Charset.forName("UTF-8"));
+        String content = FileUtil.read(processorGraphFile, StandardCharsets.UTF_8);
         List<ProcessorConfig> processorConfigList = JSON.parseArray(content, ProcessorConfig.class);
-        Assert.assertTrue(processorConfigList != null);
+        Assert.assertNotNull(processorConfigList);
         List<String> processors = new ArrayList<>();
         processors.add("processor1");
         receiveProcessor = new ReceiveProcessorImpl("receiver", processors,

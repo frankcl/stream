@@ -16,10 +16,7 @@ import java.util.Map;
  * @author frankcl
  * @date 2022-08-12 13:46:26
  */
-public class RRateLimiterResourceSuite {
-
-    private String password = "";
-    private String nodeAddress = "r-bp1fac3adaa6aa14.redis.rds.aliyuncs.com:6379";
+public class RRateLimiterResourceTest {
 
     @Before
     public void setUp() {
@@ -28,7 +25,9 @@ public class RRateLimiterResourceSuite {
         resourceConfig.className = "xin.manong.stream.boost.resource.redis.RedisClientResource";
         resourceConfig.configMap.put("mode", RedisMode.SINGLE.name());
         resourceConfig.configMap.put("connectionPoolSize", 200);
+        String password = "";
         resourceConfig.configMap.put("password", password);
+        String nodeAddress = "127.0.0.1:6379";
         resourceConfig.configMap.put("address", nodeAddress);
         resourceConfig.configMap.put("db", 1);
         ResourceManager.registerResource(resourceConfig);
@@ -50,7 +49,7 @@ public class RRateLimiterResourceSuite {
         ResourceManager.registerResource(resourceConfig);
 
         RRateLimiter rateLimiter = ResourceManager.getResource("rate_limiter", RRateLimiter.class);
-        Assert.assertTrue(rateLimiter != null);
+        Assert.assertNotNull(rateLimiter);
 
         ResourceManager.unregisterResource("rate_limiter");
     }
@@ -62,7 +61,7 @@ public class RRateLimiterResourceSuite {
         configMap.put("rateLimiterKey", "test_rate_limiter");
         RRateLimiterResource resource = new RRateLimiterResource("rate_limiter");
         resource.build(configMap);
-        Assert.assertTrue(resource.get() == null);
+        Assert.assertNull(resource.get());
         resource.destroy();
     }
 }

@@ -13,7 +13,7 @@ import java.util.Map;
  * 数据接收控制器配置
  *
  * @author frankcl
- * @create 2019-05-29 14:56
+ * @date 2019-05-29 14:56
  */
 public class ReceiveControllerConfig {
 

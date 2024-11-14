@@ -8,7 +8,7 @@ import java.util.Map;
  * 自增ID资源
  *
  * @author frankcl
- * @create 2019-06-01 12:24
+ * @date 2019-06-01 12:24
  */
 class AutoIncreasedIDResource extends Resource<AutoIncreasedIDBuilder> {
 

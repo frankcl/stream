@@ -10,7 +10,7 @@ import java.util.Map;
  * @author frankcl
  * @date 2023-01-06 14:11:52
  */
-public class KafkaProducerResourceSuite {
+public class KafkaProducerResourceTest {
 
     @Test
     public void testCreateSuccess() {
@@ -18,7 +18,7 @@ public class KafkaProducerResourceSuite {
         configMap.put("servers", "localhost:8888");
         KafkaProducerResource resource = new KafkaProducerResource("kafka_producer");
         resource.build(configMap);
-        Assert.assertTrue(resource.get() != null);
+        Assert.assertNotNull(resource.get());
         resource.destroy();
     }
 
@@ -28,7 +28,7 @@ public class KafkaProducerResourceSuite {
         configMap.put("servers", "");
         KafkaProducerResource resource = new KafkaProducerResource("ons_producer");
         resource.build(configMap);
-        Assert.assertTrue(resource.get() == null);
+        Assert.assertNull(resource.get());
         resource.destroy();
     }
 }

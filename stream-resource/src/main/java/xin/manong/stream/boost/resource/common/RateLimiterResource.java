@@ -13,7 +13,7 @@ import java.util.Map;
  * 使用guava速率控制器实现
  *
  * @author frankcl
- * @create 2019-12-03 13:57:53
+ * @date 2019-12-03 13:57:53
  */
 public class RateLimiterResource extends Resource<RateLimiter> {
 

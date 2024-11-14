@@ -18,7 +18,7 @@ class ONSProcessor implements MessageListener {
 
     private final static Logger logger = LoggerFactory.getLogger(ONSProcessor.class);
 
-    private ReceiveProcessor receiveProcessor;
+    private final ReceiveProcessor receiveProcessor;
 
     public ONSProcessor(ReceiveProcessor receiveProcessor) {
         this.receiveProcessor = receiveProcessor;

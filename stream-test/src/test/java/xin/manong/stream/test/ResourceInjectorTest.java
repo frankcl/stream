@@ -12,16 +12,17 @@ import xin.manong.stream.sdk.annotation.Resource;
 import xin.manong.stream.test.resource.AutoIncreasedIDBuilder;
 import xin.manong.weapon.base.util.FileUtil;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author frankcl
- * @create 2019-06-01 12:31
+ * @date 2019-06-01 12:31
  */
-public class ResourceInjectorSuite {
+public class ResourceInjectorTest {
 
     private static class InjectObject {
 
@@ -32,13 +33,14 @@ public class ResourceInjectorSuite {
         AutoIncreasedIDBuilder idBuilder2;
     }
 
-    private String resourcesFile = this.getClass().getResource("/resource/resources.json").getPath();
+    private final String resourcesFile = Objects.requireNonNull(this.getClass().
+            getResource("/resource/resources.json")).getPath();
 
     @Before
     public void setUp() {
-        String content = FileUtil.read(resourcesFile, Charset.forName("UTF-8"));
+        String content = FileUtil.read(resourcesFile, StandardCharsets.UTF_8);
         List<ResourceConfig> resourceConfigList = JSON.parseArray(content, ResourceConfig.class);
-        Assert.assertTrue(resourceConfigList != null);
+        Assert.assertNotNull(resourceConfigList);
         for (ResourceConfig resourceConfig : resourceConfigList) {
             ResourceManager.registerResource(resourceConfig);
         }
@@ -55,8 +57,8 @@ public class ResourceInjectorSuite {
         configMap.put("idBuilder2", "idBuilder2");
         InjectObject injectObject = new InjectObject();
         ResourceInjector.inject(injectObject, configMap);
-        Assert.assertTrue(injectObject.idBuilder1 != null);
-        Assert.assertTrue(injectObject.idBuilder2 != null);
+        Assert.assertNotNull(injectObject.idBuilder1);
+        Assert.assertNotNull(injectObject.idBuilder2);
     }
 
     @Test(expected = RuntimeException.class)

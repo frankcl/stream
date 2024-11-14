@@ -1,5 +1,6 @@
 package xin.manong.stream.sdk.receiver;
 
+import lombok.Setter;
 import xin.manong.weapon.alarm.AlarmProducer;
 
 import java.util.Map;
@@ -14,11 +15,13 @@ import java.util.Map;
  */
 public abstract class Receiver {
 
+    @Setter
     protected String appName;
     /* 接收器配置 */
     protected Map<String, Object> configMap;
     /* 接收数据处理器，stream框架负责注入，对外不可见 */
     protected ReceiveProcessor receiveProcessor;
+    @Setter
     protected AlarmProducer alarmProducer;
 
     public Receiver(Map<String, Object> configMap) {
@@ -34,26 +37,6 @@ public abstract class Receiver {
 
     /**
      * 停止接收器
-     *
-     * @return 成功返回true，否则返回false
      */
     public abstract void stop();
-
-    /**
-     * 设置报警发送器
-     *
-     * @param alarmProducer 报警发送器
-     */
-    public void setAlarmProducer(AlarmProducer alarmProducer) {
-        this.alarmProducer = alarmProducer;
-    }
-
-    /**
-     * 设置所属应用名
-     *
-     * @param appName 所属应用名
-     */
-    public void setAppName(String appName) {
-        this.appName = appName;
-    }
 }

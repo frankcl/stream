@@ -11,7 +11,7 @@ import xin.manong.weapon.base.common.Context;
 import xin.manong.weapon.base.record.KVRecord;
 import xin.manong.weapon.base.record.KVRecords;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -30,14 +30,14 @@ public class JSONMessageConverter extends ReceiveConverter {
 
     @Override
     public KVRecords convert(Context context, Object object) throws Exception {
-        if (object == null || !(object instanceof Message)) {
+        if (!(object instanceof Message)) {
             logger.error("convert record is null or not MNS message");
             return null;
         }
         Message message = (Message) object;
         context.put(StreamConstants.STREAM_MESSAGE_ID, message.getMessageId());
         context.put(StreamConstants.STREAM_MESSAGE_TIMESTAMP, message.getEnqueueTime().getTime());
-        String content = new String(message.getMessageBodyAsBytes(), Charset.forName("UTF-8"));
+        String content = new String(message.getMessageBodyAsBytes(), StandardCharsets.UTF_8);
         JSONObject jsonMessage = JSON.parseObject(content);
         KVRecord kvRecord = new KVRecord();
         for (Map.Entry<String, Object> entry : jsonMessage.entrySet()) {

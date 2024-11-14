@@ -17,7 +17,7 @@ public class PreprocessManager {
 
     private final static Logger logger = LoggerFactory.getLogger(PreprocessManager.class);
 
-    private static List<Preprocessor> preprocessors = new ArrayList<>();
+    private static final List<Preprocessor> preprocessors = new ArrayList<>();
 
     /**
      * 注册预处理器

@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.receiver.ReceiveProcessor;
 import xin.manong.weapon.base.kafka.KafkaRecordProcessor;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * kafka消息处理器
  *
@@ -16,7 +18,7 @@ public class KafkaProcessor implements KafkaRecordProcessor {
 
     private final static Logger logger = LoggerFactory.getLogger(KafkaProcessor.class);
 
-    private ReceiveProcessor receiveProcessor;
+    private final ReceiveProcessor receiveProcessor;
 
     public KafkaProcessor(ReceiveProcessor receiveProcessor) {
         this.receiveProcessor = receiveProcessor;
@@ -27,7 +29,7 @@ public class KafkaProcessor implements KafkaRecordProcessor {
         try {
             receiveProcessor.process(consumerRecord);
         } catch (Throwable e) {
-            logger.error("process message[{}] failed", new String(consumerRecord.key(), "UTF-8"));
+            logger.error("process message[{}] failed", new String(consumerRecord.key(), StandardCharsets.UTF_8));
             logger.error(e.getMessage(), e);
             throw new Exception(e);
         }

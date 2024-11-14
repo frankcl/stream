@@ -2,7 +2,7 @@ package xin.manong.stream.framework.test;
 
 import xin.manong.stream.framework.prepare.PreprocessManager;
 import xin.manong.stream.framework.prepare.PreprocessParser;
-import xin.manong.weapon.base.secret.Scanner;
+import xin.manong.weapon.base.listen.ListenerScanner;
 
 /**
  * stream测试：负责初始化stream测试环境
@@ -21,13 +21,13 @@ public class StreamTest {
      *
      * @param appClass 应用入口类
      */
-    public static void init(Class appClass) {
+    public static void init(Class<?> appClass) {
         if (flag) return;
         synchronized (StreamTest.class) {
             if (flag) return;
             PreprocessParser.parse(appClass);
             PreprocessManager.preprocess();
-            if (!Scanner.scan()) throw new RuntimeException("scan and load dynamic secret listener failed");
+            ListenerScanner.scanRegister();
             flag = true;
         }
     }

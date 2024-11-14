@@ -16,7 +16,7 @@ class MNSProcessor implements MessageProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(MNSProcessor.class);
 
-    private ReceiveProcessor receiveProcessor;
+    private final ReceiveProcessor receiveProcessor;
 
     public MNSProcessor(ReceiveProcessor receiveProcessor) {
         this.receiveProcessor = receiveProcessor;

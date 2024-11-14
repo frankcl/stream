@@ -1,5 +1,6 @@
 package xin.manong.stream.framework.receiver;
 
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -36,12 +37,14 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
 
     private final static Logger logger = LoggerFactory.getLogger(ReceiveProcessorImpl.class);
 
-    private String name;
+    private final String name;
+    @Setter
     private String appName;
-    private List<String> processors;
-    private List<ProcessorConfig> processorGraphConfig;
-    private Queue<String> processorGraphIds;
-    private ThreadLocal<ProcessorGraph> processorGraph;
+    private final List<String> processors;
+    private final List<ProcessorConfig> processorGraphConfig;
+    private final Queue<String> processorGraphIds;
+    private final ThreadLocal<ProcessorGraph> processorGraph;
+    @Setter
     private AlarmProducer alarmProducer;
 
     public ReceiveProcessorImpl(String name, List<String> processors,
@@ -118,6 +121,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
      * @param kvRecord 数据
      * @throws UnacceptableException 不可接受异常
      */
+    @SuppressWarnings("unchecked")
     private void process(String processor, ProcessorGraph processorGraph,
                          KVRecord kvRecord) throws Throwable {
         long startProcessTime = System.currentTimeMillis();
@@ -161,23 +165,5 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
         processorGraphIds.add(threadProcessorGraph.getId());
         processorGraph.set(threadProcessorGraph);
         return threadProcessorGraph;
-    }
-
-    /**
-     * 设置报警发送器
-     *
-     * @param alarmProducer 报警发送器
-     */
-    public void setAlarmProducer(AlarmProducer alarmProducer) {
-        this.alarmProducer = alarmProducer;
-    }
-
-    /**
-     * 设置应用名
-     *
-     * @param appName 应用名
-     */
-    public void setAppName(String appName) {
-        this.appName = appName;
     }
 }

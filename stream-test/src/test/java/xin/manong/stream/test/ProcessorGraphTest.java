@@ -12,31 +12,32 @@ import xin.manong.weapon.base.record.KVRecord;
 import xin.manong.weapon.base.record.KVRecords;
 import xin.manong.weapon.base.util.FileUtil;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author frankcl
  * @date 2022-07-31 10:00:13
  */
-public class ProcessorGraphSuite {
+public class ProcessorGraphTest {
 
-    private String processorGraphFile = this.getClass().getResource(
-            "/processor/processor_graph.json").getPath();
-    private String processorGraphCommonFile = this.getClass().getResource(
-            "/processor/processor_graph_common.json").getPath();
-    private String processorGraphCycleFile = this.getClass().getResource(
-            "/processor/processor_graph_has_cycle.json").getPath();
-    private String processorGraphNotFoundFile = this.getClass().getResource(
-            "/processor/processor_graph_not_found.json").getPath();
+    private final String processorGraphFile = Objects.requireNonNull(this.getClass().
+            getResource("/processor/processor_graph.json")).getPath();
+    private final String processorGraphCommonFile = Objects.requireNonNull(this.getClass().
+            getResource("/processor/processor_graph_common.json")).getPath();
+    private final String processorGraphCycleFile = Objects.requireNonNull(this.getClass().
+            getResource("/processor/processor_graph_has_cycle.json")).getPath();
+    private final String processorGraphNotFoundFile = Objects.requireNonNull(this.getClass().
+            getResource("/processor/processor_graph_not_found.json")).getPath();
 
     @Test
     public void testMakeProcessorGraph() throws Exception {
-        String content = FileUtil.read(processorGraphFile, Charset.forName("UTF-8"));
+        String content = FileUtil.read(processorGraphFile, StandardCharsets.UTF_8);
         List<ProcessorConfig> processorConfigList = JSON.parseArray(content, ProcessorConfig.class);
-        Assert.assertTrue(processorConfigList != null);
+        Assert.assertNotNull(processorConfigList);
         ProcessorGraph processorGraph = ProcessorGraphFactory.make(processorConfigList);
-        Assert.assertTrue(processorGraph != null);
+        Assert.assertNotNull(processorGraph);
         {
             KVRecord kvRecord = new KVRecord();
             kvRecord.put("fork", "success");
@@ -56,40 +57,40 @@ public class ProcessorGraphSuite {
 
     @Test
     public void testMakeProcessorGraphCommon() throws Exception {
-        String content = FileUtil.read(processorGraphCommonFile, Charset.forName("UTF-8"));
+        String content = FileUtil.read(processorGraphCommonFile, StandardCharsets.UTF_8);
         List<ProcessorConfig> processorConfigList = JSON.parseArray(content, ProcessorConfig.class);
-        Assert.assertTrue(processorConfigList != null);
+        Assert.assertNotNull(processorConfigList);
         ProcessorGraph processorGraph = ProcessorGraphFactory.make(processorConfigList);
-        Assert.assertTrue(processorGraph != null);
+        Assert.assertNotNull(processorGraph);
         ProcessorGraphFactory.sweep();
     }
 
     @Test
     public void testMakeProcessorGraphHasCycle() {
-        String content = FileUtil.read(processorGraphCycleFile, Charset.forName("UTF-8"));
+        String content = FileUtil.read(processorGraphCycleFile, StandardCharsets.UTF_8);
         List<ProcessorConfig> processorConfigList = JSON.parseArray(content, ProcessorConfig.class);
-        Assert.assertTrue(processorConfigList != null);
+        Assert.assertNotNull(processorConfigList);
         try {
             ProcessorGraphFactory.make(processorConfigList);
         } catch (UnacceptableException e) {
             ProcessorGraphFactory.sweep();
             return;
         }
-        Assert.assertTrue(false);
+        Assert.fail();
 
     }
 
     @Test
     public void testMakeProcessorGraphNotFound() {
-        String content = FileUtil.read(processorGraphNotFoundFile, Charset.forName("UTF-8"));
+        String content = FileUtil.read(processorGraphNotFoundFile, StandardCharsets.UTF_8);
         List<ProcessorConfig> processorConfigList = JSON.parseArray(content, ProcessorConfig.class);
-        Assert.assertTrue(processorConfigList != null);
+        Assert.assertNotNull(processorConfigList);
         try {
             ProcessorGraphFactory.make(processorConfigList);
         } catch (UnacceptableException e) {
             ProcessorGraphFactory.sweep();
             return;
         }
-        Assert.assertTrue(false);
+        Assert.fail();
     }
 }

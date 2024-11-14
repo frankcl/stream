@@ -9,17 +9,15 @@ import java.util.Map;
  * 插件：处理数据，满足功能需求
  * 插件抛出普通异常框架捕获处理消化
  * 插件抛出UnacceptableException或Error框架认为处理失败，重新处理数据
- *
  * 用户定义插件继承此类，实现以下方法
  * 1. init: 初始化插件
  * 2. destroy: 销毁插件
  * 3. handle: 处理数据
- *
  * 用户插件可覆盖以下方法（默认实现为空）
  * 1. flush: 冲刷插件内容，如业务需要定期落地效果，框架可保证数据定期落地（此方法框架定期调用）
  *
  * @author frankcl
- * @create 2019-05-27 13:45
+ * @date 2019-05-27 13:45
  */
 public abstract class Plugin {
 
@@ -53,7 +51,6 @@ public abstract class Plugin {
     /**
      * 销毁插件
      *
-     * @return 销毁成功返回true，否则返回false
      */
     public void destroy() {
     }
@@ -63,7 +60,7 @@ public abstract class Plugin {
      *
      * @param kvRecord 数据
      * @return 处理结果
-     * @throws Exception
+     * @throws Exception 异常
      */
     public abstract ProcessResult handle(KVRecord kvRecord) throws Exception;
 }

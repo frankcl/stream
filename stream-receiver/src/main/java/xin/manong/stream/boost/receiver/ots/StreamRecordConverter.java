@@ -28,7 +28,7 @@ public class StreamRecordConverter extends ReceiveConverter {
 
     @Override
     public KVRecords convert(Context context, Object object) throws Exception {
-        if (object == null || !(object instanceof StreamRecord)) {
+        if (!(object instanceof StreamRecord)) {
             logger.error("convert record is null or not stream record");
             return null;
         }

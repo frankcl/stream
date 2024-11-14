@@ -15,9 +15,9 @@ import java.util.HashMap;
  * @author frankcl
  * @date 2022-08-06 22:51:34
  */
-public class SpeedControllerSuite {
+public class SpeedControllerTest {
 
-    private final static Logger logger = LoggerFactory.getLogger(SpeedControllerSuite.class);
+    private final static Logger logger = LoggerFactory.getLogger(SpeedControllerTest.class);
 
     private SpeedController speedController;
 

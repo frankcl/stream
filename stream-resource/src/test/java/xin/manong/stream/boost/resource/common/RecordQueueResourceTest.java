@@ -10,7 +10,7 @@ import java.util.Map;
  * @author frankcl
  * @date 2022-08-12 13:53:28
  */
-public class RecordQueueResourceSuite {
+public class RecordQueueResourceTest {
 
     @Test
     public void testCreateSuccess() {
@@ -18,7 +18,7 @@ public class RecordQueueResourceSuite {
         configMap.put("queueSize", 100);
         RecordQueueResource resource = new RecordQueueResource("record_queue");
         resource.build(configMap);
-        Assert.assertTrue(resource.get() != null);
+        Assert.assertNotNull(resource.get());
         resource.destroy();
     }
 
@@ -28,7 +28,7 @@ public class RecordQueueResourceSuite {
         configMap.put("queueSize", -1);
         RecordQueueResource resource = new RecordQueueResource("record_queue");
         resource.build(configMap);
-        Assert.assertTrue(resource.get() == null);
+        Assert.assertNull(resource.get());
         resource.destroy();
     }
 }

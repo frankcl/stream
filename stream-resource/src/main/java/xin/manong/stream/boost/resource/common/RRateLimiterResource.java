@@ -43,8 +43,8 @@ public class RRateLimiterResource extends Resource<RRateLimiter> {
             return null;
         }
         String key = MapUtil.getValue(configMap, KEY_RATE_LIMITER_KEY, String.class);
-        Long permitsPerSecond = MapUtil.getValue(configMap, KEY_PERMITS_PER_SECOND, Number.class).longValue();
-        if (StringUtils.isEmpty(key) || permitsPerSecond == null || permitsPerSecond <= 0) return null;
+        long permitsPerSecond = MapUtil.getValue(configMap, KEY_PERMITS_PER_SECOND, Number.class).longValue();
+        if (StringUtils.isEmpty(key) || permitsPerSecond <= 0) return null;
         RRateLimiter rateLimiter = redisClient.getRateLimiter(key);
         rateLimiter.setRate(RateType.OVERALL, permitsPerSecond, 1, RateIntervalUnit.SECONDS);
         logger.info("create redisson rate limiter success");

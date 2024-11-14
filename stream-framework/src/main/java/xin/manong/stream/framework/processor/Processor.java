@@ -25,7 +25,7 @@ import java.util.Map;
  * 封装用户定义插件，stream框架内部数据结构
  *
  * @author frankcl
- * @create 2019-05-27 15:23:00
+ * @date 2019-05-27 15:23:00
  */
 public class Processor {
 
@@ -53,7 +53,7 @@ public class Processor {
      */
     public final boolean init(ProcessorConfig config) {
         logger.info("init processor[{}] ...", config.name);
-        if (config == null || !config.check()) return false;
+        if (!config.check()) return false;
         name = config.name;
         ReflectArgs args = new ReflectArgs();
         args.types = new Class[] { Map.class };
@@ -76,8 +76,6 @@ public class Processor {
 
     /**
      * 销毁processor
-     *
-     * @return 成功返回true，否则返回false
      */
     public final void destroy() {
         logger.info("processor[{}] is destroying ...", name);

@@ -14,7 +14,7 @@ import java.util.Set;
  * @author frankcl
  * @date 2023-03-01 15:34:07
  */
-public class StreamManagerSuite {
+public class StreamManagerTest {
 
     @Test
     public void testRemoveStreamHistory() {
@@ -31,6 +31,7 @@ public class StreamManagerSuite {
         Assert.assertEquals("[{}]", kvRecord.get(StreamConstants.STREAM_HISTORY));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testKeepWatchRecord() {
         String streamHistory = "[{\"__STREAM_RECEIVER__\":\"receiver\", \"__STREAM_BIRTH_PROCESSOR__\":\"processor\", \"__STREAM_TRACE_ID__\":\"xxx\"}]";

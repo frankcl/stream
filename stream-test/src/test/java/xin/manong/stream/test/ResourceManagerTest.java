@@ -11,22 +11,24 @@ import xin.manong.stream.sdk.resource.Resource;
 import xin.manong.stream.test.resource.AutoIncreasedIDBuilder;
 import xin.manong.weapon.base.util.FileUtil;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author frankcl
- * @create 2019-06-01 12:31
+ * @date 2019-06-01 12:31
  */
-public class ResourceManagerSuite {
+public class ResourceManagerTest {
 
-    private String resourcesFile = this.getClass().getResource("/resource/resources.json").getPath();
+    private final String resourcesFile = Objects.requireNonNull(this.getClass().
+            getResource("/resource/resources.json")).getPath();
 
     @Before
     public void setUp() {
-        String content = FileUtil.read(resourcesFile, Charset.forName("UTF-8"));
+        String content = FileUtil.read(resourcesFile, StandardCharsets.UTF_8);
         List<ResourceConfig> resourceConfigList = JSON.parseArray(content, ResourceConfig.class);
-        Assert.assertTrue(resourceConfigList != null);
+        Assert.assertNotNull(resourceConfigList);
         for (ResourceConfig resourceConfig : resourceConfigList) {
             ResourceManager.registerResource(resourceConfig);
         }
@@ -39,13 +41,14 @@ public class ResourceManagerSuite {
 
     @Test
     public void testBorrowAndReturn() throws Exception {
-        Resource resource = ResourceManager.borrowResource("idBuilder2");
-        Assert.assertTrue(resource != null);
+        Resource<?> resource = ResourceManager.borrowResource("idBuilder2");
+        Assert.assertNotNull(resource);
         AutoIncreasedIDBuilder idBuilder = (AutoIncreasedIDBuilder) resource.get();
         Assert.assertEquals(0L, idBuilder.getNewID().longValue());
         Assert.assertTrue(ResourceManager.returnResource(resource));
 
         resource = ResourceManager.borrowResource("idBuilder2");
+        Assert.assertNotNull(resource);
         idBuilder = (AutoIncreasedIDBuilder) resource.get();
         Assert.assertEquals(1L, idBuilder.getNewID().longValue());
         Assert.assertTrue(ResourceManager.returnResource(resource));
@@ -54,8 +57,8 @@ public class ResourceManagerSuite {
     @Test
     public void testUnregister() {
         ResourceManager.unregisterResource("idBuilder1");
-        Resource resource = ResourceManager.borrowResource("idBuilder1");
-        Assert.assertTrue(resource == null);
+        Resource<?> resource = ResourceManager.borrowResource("idBuilder1");
+        Assert.assertNull(resource);
     }
 
     @Test
@@ -63,12 +66,13 @@ public class ResourceManagerSuite {
         {
             AutoIncreasedIDBuilder idBuilder = ResourceManager.getResource(
                     "idBuilder1", AutoIncreasedIDBuilder.class);
-            Assert.assertTrue(idBuilder.getNewID().longValue() == 0L);
+            Assert.assertNotNull(idBuilder);
+            Assert.assertEquals(0L, idBuilder.getNewID().longValue());
         }
         {
             AutoIncreasedIDBuilder idBuilder = ResourceManager.getResource(
                     "idBuilder", AutoIncreasedIDBuilder.class);
-            Assert.assertTrue(idBuilder == null);
+            Assert.assertNull(idBuilder);
         }
     }
 

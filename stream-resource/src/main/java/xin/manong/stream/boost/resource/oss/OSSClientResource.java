@@ -14,7 +14,7 @@ import java.util.Map;
  * OSS客户端资源
  *
  * @author frankcl
- * @create 2019-08-26 18:23:27
+ * @date 2019-08-26 18:23:27
  */
 public class OSSClientResource extends Resource<OSSClient> {
 

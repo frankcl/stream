@@ -21,14 +21,14 @@ import java.util.Map;
  * @author frankcl
  * @date 2022-08-12 11:14:42
  */
-public class FakeReceiverSuite {
+public class FakeReceiverTest {
 
     private FakeReceiver receiver;
 
     @Before
     public void setUp() {
 
-        List<String> processors = new ArrayList<String>() { { add("processor"); } };
+        List<String> processors = new ArrayList<>() { { add("processor"); } };
         List<ProcessorConfig> processorGraphConfig = new ArrayList<>();
         ProcessorConfig processorConfig = new ProcessorConfig();
         processorConfig.name = "processor";

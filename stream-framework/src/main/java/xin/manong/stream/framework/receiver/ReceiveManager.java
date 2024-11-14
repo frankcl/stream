@@ -1,5 +1,6 @@
 package xin.manong.stream.framework.receiver;
 
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xin.manong.stream.framework.processor.ProcessorConfig;
@@ -17,10 +18,12 @@ public class ReceiveManager {
 
     private final static Logger logger = LoggerFactory.getLogger(ReceiveManager.class);
 
+    @Setter
     private String appName;
-    private List<ReceiveControllerConfig> configList;
-    private List<ProcessorConfig> processorGraphConfig;
-    private List<ReceiveController> receiveControllers;
+    private final List<ReceiveControllerConfig> configList;
+    private final List<ProcessorConfig> processorGraphConfig;
+    private final List<ReceiveController> receiveControllers;
+    @Setter
     private AlarmProducer alarmProducer;
 
     public ReceiveManager(List<ReceiveControllerConfig> configList, List<ProcessorConfig> processorGraphConfig) {
@@ -83,23 +86,5 @@ public class ReceiveManager {
         }
         logger.info("receive manager has been started");
         return true;
-    }
-
-    /**
-     * 设置报警发送器
-     *
-     * @param alarmProducer 报警发送器
-     */
-    public void setAlarmProducer(AlarmProducer alarmProducer) {
-        this.alarmProducer = alarmProducer;
-    }
-
-    /**
-     * 设置所属应用名
-     *
-     * @param appName 所属应用名
-     */
-    public void setAppName(String appName) {
-        this.appName = appName;
     }
 }

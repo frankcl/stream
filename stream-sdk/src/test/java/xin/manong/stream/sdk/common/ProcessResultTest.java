@@ -8,7 +8,7 @@ import xin.manong.weapon.base.record.KVRecord;
  * @author frankcl
  * @date 2022-08-12 14:12:21
  */
-public class ProcessResultSuite {
+public class ProcessResultTest {
 
     @Test
     public void testCommonOperations() {
@@ -24,10 +24,10 @@ public class ProcessResultSuite {
         Assert.assertTrue(processResult.getForks().contains("success"));
         Assert.assertTrue(processResult.getForks().contains("fail"));
         Assert.assertEquals(2, processResult.getRecords("success").getRecordCount());
-        Assert.assertTrue(kvRecord1 == processResult.getRecords("success").getRecord(0));
-        Assert.assertTrue(kvRecord2 == processResult.getRecords("success").getRecord(1));
+        Assert.assertSame(kvRecord1, processResult.getRecords("success").getRecord(0));
+        Assert.assertSame(kvRecord2, processResult.getRecords("success").getRecord(1));
         Assert.assertEquals(1, processResult.getRecords("fail").getRecordCount());
-        Assert.assertTrue(kvRecord3 == processResult.getRecords("fail").getRecord(0));
+        Assert.assertSame(kvRecord3, processResult.getRecords("fail").getRecord(0));
     }
 
     @Test
@@ -53,10 +53,10 @@ public class ProcessResultSuite {
         Assert.assertEquals(1, processResult1.getRecords("fork1").getRecordCount());
         Assert.assertEquals(2, processResult1.getRecords("fork2").getRecordCount());
         Assert.assertEquals(1, processResult1.getRecords("fork3").getRecordCount());
-        Assert.assertTrue(kvRecord1 == processResult1.getRecords("fork1").getRecord(0));
-        Assert.assertTrue(kvRecord2 == processResult1.getRecords("fork2").getRecord(0));
-        Assert.assertTrue(kvRecord3 == processResult1.getRecords("fork2").getRecord(1));
-        Assert.assertTrue(kvRecord4 == processResult1.getRecords("fork3").getRecord(0));
+        Assert.assertSame(kvRecord1, processResult1.getRecords("fork1").getRecord(0));
+        Assert.assertSame(kvRecord2, processResult1.getRecords("fork2").getRecord(0));
+        Assert.assertSame(kvRecord3, processResult1.getRecords("fork2").getRecord(1));
+        Assert.assertSame(kvRecord4, processResult1.getRecords("fork3").getRecord(0));
 
         Assert.assertEquals(2, processResult2.getForkCount());
         Assert.assertEquals(2, processResult2.getForks().size());
@@ -64,7 +64,7 @@ public class ProcessResultSuite {
         Assert.assertTrue(processResult2.getForks().contains("fork3"));
         Assert.assertEquals(1, processResult2.getRecords("fork2").getRecordCount());
         Assert.assertEquals(1, processResult2.getRecords("fork3").getRecordCount());
-        Assert.assertTrue(kvRecord3 == processResult2.getRecords("fork2").getRecord(0));
-        Assert.assertTrue(kvRecord4 == processResult2.getRecords("fork3").getRecord(0));
+        Assert.assertSame(kvRecord3, processResult2.getRecords("fork2").getRecord(0));
+        Assert.assertSame(kvRecord4, processResult2.getRecords("fork3").getRecord(0));
     }
 }

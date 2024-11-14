@@ -14,7 +14,7 @@ import java.util.Map;
  * OTS客户端资源
  *
  * @author frankcl
- * @create 2019-06-01 13:55
+ * @date 2019-06-01 13:55
  */
 public class OTSClientResource extends Resource<OTSClient> {
 

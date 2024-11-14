@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * @author frankcl
  * @date 2022-08-12 11:56:11
  */
-public class StreamRecordConverterSuite {
+public class StreamRecordConverterTest {
 
     private StreamRecordConverter converter;
 
@@ -73,6 +73,6 @@ public class StreamRecordConverterSuite {
     public void testConvertFail() throws Exception {
         Context context = new Context();
         KVRecords kvRecords = converter.convert(context, "unknown");
-        Assert.assertTrue(kvRecords == null);
+        Assert.assertNull(kvRecords);
     }
 }

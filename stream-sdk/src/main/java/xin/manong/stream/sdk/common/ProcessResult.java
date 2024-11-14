@@ -14,11 +14,11 @@ import java.util.Set;
  * 处理结果区分分支，根据分支将数据分发下游
  *
  * @author frankcl
- * @create 2019-05-27 16:23
+ * @date 2019-05-27 16:23
  */
 public class ProcessResult implements Serializable {
 
-    private Map<String, KVRecords> forkMap;
+    private final Map<String, KVRecords> forkMap;
 
     public ProcessResult() {
         forkMap = new HashMap<>();
@@ -93,7 +93,7 @@ public class ProcessResult implements Serializable {
 
     @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (Map.Entry<String, KVRecords> entry : forkMap.entrySet()) {
             buffer.append("fork=").append(entry.getKey()).append(", records=").
                     append(entry.getValue().getRecordCount()).append("\n");

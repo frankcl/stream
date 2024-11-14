@@ -11,13 +11,14 @@ import xin.manong.weapon.base.common.Context;
 import xin.manong.weapon.base.record.KVRecord;
 import xin.manong.weapon.base.record.KVRecords;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 /**
  * @author frankcl
  * @date 2022-08-12 11:48:25
  */
-public class JSONMessageConverterSuite {
+public class JSONMessageConverterTest {
 
     private JSONMessageConverter converter;
 
@@ -40,7 +41,7 @@ public class JSONMessageConverterSuite {
         body.put("key", "k");
         body.put("v1", 1000);
         ConsumerRecord<byte[], byte[]> consumerRecord = new ConsumerRecord<>(topic, 1, 100L,
-                key.getBytes("UTF-8"), body.toJSONString().getBytes("UTF-8"));
+                key.getBytes(StandardCharsets.UTF_8), body.toJSONString().getBytes(StandardCharsets.UTF_8));
         Context context = new Context();
         KVRecords kvRecords = converter.convert(context, consumerRecord);
         Assert.assertEquals(1, kvRecords.getRecordCount());
@@ -75,6 +76,6 @@ public class JSONMessageConverterSuite {
     public void testConvertFail() throws Exception {
         Context context = new Context();
         KVRecords kvRecords = converter.convert(context, "unknown");
-        Assert.assertTrue(kvRecords == null);
+        Assert.assertNull(kvRecords);
     }
 }

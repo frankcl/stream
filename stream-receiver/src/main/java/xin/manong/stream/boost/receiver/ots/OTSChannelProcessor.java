@@ -19,7 +19,7 @@ public class OTSChannelProcessor implements IChannelProcessor {
 
     private final static Logger logger = LoggerFactory.getLogger(OTSChannelProcessor.class);
 
-    private ReceiveProcessor receiveProcessor;
+    private final ReceiveProcessor receiveProcessor;
 
     public OTSChannelProcessor(ReceiveProcessor receiveProcessor) {
         this.receiveProcessor = receiveProcessor;

@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  * 根据注解为目标对象注入资源
  *
  * @author frankcl
- * @create 2019-06-13 11:20
+ * @date 2019-06-13 11:20
  */
 public class ResourceInjector {
 
@@ -38,7 +38,7 @@ public class ResourceInjector {
         if (configMap == null || !configMap.containsKey(name)) {
             String message = String.format("resource name is not found in config map for key[%s]", name);
             logger.error(message);
-            throw new RuntimeException(message);
+            throw new IllegalStateException(message);
         }
         return (String) configMap.get(name);
     }
@@ -53,7 +53,7 @@ public class ResourceInjector {
      * @return 成功返回资源实例，否则返回null；如果存在多个资源抛出异常
      */
     private static Object getResource(String resourceName, Field field) {
-        Class fieldClass = field.getType();
+        Class<?> fieldClass = field.getType();
         if (StringUtils.isEmpty(resourceName)) {
             return ResourceManager.getResource(fieldClass);
         } else {
@@ -69,8 +69,7 @@ public class ResourceInjector {
      */
     public static void inject(Object object, Map<String, Object> configMap) {
         Field[] fields = ReflectUtil.getFields(object);
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
+        for (Field field : fields) {
             Resource resource = field.getAnnotation(Resource.class);
             if (resource == null) continue;
             String name = parseResourceName(resource, configMap);
@@ -80,7 +79,7 @@ public class ResourceInjector {
                         StringUtils.isEmpty(name) ? field.getType().getName() : name, field.getName(),
                         object.getClass().getName());
                 logger.error(message);
-                throw new RuntimeException(message);
+                throw new IllegalStateException(message);
             }
             try {
                 ReflectUtil.setFieldValue(object, field.getName(), resourceObject);

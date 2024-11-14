@@ -14,7 +14,7 @@ import java.util.concurrent.BlockingQueue;
  * 数据队列资源
  *
  * @author frankcl
- * @create 2019-10-26 22:07:08
+ * @date 2019-10-26 22:07:08
  */
 public class RecordQueueResource extends Resource<BlockingQueue<KVRecords>> {
 

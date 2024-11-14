@@ -10,7 +10,7 @@ import java.util.Map;
  * 用户自定义资源需要继承此类，实现create和destroy方法，定义资源创建和销毁逻辑
  *
  * @author frankcl
- * @create 2019-06-01 10:36
+ * @date 2019-06-01 10:36
  */
 public abstract class Resource<T> {
 

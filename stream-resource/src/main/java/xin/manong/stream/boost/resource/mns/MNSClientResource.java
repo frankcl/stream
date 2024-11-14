@@ -14,7 +14,7 @@ import java.util.Map;
  * MNS客户端资源
  *
  * @author frankcl
- * @create 2024-01-12 13:55
+ * @date 2024-01-12 13:55
  */
 public class MNSClientResource extends Resource<MNSClient> {
 

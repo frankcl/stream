@@ -73,6 +73,7 @@ public class StreamManager {
      * @param kvRecord 数据
      * @param context 上下文
      */
+    @SuppressWarnings("unchecked")
     public static void keepWatchRecord(KVRecord kvRecord, Context context) {
         Set<KVRecord> watchRecords = context.contains(StreamConstants.STREAM_KEEP_WATCH) ?
             (Set<KVRecord>) context.get(StreamConstants.STREAM_KEEP_WATCH) : new HashSet<>();

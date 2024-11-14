@@ -42,7 +42,7 @@ public class FakeReceiver extends Receiver {
     @Override
     public void stop() {
         logger.info("fake receiver is stopping ...");
-        for (int i = 0; i < producers.length; i++) producers[i].stop();
+        for (FakeRecordProducer producer : producers) producer.stop();
         logger.info("fake receiver has been stopped");
     }
 }

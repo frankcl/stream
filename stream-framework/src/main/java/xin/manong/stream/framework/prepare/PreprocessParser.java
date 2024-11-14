@@ -25,10 +25,9 @@ public class PreprocessParser {
      *
      * @param appClass 应用入口类
      */
-    public static void parse(Class appClass) {
+    public static void parse(Class<?> appClass) {
         if (appClass == null) return;
         Annotation[] appAnnotations = appClass.getAnnotations();
-        if (appAnnotations == null || appAnnotations.length == 0) return;
         for (Annotation appAnnotation : appAnnotations) {
             if (appAnnotation.annotationType() == Import.class) {
                 registerPreprocessor((Import) appAnnotation, null);
@@ -49,12 +48,12 @@ public class PreprocessParser {
      * @param appAnnotation 应用注解
      */
     private static void registerPreprocessor(Import importAnnotation, Annotation appAnnotation) {
-        Class[] classes = importAnnotation.value();
+        Class<?>[] classes = importAnnotation.value();
         if (classes == null || classes.length == 0) {
             logger.warn("missing classes for {}", importAnnotation.getClass().getName());
             return;
         }
-        for (Class preprocessorClass : classes) {
+        for (Class<?> preprocessorClass : classes) {
             if (!Preprocessor.class.isAssignableFrom(preprocessorClass)) {
                 logger.warn("import class[{}] is not an implementation of {}",
                         preprocessorClass.getName(), Preprocessor.class.getName());

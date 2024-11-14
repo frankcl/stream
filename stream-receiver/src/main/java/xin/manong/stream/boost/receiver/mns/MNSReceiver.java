@@ -24,7 +24,6 @@ public class MNSReceiver extends Receiver implements RebuildListener {
 
     private final static Logger logger = LoggerFactory.getLogger(MNSReceiver.class);
 
-    private MNSProcessor processor;
     private MNSQueueConsumer consumer;
     @Resource(name = "mnsClient")
     protected MNSClient mnsClient;
@@ -54,7 +53,7 @@ public class MNSReceiver extends Receiver implements RebuildListener {
             logger.error("receive processor is null");
             return false;
         }
-        processor = new MNSProcessor(receiveProcessor);
+        MNSProcessor processor = new MNSProcessor(receiveProcessor);
         consumer.setProcessor(processor);
         consumer.setMnsClient(mnsClient);
         if (!consumerConfig.check()) return false;
@@ -73,8 +72,8 @@ public class MNSReceiver extends Receiver implements RebuildListener {
     }
 
     @Override
-    public void notifyRebuildEvent(Rebuildable rebuildObject) {
-        if (rebuildObject == null || rebuildObject != consumer) return;
+    public void onRebuild(Rebuildable rebuildTarget) {
+        if (rebuildTarget == null || rebuildTarget != consumer) return;
         if (receiveProcessor == null) return;
         receiveProcessor.sweep();
     }

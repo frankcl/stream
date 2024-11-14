@@ -21,14 +21,14 @@ import xin.manong.weapon.alarm.Alarm;
 import xin.manong.weapon.alarm.AlarmConfig;
 import xin.manong.weapon.alarm.AlarmLevel;
 import xin.manong.weapon.alarm.AlarmProducer;
-import xin.manong.weapon.base.secret.Scanner;
+import xin.manong.weapon.base.listen.ListenerScanner;
 import xin.manong.weapon.base.util.FileUtil;
 import xin.manong.weapon.base.util.ReflectArgs;
 import xin.manong.weapon.base.util.ReflectUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -42,14 +42,13 @@ public class StreamRunner {
     private final static Logger logger = LoggerFactory.getLogger(StreamRunner.class);
 
     private final static String CLASS_PATH_PREFIX = "classpath:";
-    private final static String CHARSET_UTF8 = "UTF-8";
 
-    private StreamRunnerConfig config;
+    private final StreamRunnerConfig config;
     private ReceiveManager receiveManager;
     private AlarmProducer alarmProducer;
 
     public StreamRunner(StreamRunnerConfig config) {
-        if (config == null || !config.check()) throw new RuntimeException("check stream config failed");
+        if (config == null || !config.check()) throw new IllegalArgumentException("check stream config failed");
         this.config = config;
     }
 
@@ -61,7 +60,7 @@ public class StreamRunner {
     public boolean start() throws Exception {
         logger.info("stream[{}] is starting ...", config.name);
         PreprocessManager.preprocess();
-        if (!Scanner.scan()) return false;
+        ListenerScanner.scanRegister();
         if (!startAlarmProducer()) return false;
         StreamManager.buildStreamLogger(config.loggerFile, config.loggerKeys);
         if (config.resources != null) {
@@ -157,7 +156,7 @@ public class StreamRunner {
      *
      * @param args 命令行参数
      * @return 配置文件路径
-     * @throws ParseException
+     * @throws ParseException 解析异常
      */
     private static String parseCommands(String[] args) throws ParseException {
         Options options = new Options();
@@ -181,21 +180,21 @@ public class StreamRunner {
      * @param streamApplication 注解
      * @param resourceClass 应用资源类
      */
-    private static void checkStreamApplication(StreamApplication streamApplication, Class resourceClass) {
+    private static void checkStreamApplication(StreamApplication streamApplication, Class<?> resourceClass) {
         if (streamApplication == null) {
             logger.error("resource class[{}] is not stream application resource", resourceClass.getName());
-            throw new RuntimeException(String.format("resource class[%s] is not stream application resource",
+            throw new IllegalArgumentException(String.format("resource class[%s] is not stream application resource",
                     resourceClass.getName()));
         }
         if (StringUtils.isEmpty(streamApplication.name())) {
             logger.error("stream application name is empty");
-            throw new RuntimeException("stream application name is empty");
+            throw new IllegalArgumentException("stream application name is empty");
         }
         if (StringUtils.isEmpty(streamApplication.configFile()) ||
                 !streamApplication.configFile().startsWith(CLASS_PATH_PREFIX)) {
             logger.error("invalid stream config file[{}], must start with prefix[{}]",
                     streamApplication.configFile(), CLASS_PATH_PREFIX);
-            throw new RuntimeException(String.format("invalid stream config file[%s], must start with prefix[%s]",
+            throw new IllegalArgumentException(String.format("invalid stream config file[%s], must start with prefix[%s]",
                     streamApplication.configFile(), CLASS_PATH_PREFIX));
         }
     }
@@ -208,31 +207,30 @@ public class StreamRunner {
      * @param resourceClass 加载资源类
      * @param args 参数
      * @return 解析成功返回配置信息，否则抛出异常
-     * @throws Exception
+     * @throws Exception 异常
      */
-    private static StreamRunnerConfig parseStreamConfig(Class resourceClass, String[] args) throws Exception {
+    private static StreamRunnerConfig parseStreamConfig(Class<?> resourceClass, String[] args) throws Exception {
         try {
             String configFile = parseCommands(args);
-            String content = FileUtil.read(configFile, Charset.forName(CHARSET_UTF8));
+            String content = FileUtil.read(configFile, StandardCharsets.UTF_8);
             return JSON.toJavaObject(JSON.parseObject(content), StreamRunnerConfig.class);
         } catch (ParseException e) {
             if (resourceClass == null) throw e;
-            StreamApplication streamApplication = (StreamApplication)
-                    resourceClass.getAnnotation(StreamApplication.class);
+            StreamApplication streamApplication = resourceClass.getAnnotation(StreamApplication.class);
             checkStreamApplication(streamApplication, resourceClass);
             String configFile = streamApplication.configFile().substring(CLASS_PATH_PREFIX.length());
             configFile = configFile.startsWith("/") ? configFile : String.format("/%s", configFile);
             InputStream inputStream = resourceClass.getResourceAsStream(configFile);
             if (inputStream == null) {
                 logger.error("stream application config is not found for path[{}]", configFile);
-                throw new RuntimeException(String.format("stream application config is not found for path[%s]",
+                throw new IllegalArgumentException(String.format("stream application config is not found for path[%s]",
                         configFile));
             }
             int n, bufferSize = 4096;
             byte[] buffer = new byte[bufferSize];
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream(bufferSize);
             while ((n = inputStream.read(buffer, 0, buffer.length)) != -1) outputStream.write(buffer, 0, n);
-            String content = new String(outputStream.toByteArray(), Charset.forName(CHARSET_UTF8));
+            String content = outputStream.toString(StandardCharsets.UTF_8);
             outputStream.close();
             inputStream.close();
             StreamRunnerConfig config = JSON.toJavaObject(JSON.parseObject(content), StreamRunnerConfig.class);
@@ -246,9 +244,9 @@ public class StreamRunner {
      *
      * @param appClass 应用入口类
      * @param args 命令行参数
-     * @throws Exception
+     * @throws Exception 异常
      */
-    public static void run(Class appClass, String[] args) throws Exception {
+    public static void run(Class<?> appClass, String[] args) throws Exception {
         JSON.DEFAULT_PARSER_FEATURE &= ~Feature.UseBigDecimal.getMask();
         StreamRunnerConfig config = parseStreamConfig(appClass, args);
         PreprocessParser.parse(appClass);

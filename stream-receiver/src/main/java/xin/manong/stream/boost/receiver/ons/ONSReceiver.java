@@ -70,8 +70,8 @@ public class ONSReceiver extends Receiver implements RebuildListener {
     }
 
     @Override
-    public void notifyRebuildEvent(Rebuildable rebuildObject) {
-        if (rebuildObject == null || rebuildObject != consumer) return;
+    public void onRebuild(Rebuildable rebuildTarget) {
+        if (rebuildTarget == null || rebuildTarget != consumer) return;
         if (receiveProcessor == null) return;
         receiveProcessor.sweep();
     }

@@ -43,13 +43,13 @@
 | aliyun-sdk-oss      | com.aliyun.oss          |    3.15.0    |   true   |
 | commons-cli         | commons-cli             |     1.3      |  false   |
 | commons-pool2       | org.apache.commons      |    2.11.1    |  false   |
-| guava               | com.google.guava        |   31.1-jre   |   true   |
-| kafka-clients       | org.apache.kafka        |    3.3.1     |   true   |
+| guava               | com.google.guava        |  33.3.1-jre  |   true   |
+| kafka-clients       | org.apache.kafka        |    3.9.0     |   true   |
 | ons-client          | com.aliyun.openservices | 1.8.0.Final  |   true   |
-| redisson            | org.redisson            |    3.19.0    |   true   | 
-| slf4j-log4j12       | org.slf4j               |    1.7.25    |   true   |
+| redisson            | org.redisson            |    3.38.1    |   true   | 
+| slf4j-reload4j      | org.slf4j               |    2.0.16    |   true   |
 | tablestore          | com.aliyun.openservices |   5.13.10    |   true   |
-| weapon-alarm        | xin.manong              |    0.1.9     |  false   |
-| weapon-aliyun       | xin.manong              |    0.1.9     |  false   |
-| weapon-base         | xin.manong              |    0.1.9     |  false   |
+| weapon-alarm        | xin.manong              |    0.2.0     |  false   |
+| weapon-aliyun       | xin.manong              |    0.2.0     |  false   |
+| weapon-base         | xin.manong              |    0.2.0     |  false   |
 
