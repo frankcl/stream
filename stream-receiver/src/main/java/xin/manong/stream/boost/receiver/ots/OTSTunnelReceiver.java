@@ -3,14 +3,15 @@ package xin.manong.stream.boost.receiver.ots;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alicloud.openservices.tablestore.tunnel.worker.IChannelProcessor;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.receiver.Receiver;
 import xin.manong.weapon.aliyun.ots.OTSTunnel;
 import xin.manong.weapon.aliyun.ots.OTSTunnelConfig;
 import xin.manong.weapon.aliyun.ots.OTSTunnelWorkerConfig;
-import xin.manong.weapon.base.rebuild.RebuildListener;
-import xin.manong.weapon.base.rebuild.Rebuildable;
+import xin.manong.weapon.base.listen.Listener;
+import xin.manong.weapon.base.listen.RebuildEvent;
 
 import java.util.Map;
 
@@ -20,7 +21,7 @@ import java.util.Map;
  * @author frankcl
  * @date 2022-08-03 19:11:02
  */
-public class OTSTunnelReceiver extends Receiver implements RebuildListener {
+public class OTSTunnelReceiver extends Receiver implements Listener {
 
     private final static Logger logger = LoggerFactory.getLogger(OTSTunnelReceiver.class);
 
@@ -69,8 +70,8 @@ public class OTSTunnelReceiver extends Receiver implements RebuildListener {
     }
 
     @Override
-    public void onRebuild(Rebuildable rebuildTarget) {
-        if (rebuildTarget == null || rebuildTarget != tunnel) return;
+    public void onRebuild(@NotNull RebuildEvent event) {
+        if (event.target == null || event.target != tunnel) return;
         if (receiveProcessor == null) return;
         receiveProcessor.sweep();
     }

@@ -21,7 +21,7 @@ import xin.manong.weapon.alarm.Alarm;
 import xin.manong.weapon.alarm.AlarmConfig;
 import xin.manong.weapon.alarm.AlarmLevel;
 import xin.manong.weapon.alarm.AlarmProducer;
-import xin.manong.weapon.base.listen.ListenerScanner;
+import xin.manong.weapon.base.secret.ListenerScanner;
 import xin.manong.weapon.base.util.FileUtil;
 import xin.manong.weapon.base.util.ReflectArgs;
 import xin.manong.weapon.base.util.ReflectUtil;
@@ -95,6 +95,7 @@ public class StreamRunner {
                     config.name), AlarmLevel.INFO).setAppName(config.name).setTitle("stream应用停止通知"));
             alarmProducer.stop();
         }
+        ListenerScanner.unregister();
         logger.info("stream[{}] has been stopped", config.name);
     }
 

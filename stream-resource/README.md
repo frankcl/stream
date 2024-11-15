@@ -214,22 +214,6 @@ kafka消息生产客户端封装，配置定义示例如下
 }
 ```
 
-## 进程级速度控制器
-控制进程级别数据处理速率，配置定义示例如下
-```json
-{
-  "resources": [
-    {
-      "name": "xxx_rate_limiter",                                                         //限速器名称
-      "className": "xin.manong.stream.boost.resource.common.RateLimiterResource",         //限速器资源全限定类名
-      "configMap": {                                                                      //数据队列配置信息
-        "permitsPerSecond": 10                                                            //限制最大速率，单位：条/秒
-      }
-    }
-  ]
-}
-```
-
 ## 全局速度控制器
 控制应用级别数据处理速率，配置定义示例如下
 
@@ -239,7 +223,7 @@ kafka消息生产客户端封装，配置定义示例如下
   "resources": [
     {
       "name": "xxx_rate_limiter",                                                         //限速器名称
-      "className": "xin.manong.stream.boost.resource.common.RRateLimiterResource",        //限速器资源全限定类名
+      "className": "xin.manong.stream.boost.resource.common.RateLimiterResource",         //限速器资源全限定类名
       "configMap": {                                                                      //数据队列配置信息
         "redisClient": "xxx",                                                             //redis客户端资源名称
         "rateLimiterKey": "xxx",                                                          //redis限速器key
