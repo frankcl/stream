@@ -55,6 +55,10 @@
         </dependency>
         <dependency>
             <groupId>xin.manong</groupId>
+            <artifactId>weapon-aliyun</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>xin.manong</groupId>
             <artifactId>stream-sdk</artifactId>
             <version>${stream.version}</version>
         </dependency>

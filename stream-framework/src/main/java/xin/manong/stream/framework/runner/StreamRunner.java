@@ -21,7 +21,7 @@ import xin.manong.weapon.alarm.Alarm;
 import xin.manong.weapon.alarm.AlarmConfig;
 import xin.manong.weapon.alarm.AlarmLevel;
 import xin.manong.weapon.alarm.AlarmProducer;
-import xin.manong.weapon.base.secret.ListenerScanner;
+import xin.manong.weapon.aliyun.secret.ListenerScanner;
 import xin.manong.weapon.base.util.FileUtil;
 import xin.manong.weapon.base.util.ReflectArgs;
 import xin.manong.weapon.base.util.ReflectUtil;

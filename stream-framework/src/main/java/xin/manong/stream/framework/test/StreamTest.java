@@ -2,7 +2,7 @@ package xin.manong.stream.framework.test;
 
 import xin.manong.stream.framework.prepare.PreprocessManager;
 import xin.manong.stream.framework.prepare.PreprocessParser;
-import xin.manong.weapon.base.listen.ListenerScanner;
+import xin.manong.weapon.aliyun.secret.ListenerScanner;
 
 /**
  * stream测试：负责初始化stream测试环境
