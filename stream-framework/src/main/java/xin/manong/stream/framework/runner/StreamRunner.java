@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import xin.manong.stream.framework.common.StreamManager;
 import xin.manong.stream.framework.prepare.PreprocessManager;
 import xin.manong.stream.framework.prepare.PreprocessParser;
+import xin.manong.stream.framework.processor.ProcessorConfig;
 import xin.manong.stream.framework.processor.ProcessorGraph;
 import xin.manong.stream.framework.processor.ProcessorGraphFactory;
 import xin.manong.stream.framework.receiver.ReceiveControllerConfig;
@@ -68,6 +69,9 @@ public class StreamRunner {
                 ResourceManager.registerResource(resourceConfig);
             }
         }
+        for (ProcessorConfig processorConfig : config.processors) {
+            processorConfig.pythonEnv = config.pythonEnv;
+        }
         if (!checkProcessorGraph()) return false;
         receiveManager = new ReceiveManager(config.receivers, config.processors);
         receiveManager.setAppName(config.name);
@@ -125,7 +129,7 @@ public class StreamRunner {
             return true;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            logger.error("start alarm producer[{}] failed", config.alarmConfig.producerClass);
+            logger.error("start alarm producer[{}] error", config.alarmConfig.producerClass);
             return false;
         }
     }

@@ -10,8 +10,8 @@ import xin.manong.stream.sdk.receiver.Receiver;
 import xin.manong.weapon.aliyun.mns.MNSClient;
 import xin.manong.weapon.aliyun.mns.MNSQueueConsumer;
 import xin.manong.weapon.aliyun.mns.MNSQueueConsumerConfig;
-import xin.manong.weapon.base.listen.Listener;
-import xin.manong.weapon.base.listen.RebuildEvent;
+import xin.manong.weapon.base.event.EventListener;
+import xin.manong.weapon.base.event.RebuildEvent;
 
 import java.util.Map;
 
@@ -21,7 +21,7 @@ import java.util.Map;
  * @author frankcl
  * @date 2022-08-03 19:09:57
  */
-public class MNSReceiver extends Receiver implements Listener {
+public class MNSReceiver extends Receiver implements EventListener {
 
     private final static Logger logger = LoggerFactory.getLogger(MNSReceiver.class);
 
@@ -74,7 +74,7 @@ public class MNSReceiver extends Receiver implements Listener {
 
     @Override
     public void onRebuild(@NotNull RebuildEvent event) {
-        if (event.target == null || event.target != consumer) return;
+        if (event.getBuildTarget() == null || event.getBuildTarget() != consumer) return;
         if (receiveProcessor == null) return;
         receiveProcessor.sweep();
     }

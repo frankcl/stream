@@ -55,4 +55,11 @@ public class StreamConstants {
     public final static String STREAM_MESSAGE_OFFSET = "__STREAM_MESSAGE_OFFSET__";
     /* 消息产生时间戳 */
     public final static String STREAM_MESSAGE_TIMESTAMP = "__STREAM_MESSAGE_TIMESTAMP__";
+
+    /* python执行环境 */
+    public final static String PYTHON_ENV = "__PYTHON_ENV__";
+    /* python文件路径 */
+    public final static String PYTHON_FILE = "__PYTHON_FILE__";
+    /* python插件类名 */
+    public final static String PYTHON_CLASS = "__PYTHON_CLASS__";
 }

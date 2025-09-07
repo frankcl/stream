@@ -156,7 +156,7 @@ public class ProcessorGraph {
         ProcessorConfig processorConfig = processorConfigMap.get(processorName);
         for (String name : processorConfig.processors.values()) {
             if (!processorConfigMap.containsKey(name)) {
-                logger.error("processor[{}] is not found for building graph", name);
+                logger.error("processor[{}] is not found for checking graph", name);
                 throw new UnacceptableException(String.format(
                         "processor[%s] is not found for building graph", name));
             }

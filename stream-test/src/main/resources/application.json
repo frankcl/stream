@@ -1,5 +1,6 @@
 {
   "name": "fake_stream",
+  "pythonEnv": "/Users/frankcl/Code/private/stream/stream-test/python",
   "loggerKeys": ["id"],
   "resources": [
     {
@@ -26,7 +27,7 @@
         "idBuilder": "id_builder"
       },
       "processors": {
-        "even": "processor1",
+        "even": "python_processor",
         "odd": "processor2"
       }
     },
@@ -46,6 +47,17 @@
         "name": "processor2"
       },
       "processors": {
+      }
+    },
+    {
+      "name": "python_processor",
+      "className": "xin.manong.stream.sdk.python.PythonPlugin",
+      "pluginConfig": {
+        "__PYTHON_FILE__": "test_plugin.py",
+        "__PYTHON_CLASS__": "TestPlugin"
+      },
+      "processors": {
+        "next": "processor1"
       }
     }
   ]

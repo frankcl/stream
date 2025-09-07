@@ -23,6 +23,7 @@ public class StreamRunnerConfig {
 
     public String name;
     public String loggerFile;
+    public String pythonEnv;
     public List<String> loggerKeys;
     public List<ReceiveControllerConfig> receivers = new ArrayList<>();
     public List<ProcessorConfig> processors = new ArrayList<>();

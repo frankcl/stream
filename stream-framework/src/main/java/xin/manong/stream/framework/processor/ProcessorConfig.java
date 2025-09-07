@@ -3,6 +3,7 @@ package xin.manong.stream.framework.processor;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xin.manong.stream.sdk.common.StreamConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,7 @@ public class ProcessorConfig {
 
     public String name;
     public String className;
+    public String pythonEnv;
     public Map<String, Object> pluginConfig = new HashMap<>();
     public Map<String, String> processors = new HashMap<>();
 
@@ -37,6 +39,7 @@ public class ProcessorConfig {
             logger.error("processor[{}] class name is empty", name);
             return false;
         }
+        if (StringUtils.isNotEmpty(pythonEnv)) pluginConfig.put(StreamConstants.PYTHON_ENV, pythonEnv);
         return true;
     }
 }
