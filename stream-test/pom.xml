@@ -29,30 +29,30 @@
 
     <artifactId>stream-test</artifactId>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.graalvm.python</groupId>
-                <artifactId>graalpy-maven-plugin</artifactId>
-                <version>${graalvm.version}</version>
-                <configuration>
-                    <packages>
-                        <package>numpy</package>
-                    </packages>
-                    <externalDirectory>
-                        ${project.basedir}/python
-                    </externalDirectory>
-                </configuration>
-                <executions>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.graalvm.python</groupId>-->
+<!--                <artifactId>graalpy-maven-plugin</artifactId>-->
+<!--                <version>${graalvm.version}</version>-->
+<!--                <configuration>-->
+<!--                    <packages>-->
+<!--                        <package>numpy</package>-->
+<!--                    </packages>-->
+<!--                    <externalDirectory>-->
+<!--                        ${project.basedir}/python-->
+<!--                    </externalDirectory>-->
+<!--                </configuration>-->
+<!--                <executions>-->
 <!--                    <execution>-->
 <!--                        <goals>-->
 <!--                            <goal>process-graalpy-resources</goal>-->
 <!--                        </goals>-->
 <!--                    </execution>-->
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+<!--                </executions>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
     <dependencies>
         <dependency>
