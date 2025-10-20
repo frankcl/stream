@@ -41,6 +41,7 @@
         <module>stream-resource</module>
         <module>stream-receiver</module>
         <module>stream-plugin</module>
+        <module>stream-config-map</module>
     </modules>
 
     <properties>
@@ -54,6 +55,7 @@
         <redisson.version>3.38.1</redisson.version>
         <kafka.version>3.9.0</kafka.version>
         <graalvm.version>24.2.2</graalvm.version>
+        <jetcd.version>0.8.3</jetcd.version>
         <oss.version>3.18.1</oss.version>
         <ons-client.version>1.8.0.Final</ons-client.version>
         <tablestore.version>5.13.10</tablestore.version>
@@ -61,6 +63,7 @@
         <aliyun-log.version>0.6.82</aliyun-log.version>
         <aliyun-log-producer.version>0.3.12</aliyun-log-producer.version>
         <aliyun-mns.version>1.1.9.2</aliyun-mns.version>
+        <elasticsearch-java.version>8.13.4</elasticsearch-java.version>
         <weapon.version>0.2.0</weapon.version>
         <stream.version>0.1.2</stream.version>
     </properties>
@@ -193,6 +196,17 @@
                 <version>${kafka.version}</version>
             </dependency>
             <dependency>
+                <groupId>io.etcd</groupId>
+                <artifactId>jetcd-core</artifactId>
+                <version>${jetcd.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
                 <groupId>org.graalvm.polyglot</groupId>
                 <artifactId>polyglot</artifactId>
                 <version>${graalvm.version}</version>
@@ -242,6 +256,11 @@
                 <groupId>com.aliyun.mns</groupId>
                 <artifactId>aliyun-sdk-mns</artifactId>
                 <version>${aliyun-mns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>co.elastic.clients</groupId>
+                <artifactId>elasticsearch-java</artifactId>
+                <version>${elasticsearch-java.version}</version>
             </dependency>
             <dependency>
                 <groupId>xin.manong</groupId>

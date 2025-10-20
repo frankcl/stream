@@ -25,4 +25,9 @@ public abstract class Preprocessor {
      * 预处理
      */
     public abstract void process();
+
+    /**
+     * 销毁资源
+     */
+    public void destroy() {}
 }

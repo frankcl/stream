@@ -97,6 +97,16 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>io.etcd</groupId>
+            <artifactId>jetcd-core</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>co.elastic.clients</groupId>
+            <artifactId>elasticsearch-java</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>xin.manong</groupId>
             <artifactId>weapon-aliyun</artifactId>
         </dependency>

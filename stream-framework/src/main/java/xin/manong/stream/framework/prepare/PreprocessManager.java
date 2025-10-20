@@ -43,4 +43,13 @@ public class PreprocessManager {
             for (Preprocessor preprocessor : preprocessors) preprocessor.process();
         }
     }
+
+    /**
+     * 销毁预处理
+     */
+    public static void destroy() {
+        synchronized (PreprocessManager.class) {
+            for (Preprocessor preprocessor : preprocessors) preprocessor.destroy();
+        }
+    }
 }

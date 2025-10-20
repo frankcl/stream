@@ -100,6 +100,7 @@ public class StreamRunner {
             alarmProducer.stop();
         }
         ListenerScanner.unregister();
+        PreprocessManager.destroy();
         logger.info("stream[{}] has been stopped", config.name);
     }
 
@@ -223,7 +224,8 @@ public class StreamRunner {
             if (resourceClass == null) throw e;
             StreamApplication streamApplication = resourceClass.getAnnotation(StreamApplication.class);
             checkStreamApplication(streamApplication, resourceClass);
-            String configFile = streamApplication.configFile().substring(CLASS_PATH_PREFIX.length());
+            String configFile = streamApplication.configFile();
+            if (configFile.startsWith(CLASS_PATH_PREFIX)) configFile = configFile.substring(CLASS_PATH_PREFIX.length());
             configFile = configFile.startsWith("/") ? configFile : String.format("/%s", configFile);
             InputStream inputStream = resourceClass.getResourceAsStream(configFile);
             if (inputStream == null) {
