@@ -5,7 +5,7 @@
     <parent>
         <artifactId>stream</artifactId>
         <groupId>xin.manong</groupId>
-        <version>0.1.2</version>
+        <version>0.1.3</version>
     </parent>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
@@ -49,6 +49,11 @@
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

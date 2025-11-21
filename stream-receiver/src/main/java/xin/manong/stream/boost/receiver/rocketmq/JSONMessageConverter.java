@@ -1,9 +1,9 @@
-package xin.manong.stream.boost.receiver.ons;
+package xin.manong.stream.boost.receiver.rocketmq;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.aliyun.openservices.ons.api.Message;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.rocketmq.common.message.MessageExt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xin.manong.stream.sdk.common.StreamConstants;
@@ -16,10 +16,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
- * JSON格式MQ消息转换器
+ * JSON格式RocketMQ消息转换器
  *
  * @author frankcl
- * @date 2022-08-04 15:39:18
+ * @date 2025-11-01 15:39:18
  */
 public class JSONMessageConverter extends ReceiveConverter {
 
@@ -31,26 +31,26 @@ public class JSONMessageConverter extends ReceiveConverter {
 
     @Override
     public KVRecords convert(Context context, Object object) throws Exception {
-        if (!(object instanceof Message message)) {
-            logger.error("Convert record is null or not ONS message");
+        if (!(object instanceof MessageExt message)) {
+            logger.error("Convert record is null or not RocketMQ message");
             return null;
         }
-        context.put(StreamConstants.STREAM_MESSAGE_ID, message.getMsgID());
+        context.put(StreamConstants.STREAM_MESSAGE_ID, message.getMsgId());
         context.put(StreamConstants.STREAM_MESSAGE_TOPIC, message.getTopic());
         context.put(StreamConstants.STREAM_MESSAGE_TIMESTAMP, message.getBornTimestamp());
-        if (!StringUtils.isEmpty(message.getKey())) context.put(StreamConstants.STREAM_MESSAGE_KEY, message.getKey());
-        if (!StringUtils.isEmpty(message.getTag())) context.put(StreamConstants.STREAM_MESSAGE_TAG, message.getTag());
+        if (StringUtils.isNotEmpty(message.getKeys())) context.put(StreamConstants.STREAM_MESSAGE_KEY, message.getKeys());
+        if (StringUtils.isNotEmpty(message.getTags())) context.put(StreamConstants.STREAM_MESSAGE_TAG, message.getTags());
         String content = new String(message.getBody(), StandardCharsets.UTF_8);
         JSONObject jsonMessage = JSON.parseObject(content);
         KVRecord kvRecord = new KVRecord();
         for (Map.Entry<String, Object> entry : jsonMessage.entrySet()) {
             kvRecord.put(entry.getKey(), entry.getValue());
         }
-        kvRecord.put(StreamConstants.STREAM_MESSAGE_ID, message.getMsgID());
+        kvRecord.put(StreamConstants.STREAM_MESSAGE_ID, message.getMsgId());
         kvRecord.put(StreamConstants.STREAM_MESSAGE_TOPIC, message.getTopic());
         kvRecord.put(StreamConstants.STREAM_MESSAGE_TIMESTAMP, message.getBornTimestamp());
-        if (!StringUtils.isEmpty(message.getKey())) kvRecord.put(StreamConstants.STREAM_MESSAGE_KEY, message.getKey());
-        if (!StringUtils.isEmpty(message.getTag())) kvRecord.put(StreamConstants.STREAM_MESSAGE_TAG, message.getTag());
+        if (!StringUtils.isEmpty(message.getKeys())) kvRecord.put(StreamConstants.STREAM_MESSAGE_KEY, message.getKeys());
+        if (!StringUtils.isEmpty(message.getTags())) kvRecord.put(StreamConstants.STREAM_MESSAGE_TAG, message.getTags());
         KVRecords kvRecords = new KVRecords();
         kvRecords.addRecord(kvRecord);
         return kvRecords;
