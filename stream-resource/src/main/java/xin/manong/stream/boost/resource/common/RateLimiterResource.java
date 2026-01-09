@@ -23,7 +23,8 @@ public class RateLimiterResource extends Resource<RRateLimiter> {
     private final static Logger logger = LoggerFactory.getLogger(RateLimiterResource.class);
 
     private final static String KEY_RATE_LIMITER_KEY = "rateLimiterKey";
-    private final static String KEY_PERMITS_PER_SECOND = "permitsPerSecond";
+    private final static String KEY_PERMITS = "permits";
+    private final static String KEY_TIME_SPAN_SECONDS = "timeSpanSeconds";
 
     @xin.manong.stream.sdk.annotation.Resource(name = "${redisClient}")
     protected RedisClient redisClient;
@@ -34,19 +35,24 @@ public class RateLimiterResource extends Resource<RRateLimiter> {
 
     @Override
     public RRateLimiter create(Map<String, Object> configMap) {
-        if (!configMap.containsKey(KEY_PERMITS_PER_SECOND)) {
-            logger.error("missing param[{}]", KEY_PERMITS_PER_SECOND);
+        if (!configMap.containsKey(KEY_PERMITS)) {
+            logger.error("Missing param[{}]", KEY_PERMITS);
+            return null;
+        }
+        if (!configMap.containsKey(KEY_TIME_SPAN_SECONDS)) {
+            logger.error("Missing param[{}]", KEY_TIME_SPAN_SECONDS);
             return null;
         }
         if (!configMap.containsKey(KEY_RATE_LIMITER_KEY)) {
-            logger.error("missing param[{}]", KEY_RATE_LIMITER_KEY);
+            logger.error("Missing param[{}]", KEY_RATE_LIMITER_KEY);
             return null;
         }
         String key = MapUtil.getValue(configMap, KEY_RATE_LIMITER_KEY, String.class);
-        long permitsPerSecond = MapUtil.getValue(configMap, KEY_PERMITS_PER_SECOND, Number.class).longValue();
-        if (StringUtils.isEmpty(key) || permitsPerSecond <= 0) return null;
+        long permits = MapUtil.getValue(configMap, KEY_PERMITS, Number.class).longValue();
+        int timeSpanSeconds = MapUtil.getValue(configMap, KEY_TIME_SPAN_SECONDS, Integer.class);
+        if (StringUtils.isEmpty(key) || permits <= 0 || timeSpanSeconds <= 0) return null;
         RRateLimiter rateLimiter = redisClient.getRateLimiter(key);
-        rateLimiter.setRate(RateType.OVERALL, permitsPerSecond, Duration.ofSeconds(1));
+        rateLimiter.setRate(RateType.OVERALL, permits, Duration.ofSeconds(timeSpanSeconds));
         logger.info("create redisson rate limiter success");
         return rateLimiter;
     }

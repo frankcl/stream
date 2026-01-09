@@ -44,7 +44,8 @@ public class RateLimiterResourceTest {
         resourceConfig.name = "rate_limiter";
         resourceConfig.className = "xin.manong.stream.boost.resource.common.RateLimiterResource";
         resourceConfig.configMap.put("rateLimiterKey", "test_rate_limiter");
-        resourceConfig.configMap.put("permitsPerSecond", 10);
+        resourceConfig.configMap.put("permits", 10);
+        resourceConfig.configMap.put("timeSpanSeconds", 3);
         resourceConfig.configMap.put("redisClient", "redis_client");
         ResourceManager.registerResource(resourceConfig);
 
@@ -57,7 +58,7 @@ public class RateLimiterResourceTest {
     @Test
     public void testBuildFail() {
         Map<String, Object> configMap = new HashMap<>();
-        configMap.put("permitsPerSecond", 10d);
+        configMap.put("permits", 10);
         configMap.put("rateLimiterKey", "test_rate_limiter");
         RateLimiterResource resource = new RateLimiterResource("rate_limiter");
         resource.build(configMap);

@@ -227,7 +227,8 @@ kafka消息生产客户端封装，配置定义示例如下
       "configMap": {                                                                      //数据队列配置信息
         "redisClient": "xxx",                                                             //redis客户端资源名称
         "rateLimiterKey": "xxx",                                                          //redis限速器key
-        "permitsPerSecond": 10                                                            //限制最大速率，单位：条/秒
+        "timeSpanSeconds": 60,                                                            //时间跨度，单位秒
+        "permits": 10                                                                     //限制数量
       }
     }
   ]
