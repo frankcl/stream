@@ -28,18 +28,18 @@ public class DataHubClientResource extends Resource<DataHubClient> {
     public DataHubClient create(Map<String, Object> configMap) {
         DataHubClientConfig clientConfig = JSON.toJavaObject(new JSONObject(configMap), DataHubClientConfig.class);
         if (clientConfig == null) {
-            logger.error("parse data hub client config failed");
+            logger.error("Parse data hub client config failed");
             return null;
         }
         DataHubClient dataHubClient = new DataHubClient(clientConfig);
-        logger.info("create data hub client success");
+        logger.info("Create data hub client success");
         return dataHubClient;
     }
 
     @Override
     public void destroy() {
         if (object != null) object.close();
-        logger.info("close data hub client success");
+        logger.info("Close data hub client success");
         object = null;
     }
 }

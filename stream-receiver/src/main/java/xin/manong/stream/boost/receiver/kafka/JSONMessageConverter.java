@@ -32,7 +32,7 @@ public class JSONMessageConverter extends ReceiveConverter {
     @Override
     public KVRecords convert(Context context, Object object) throws Exception {
         if (!(object instanceof ConsumerRecord)) {
-            logger.error("convert record is null or not kafka message");
+            logger.error("Convert record is null or not kafka message");
             return null;
         }
         ConsumerRecord<byte[], byte[]> consumerRecord = (ConsumerRecord<byte[], byte[]>) object;

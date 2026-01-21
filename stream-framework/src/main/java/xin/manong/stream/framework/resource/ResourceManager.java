@@ -48,9 +48,9 @@ public class ResourceManager {
             }
             if (resources.isEmpty()) return null;
             if (resources.size() > 1) {
-                logger.error("more than one candidate resource for class[{}]", clazz.getName());
+                logger.error("More than one candidate resource for class:{}", clazz.getName());
                 throw new IllegalStateException(String.format(
-                        "more than one candidate resource for class[%s]", clazz.getName()));
+                        "More than one candidate resource for class:%s", clazz.getName()));
             }
             return clazz.cast(resources.get(0));
         }
@@ -68,13 +68,13 @@ public class ResourceManager {
         synchronized (resourcePoolMap) {
             Resource<?> resource = borrowResource(resourceName);
             if (resource == null) {
-                logger.warn("get resource failed for name[{}]", resourceName);
+                logger.warn("Get resource failed for name:{}", resourceName);
                 return null;
             }
             try {
                 return clazz.cast(resource.get());
             } catch (Exception e) {
-                logger.error("convert resource failed for name[{}], class[{}]",
+                logger.error("Convert resource failed for name:{}, class:{}",
                         resourceName, clazz.getName());
                 logger.error(e.getMessage(), e);
                 return null;
@@ -94,14 +94,14 @@ public class ResourceManager {
         synchronized (resourcePoolMap) {
             ResourcePool pool = resourcePoolMap.get(resource.getName());
             if (pool == null) {
-                logger.warn("resource[{}] is not found, ignore return", resource.getName());
+                logger.warn("Resource:{} is not found, ignore return", resource.getName());
                 return false;
             }
             try {
                 pool.returnObject(resource);
                 return true;
             } catch (Exception e) {
-                logger.error("return resource[{}] failed", resource.getName());
+                logger.error("Return resource:{} failed", resource.getName());
                 logger.error(e.getMessage(), e);
                 return false;
             }
@@ -119,13 +119,13 @@ public class ResourceManager {
         synchronized (resourcePoolMap) {
             ResourcePool<?> pool = resourcePoolMap.get(resourceName);
             if (pool == null) {
-                logger.warn("resource[{}] is not found, ignore borrow", resourceName);
+                logger.warn("Resource:{} is not found, ignore borrow", resourceName);
                 return null;
             }
             try {
                 return pool.borrowObject();
             } catch (Exception e) {
-                logger.error("borrow resource[{}] failed", resourceName);
+                logger.error("Borrow resource:{} failed", resourceName);
                 logger.error(e.getMessage(), e);
                 return null;
             }
@@ -140,12 +140,12 @@ public class ResourceManager {
     public static void registerResource(ResourceConfig resourceConfig) {
         synchronized (resourcePoolMap) {
             if (resourcePoolMap.containsKey(resourceConfig.name)) {
-                logger.info("resource[{}] has been registered, unregister it", resourceConfig.name);
+                logger.info("Resource:{} has been registered, unregister it", resourceConfig.name);
                 unregisterResource(resourceConfig.name);
             }
             ResourcePool<?> pool = new ResourcePool<>(resourceConfig);
             resourcePoolMap.put(resourceConfig.name, pool);
-            logger.info("register resource success for name[{}]", resourceConfig.name);
+            logger.info("Register resource success for name:{}", resourceConfig.name);
         }
     }
 
@@ -156,17 +156,17 @@ public class ResourceManager {
      */
     public static void unregisterResource(String resourceName) {
         if (!resourcePoolMap.containsKey(resourceName)) {
-            logger.warn("resource[{}] is not found, ignore unregister", resourceName);
+            logger.warn("Resource:{} is not found, ignore unregister", resourceName);
             return;
         }
         synchronized (resourcePoolMap) {
             ResourcePool<?> resourcePool = resourcePoolMap.remove(resourceName);
             if (resourcePool == null) {
-                logger.info("resource[{}] has been unregistered", resourceName);
+                logger.info("Resource:{} has been unregistered", resourceName);
                 return;
             }
             resourcePool.close();
-            logger.info("unregister resource success for name[{}]", resourceName);
+            logger.info("Unregister resource success for name:{}", resourceName);
         }
     }
 
@@ -177,7 +177,7 @@ public class ResourceManager {
         synchronized (resourcePoolMap) {
             for (ResourcePool<?> pool : resourcePoolMap.values()) pool.close();
             resourcePoolMap.clear();
-            logger.info("unregister all resources success");
+            logger.info("Unregister all resources success");
         }
     }
 }

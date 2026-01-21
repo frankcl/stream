@@ -24,7 +24,7 @@ public class FakeReceiver extends Receiver {
 
     @Override
     public boolean start() {
-        logger.info("fake receiver is starting ...");
+        logger.info("Fake receiver is starting ...");
         FakeReceiverConfig receiveConfig = JSON.toJavaObject(
                 new JSONObject(configMap), FakeReceiverConfig.class);
         if (!receiveConfig.check()) return false;
@@ -35,14 +35,14 @@ public class FakeReceiver extends Receiver {
             producers[i].setTimeIntervalMs(receiveConfig.timeIntervalMs);
             producers[i].start();
         }
-        logger.info("fake receiver has been started");
+        logger.info("Fake receiver has been started");
         return true;
     }
 
     @Override
     public void stop() {
-        logger.info("fake receiver is stopping ...");
+        logger.info("Fake receiver is stopping ...");
         for (FakeRecordProducer producer : producers) producer.stop();
-        logger.info("fake receiver has been stopped");
+        logger.info("Fake receiver has been stopped");
     }
 }

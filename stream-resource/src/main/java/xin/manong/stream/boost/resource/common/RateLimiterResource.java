@@ -53,13 +53,13 @@ public class RateLimiterResource extends Resource<RRateLimiter> {
         if (StringUtils.isEmpty(key) || permits <= 0 || timeSpanSeconds <= 0) return null;
         RRateLimiter rateLimiter = redisClient.getRateLimiter(key);
         rateLimiter.setRate(RateType.OVERALL, permits, Duration.ofSeconds(timeSpanSeconds));
-        logger.info("create redisson rate limiter success");
+        logger.info("Create redisson rate limiter success");
         return rateLimiter;
     }
 
     @Override
     public void destroy() {
-        logger.info("destroy redisson rate limiter success");
+        logger.info("Destroy redisson rate limiter success");
         if (object != null) object.delete();
         object = null;
     }

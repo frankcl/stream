@@ -44,9 +44,9 @@ public class ReceiveController {
      * @return 成功返回true，否则返回false
      */
     public final boolean init(ReceiveControllerConfig config, List<ProcessorConfig> processorGraphConfig) {
-        logger.info("init receiver[{}] ...", config.name);
+        logger.info("Init receiver:{} ...", config.name);
         if (!config.check()) {
-            logger.error("receive controller config is invalid");
+            logger.error("Receive controller config is invalid");
             return false;
         }
         this.config = config;
@@ -56,7 +56,7 @@ public class ReceiveController {
         ((ReceiveProcessorImpl) receiveProcessor).setAlarmProducer(alarmProducer);
         ((ReceiveProcessorImpl) receiveProcessor).setAppName(appName);
         ReflectUtil.setFieldValue(receiver, "receiveProcessor", receiveProcessor);
-        logger.info("init receiver[{}] success", name);
+        logger.info("Init receiver:{} success", name);
         return true;
     }
 
@@ -66,12 +66,12 @@ public class ReceiveController {
      * @return 成功返回true，否则返回false
      */
     public final boolean start() {
-        logger.info("receiver[{}] is starting ...", name);
+        logger.info("Receiver:{} is starting ...", name);
         if (!receiver.start()) {
-            logger.error("start receiver[{}] failed", name);
+            logger.error("Start receiver:{} failed", name);
             return false;
         }
-        logger.info("receiver[{}] has been started", name);
+        logger.info("Receiver:{} has been started", name);
         return true;
     }
 
@@ -79,11 +79,11 @@ public class ReceiveController {
      * 销毁
      */
     public final void destroy() {
-        logger.info("receiver[{}] is destroying ...", name);
+        logger.info("Receiver:{} is destroying ...", name);
         if (receiver != null) receiver.stop();
         if (converter != null) converter.destroy();
         receiveProcessor.sweep();
-        logger.info("receiver[{}] has been destroyed", name);
+        logger.info("Receiver:{} has been destroyed", name);
     }
 
     /**
@@ -115,7 +115,7 @@ public class ReceiveController {
         converter = (ReceiveConverter) ReflectUtil.newInstance(config.converterClass, args);
         ResourceInjector.inject(converter, config.converterConfigMap);
         if (!converter.init()) {
-            logger.error("init receive converter[{}] failed", name);
+            logger.error("Init receive converter:{} failed", name);
             return false;
         }
         return true;

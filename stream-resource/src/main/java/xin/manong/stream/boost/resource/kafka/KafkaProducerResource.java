@@ -29,22 +29,22 @@ public class KafkaProducerResource extends Resource<KafkaProducer> {
         KafkaProduceConfig producerConfig = JSON.toJavaObject(
                 new JSONObject(configMap), KafkaProduceConfig.class);
         if (producerConfig == null) {
-            logger.error("parse kafka producer config failed");
+            logger.error("Parse kafka producer config failed");
             return null;
         }
         KafkaProducer producer = new KafkaProducer(producerConfig);
         if (!producer.init()) {
-            logger.error("init kafka producer failed");
+            logger.error("Init kafka producer failed");
             return null;
         }
-        logger.info("create kafka producer success");
+        logger.info("Create kafka producer success");
         return producer;
     }
 
     @Override
     public void destroy() {
         if (object != null) object.destroy();
-        logger.info("destroy kafka producer success");
+        logger.info("Destroy kafka producer success");
         object = null;
     }
 }

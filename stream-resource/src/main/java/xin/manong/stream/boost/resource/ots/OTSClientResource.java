@@ -28,18 +28,18 @@ public class OTSClientResource extends Resource<OTSClient> {
     public OTSClient create(Map<String, Object> configMap) {
         OTSClientConfig clientConfig = JSON.toJavaObject(new JSONObject(configMap), OTSClientConfig.class);
         if (clientConfig == null) {
-            logger.error("parse OTS client config failed");
+            logger.error("Parse OTS client config failed");
             return null;
         }
         OTSClient otsClient = new OTSClient(clientConfig);
-        logger.info("create OTS client success");
+        logger.info("Create OTS client success");
         return otsClient;
     }
 
     @Override
     public void destroy() {
         if (object != null) object.close();
-        logger.info("close OTS client success");
+        logger.info("Close OTS client success");
         object = null;
     }
 }

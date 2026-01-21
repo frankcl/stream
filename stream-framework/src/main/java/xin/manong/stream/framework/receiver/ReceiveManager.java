@@ -38,28 +38,28 @@ public class ReceiveManager {
      * @return 成功返回true，否则返回false
      */
     public boolean init() {
-        logger.info("receive manager init ...");
+        logger.info("Receive manager init ...");
         if (configList == null || configList.isEmpty()) {
-            logger.error("receiver config list is empty");
+            logger.error("Receiver config list are empty");
             return false;
         }
         Set<String> receiverNames = new HashSet<>();
         for (ReceiveControllerConfig config : configList) {
             if (receiverNames.contains(config.name)) {
-                logger.error("the same receiver[{}] exists", config.name);
+                logger.error("The same name receiver:{} exists", config.name);
                 return false;
             }
             ReceiveController receiveController = new ReceiveController();
             receiveController.setAppName(appName);
             receiveController.setAlarmProducer(alarmProducer);
             if (!receiveController.init(config, processorGraphConfig)) {
-                logger.error("init receiver[{}] failed", config.name);
+                logger.error("Init receiver:{} failed", config.name);
                 return false;
             }
             receiverNames.add(config.name);
             receiveControllers.add(receiveController);
         }
-        logger.info("init receive manager success");
+        logger.info("Init receive manager success");
         return true;
     }
 
@@ -67,11 +67,11 @@ public class ReceiveManager {
      * 销毁
      */
     public void destroy() {
-        logger.info("receive manager is destroying ...");
+        logger.info("Receive manager is destroying ...");
         for (ReceiveController receiveController : receiveControllers) {
             receiveController.destroy();
         }
-        logger.info("receive manager has been destroyed");
+        logger.info("Receive manager has been destroyed");
     }
 
     /**
@@ -80,11 +80,11 @@ public class ReceiveManager {
      * @return 成功返回true，否则返回false
      */
     public boolean start() {
-        logger.info("receive manager is starting ...");
+        logger.info("Receive manager is starting ...");
         for (ReceiveController receiveController : receiveControllers) {
             if (!receiveController.start()) return false;
         }
-        logger.info("receive manager has been started");
+        logger.info("Receive manager has been started");
         return true;
     }
 }

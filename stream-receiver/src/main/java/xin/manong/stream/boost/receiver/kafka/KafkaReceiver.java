@@ -28,31 +28,31 @@ public class KafkaReceiver extends Receiver {
 
     @Override
     public boolean start() {
-        logger.info("kafka receiver is starting ...");
+        logger.info("Kafka receiver is starting ...");
         KafkaConsumeConfig consumerConfig = JSON.toJavaObject(new JSONObject(configMap), KafkaConsumeConfig.class);
         if (consumerConfig == null) {
-            logger.error("parse kafka consume config failed");
+            logger.error("Parse kafka consume config failed");
             return false;
         }
         if (!consumerConfig.check()) return false;
         if (receiveProcessor == null) {
-            logger.error("receive processor is null");
+            logger.error("Receive processor is null");
             return false;
         }
         KafkaProcessor processor = new KafkaProcessor(receiveProcessor);
         consumeGroup = new KafkaConsumeGroup(consumerConfig, processor);
         if (!consumeGroup.start()) {
-            logger.error("start kafka consume group failed");
+            logger.error("Start kafka consume group failed");
             return false;
         }
-        logger.info("kafka receiver has been started");
+        logger.info("Kafka receiver has been started");
         return true;
     }
 
     @Override
     public void stop() {
-        logger.info("kafka receiver is stopping ...");
+        logger.info("Kafka receiver is stopping ...");
         if (consumeGroup != null) consumeGroup.stop();
-        logger.info("kafka receiver has been stopped");
+        logger.info("Kafka receiver has been stopped");
     }
 }

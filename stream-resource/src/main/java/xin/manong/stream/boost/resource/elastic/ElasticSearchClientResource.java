@@ -29,7 +29,7 @@ public class ElasticSearchClientResource extends Resource<ElasticSearchClient> {
         ElasticSearchClientConfig config = JSON.toJavaObject(
                 new JSONObject(configMap), ElasticSearchClientConfig.class);
         if (config == null) {
-            logger.error("parse elastic search client config failed");
+            logger.error("Parse elastic search client config failed");
             return null;
         }
         ElasticSearchClient client = new ElasticSearchClient(config);

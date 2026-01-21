@@ -36,17 +36,17 @@ public class OTSTunnelReceiver extends Receiver implements EventListener {
     public boolean start() {
         logger.info("OTSTunnel receiver is starting ...");
         if (receiveProcessor == null) {
-            logger.error("receive processor is null");
+            logger.error("Receive processor is null");
             return false;
         }
         channelProcessor = new OTSChannelProcessor(receiveProcessor);
         OTSTunnelConfig tunnelConfig = JSON.toJavaObject(new JSONObject(configMap), OTSTunnelConfig.class);
         if (tunnelConfig == null) {
-            logger.error("parse OTS tunnel config failed");
+            logger.error("Parse OTS tunnel config failed");
             return false;
         }
         if (tunnelConfig.workerConfigs == null || tunnelConfig.workerConfigs.isEmpty()) {
-            logger.error("miss OTS tunnel worker config");
+            logger.error("Missing OTS tunnel worker config");
             return false;
         }
         for (OTSTunnelWorkerConfig workerConfig : tunnelConfig.workerConfigs) {

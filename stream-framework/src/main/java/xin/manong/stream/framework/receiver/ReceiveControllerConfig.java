@@ -40,15 +40,15 @@ public class ReceiveControllerConfig {
      */
     public boolean check() {
         if (StringUtils.isEmpty(name)) {
-            logger.error("receiver name is empty");
+            logger.error("Receiver name is empty");
             return false;
         }
         if (StringUtils.isEmpty(receiverClass)) {
-            logger.error("receiver class name is empty");
+            logger.error("Receiver class name is empty");
             return false;
         }
         if (processors == null || processors.isEmpty()) {
-            logger.error("processors are empty");
+            logger.error("Processors are empty");
             return false;
         }
         return true;

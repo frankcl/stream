@@ -29,18 +29,18 @@ public class OSSClientResource extends Resource<OSSClient> {
         OSSClientConfig clientConfig = JSON.toJavaObject(
                 new JSONObject(configMap), OSSClientConfig.class);
         if (clientConfig == null) {
-            logger.error("parse OSS client config failed");
+            logger.error("Parse OSS client config failed");
             return null;
         }
         OSSClient ossClient = new OSSClient(clientConfig);
-        logger.info("create OSS client success");
+        logger.info("Create OSS client success");
         return ossClient;
     }
 
     @Override
     public void destroy() {
         if (object != null) object.close();
-        logger.info("close OSS client success");
+        logger.info("Close OSS client success");
         object = null;
     }
 }

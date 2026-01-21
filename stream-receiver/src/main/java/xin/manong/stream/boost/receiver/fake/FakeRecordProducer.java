@@ -41,7 +41,7 @@ public class FakeRecordProducer implements Runnable {
             } catch (InterruptedException e) {
                 logger.warn(e.getMessage(), e);
             } catch (Throwable e) {
-                logger.error("process fake record failed");
+                logger.error("Process fake record failed");
                 logger.error(e.getMessage(), e);
             }
         }
@@ -51,18 +51,18 @@ public class FakeRecordProducer implements Runnable {
      * 启动
      */
     public void start() {
-        logger.info("fake record producer[{}] is starting ...", name);
+        logger.info("Fake record producer:{} is starting ...", name);
         running = true;
         workThread = new Thread(this, name);
         workThread.start();
-        logger.info("fake record producer[{}] has been started", name);
+        logger.info("Fake record producer:{} has been started", name);
     }
 
     /**
      * 停止
      */
     public void stop() {
-        logger.info("fake record producer[{}] is stopping ...", name);
+        logger.info("Fake record producer:{} is stopping ...", name);
         running = false;
         if (workThread.isAlive()) workThread.interrupt();
         try {
@@ -70,6 +70,6 @@ public class FakeRecordProducer implements Runnable {
         } catch (InterruptedException e) {
             logger.error(e.getMessage(), e);
         }
-        logger.info("fake record producer[{}] has been stopped", name);
+        logger.info("Fake record producer:{} has been stopped", name);
     }
 }

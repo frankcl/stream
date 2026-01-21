@@ -38,7 +38,7 @@ public class UniqueListResource extends EtcdConfigResource<Set<String>> {
 
     @Override
     public void destroy() {
-        logger.info("destroy set resource success");
+        logger.info("Destroy set resource success");
         object = null;
     }
 
@@ -51,7 +51,7 @@ public class UniqueListResource extends EtcdConfigResource<Set<String>> {
     @Override
     public void processChanged(String key, String content) {
         try {
-            logger.info("Unique list config[{}] is changed, reload it", key);
+            logger.info("Unique list config:{} is changed, reload it", key);
             Set<String> uniqueList = Arrays.stream(content.trim().split("\n")).filter(
                     StringUtils::isNotEmpty).collect(Collectors.toSet());
             if (uniqueList.isEmpty()) return;
@@ -62,7 +62,7 @@ public class UniqueListResource extends EtcdConfigResource<Set<String>> {
             object.addAll(uniqueList);
             object.removeIf(name -> !uniqueList.contains(name));
         } catch (Exception e) {
-            logger.error("Reload unique list config[{}] failed", key);
+            logger.error("Reload unique list config:{} failed", key);
             logger.error(e.getMessage(), e);
         }
     }

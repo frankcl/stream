@@ -36,7 +36,7 @@ public class ResourceInjector {
         if (!matcher.matches()) return resource.name().trim();
         String name = matcher.group(1).trim();
         if (configMap == null || !configMap.containsKey(name)) {
-            String message = String.format("resource name is not found in config map for key[%s]", name);
+            String message = String.format("Resource name is not found in config map for key:%s", name);
             logger.error(message);
             throw new IllegalStateException(message);
         }
@@ -75,7 +75,7 @@ public class ResourceInjector {
             String name = parseResourceName(resource, configMap);
             Object resourceObject = getResource(name, field);
             if (resourceObject == null && resource.required()) {
-                String message = String.format("resource[%s] is not found for field[%s] of object[%s]",
+                String message = String.format("Resource:%s is not found for field:%s of object:%s",
                         StringUtils.isEmpty(name) ? field.getType().getName() : name, field.getName(),
                         object.getClass().getName());
                 logger.error(message);
@@ -84,7 +84,7 @@ public class ResourceInjector {
             try {
                 ReflectUtil.setFieldValue(object, field.getName(), resourceObject);
             } catch (Exception e) {
-                String message = String.format("inject resource[%s] failed for field[%s] of object[%s]",
+                String message = String.format("Inject resource:%s failed for field:%s of object:%s",
                         StringUtils.isEmpty(name) ? field.getType().getName() : name, field.getName(),
                         object.getClass().getName());
                 logger.error(message);

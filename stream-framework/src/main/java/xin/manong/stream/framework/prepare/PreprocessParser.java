@@ -50,12 +50,12 @@ public class PreprocessParser {
     private static void registerPreprocessor(Import importAnnotation, Annotation appAnnotation) {
         Class<?>[] classes = importAnnotation.value();
         if (classes == null || classes.length == 0) {
-            logger.warn("missing classes for {}", importAnnotation.getClass().getName());
+            logger.warn("Missing classes for {}", importAnnotation.getClass().getName());
             return;
         }
         for (Class<?> preprocessorClass : classes) {
             if (!Preprocessor.class.isAssignableFrom(preprocessorClass)) {
-                logger.warn("import class[{}] is not an implementation of {}",
+                logger.warn("Import class:{} is not an implementation of {}",
                         preprocessorClass.getName(), Preprocessor.class.getName());
                 return;
             }

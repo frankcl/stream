@@ -30,11 +30,10 @@ public class JSONMessageConverter extends ReceiveConverter {
 
     @Override
     public KVRecords convert(Context context, Object object) throws Exception {
-        if (!(object instanceof Message)) {
-            logger.error("convert record is null or not MNS message");
+        if (!(object instanceof Message message)) {
+            logger.error("Convert record is null or not MNS message");
             return null;
         }
-        Message message = (Message) object;
         context.put(StreamConstants.STREAM_MESSAGE_ID, message.getMessageId());
         context.put(StreamConstants.STREAM_MESSAGE_TIMESTAMP, message.getEnqueueTime().getTime());
         String content = new String(message.getMessageBodyAsBytes(), StandardCharsets.UTF_8);

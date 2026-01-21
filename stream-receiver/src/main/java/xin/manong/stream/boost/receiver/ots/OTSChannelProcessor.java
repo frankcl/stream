@@ -32,7 +32,7 @@ public class OTSChannelProcessor implements IChannelProcessor {
             try {
                 receiveProcessor.process(record);
             } catch (Throwable e) {
-                logger.error("process stream record failed for trace[{}] and token[{}]",
+                logger.error("Process stream record failed for trace:{} and token:{}",
                         input.getTraceId(), input.getNextToken());
                 logger.error(e.getMessage(), e);
                 throw new RuntimeException(e);
@@ -42,6 +42,6 @@ public class OTSChannelProcessor implements IChannelProcessor {
 
     @Override
     public void shutdown() {
-        logger.info("channel processor has been shutdown");
+        logger.info("Channel processor has been shutdown");
     }
 }

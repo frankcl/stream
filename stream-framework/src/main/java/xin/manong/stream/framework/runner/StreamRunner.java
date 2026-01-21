@@ -49,7 +49,7 @@ public class StreamRunner {
     private AlarmProducer alarmProducer;
 
     public StreamRunner(StreamRunnerConfig config) {
-        if (config == null || !config.check()) throw new IllegalArgumentException("check stream config failed");
+        if (config == null || !config.check()) throw new IllegalArgumentException("Check stream config failed");
         this.config = config;
     }
 
@@ -59,7 +59,7 @@ public class StreamRunner {
      * @return 成功返回true，否则返回false
      */
     public boolean start() throws Exception {
-        logger.info("stream[{}] is starting ...", config.name);
+        logger.info("Stream:{} is starting ...", config.name);
         PreprocessManager.preprocess();
         ListenerScanner.scanRegister();
         if (!startAlarmProducer()) return false;
@@ -79,10 +79,10 @@ public class StreamRunner {
         if (!receiveManager.init()) return false;
         if (!receiveManager.start()) return false;
         if (alarmProducer != null) {
-            alarmProducer.send(new Alarm(String.format("stream app[%s] has been started",
-                    config.name), AlarmLevel.INFO).setAppName(config.name).setTitle("stream应用启动通知"));
+            alarmProducer.send(new Alarm(String.format("Stream app:%s has been started",
+                    config.name), AlarmLevel.INFO).setAppName(config.name).setTitle("Stream应用启动通知"));
         }
-        logger.info("stream[{}] has been started", config.name);
+        logger.info("Stream:{} has been started", config.name);
         return true;
     }
 
@@ -90,18 +90,18 @@ public class StreamRunner {
      * 停止调度器
      */
     public void stop() {
-        logger.info("stream[{}] is stopping ...", config.name);
+        logger.info("Stream:{} is stopping ...", config.name);
         if (receiveManager != null) receiveManager.destroy();
         ProcessorGraphFactory.sweep();
         ResourceManager.unregisterAllResources();
         if (alarmProducer != null) {
-            alarmProducer.send(new Alarm(String.format("stream app[%s] has been stopped",
-                    config.name), AlarmLevel.INFO).setAppName(config.name).setTitle("stream应用停止通知"));
+            alarmProducer.send(new Alarm(String.format("Stream app:%s has been stopped",
+                    config.name), AlarmLevel.INFO).setAppName(config.name).setTitle("Stream应用停止通知"));
             alarmProducer.stop();
         }
         ListenerScanner.unregister();
         PreprocessManager.destroy();
-        logger.info("stream[{}] has been stopped", config.name);
+        logger.info("Stream:{} has been stopped", config.name);
     }
 
     /**
@@ -111,11 +111,11 @@ public class StreamRunner {
      */
     private boolean startAlarmProducer() {
         if (config.alarmConfig == null) {
-            logger.info("alarm config is null");
+            logger.info("Alarm config is null");
             return true;
         }
         if (!config.alarmConfig.check()) {
-            logger.error("invalid alarm config");
+            logger.error("Invalid alarm config");
             return false;
         }
         try {
@@ -123,14 +123,14 @@ public class StreamRunner {
                     new Class[]{ AlarmConfig.class }, new Object[]{ config.alarmConfig });
             alarmProducer = (AlarmProducer) ReflectUtil.newInstance(config.alarmConfig.producerClass, args);
             if (!alarmProducer.start()) {
-                logger.error("start alarm producer[{}] failed", config.alarmConfig.producerClass);
+                logger.error("Start alarm producer:{} failed", config.alarmConfig.producerClass);
                 return false;
             }
-            logger.info("start alarm producer[{}] success", config.alarmConfig.producerClass);
+            logger.info("Start alarm producer:{} success", config.alarmConfig.producerClass);
             return true;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            logger.error("start alarm producer[{}] error", config.alarmConfig.producerClass);
+            logger.error("Start alarm producer:{} error", config.alarmConfig.producerClass);
             return false;
         }
     }
@@ -148,7 +148,7 @@ public class StreamRunner {
             if (!receiveControllerConfig.check()) return false;
             for (String processor : receiveControllerConfig.processors) {
                 if (processorGraph.containsProcessor(processor)) continue;
-                logger.error("processor[{}] is not found for receiver[{}]", processor,
+                logger.error("Processor:{} is not found for receiver:{}", processor,
                         receiveControllerConfig.name);
                 return false;
             }
@@ -167,8 +167,8 @@ public class StreamRunner {
     private static String parseCommands(String[] args) throws ParseException {
         Options options = new Options();
         options.addOption(Option.builder("h").longOpt("help").
-                desc("help information for stream runner").build());
-        options.addOption(Option.builder("c").hasArg().required().desc("stream config file path").build());
+                desc("Help information for stream runner").build());
+        options.addOption(Option.builder("c").hasArg().required().desc("Stream config file path").build());
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine command = parser.parse(options, args);
@@ -188,19 +188,19 @@ public class StreamRunner {
      */
     private static void checkStreamApplication(StreamApplication streamApplication, Class<?> resourceClass) {
         if (streamApplication == null) {
-            logger.error("resource class[{}] is not stream application resource", resourceClass.getName());
-            throw new IllegalArgumentException(String.format("resource class[%s] is not stream application resource",
+            logger.error("Resource class:{} is not stream application resource", resourceClass.getName());
+            throw new IllegalArgumentException(String.format("Resource class:%s is not stream application resource",
                     resourceClass.getName()));
         }
         if (StringUtils.isEmpty(streamApplication.name())) {
-            logger.error("stream application name is empty");
-            throw new IllegalArgumentException("stream application name is empty");
+            logger.error("Stream application name is empty");
+            throw new IllegalArgumentException("Stream application name is empty");
         }
         if (StringUtils.isEmpty(streamApplication.configFile()) ||
                 !streamApplication.configFile().startsWith(CLASS_PATH_PREFIX)) {
-            logger.error("invalid stream config file[{}], must start with prefix[{}]",
+            logger.error("Invalid stream config file:{}, must start with prefix:{}",
                     streamApplication.configFile(), CLASS_PATH_PREFIX);
-            throw new IllegalArgumentException(String.format("invalid stream config file[%s], must start with prefix[%s]",
+            throw new IllegalArgumentException(String.format("Invalid stream config file:%s, must start with prefix:%s",
                     streamApplication.configFile(), CLASS_PATH_PREFIX));
         }
     }
@@ -229,8 +229,8 @@ public class StreamRunner {
             configFile = configFile.startsWith("/") ? configFile : String.format("/%s", configFile);
             InputStream inputStream = resourceClass.getResourceAsStream(configFile);
             if (inputStream == null) {
-                logger.error("stream application config is not found for path[{}]", configFile);
-                throw new IllegalArgumentException(String.format("stream application config is not found for path[%s]",
+                logger.error("Stream application config is not found for path:{}", configFile);
+                throw new IllegalArgumentException(String.format("Stream application config is not found for path:%s",
                         configFile));
             }
             int n, bufferSize = 4096;
@@ -264,11 +264,11 @@ public class StreamRunner {
             countDownLatch.countDown();
         }));
         if (!streamRunner.start()) {
-            logger.error("start stream[{}] failed", config.name);
+            logger.error("Start stream:{} failed", config.name);
             System.exit(1);
         }
-        logger.info("stream[{}] is working ...", config.name);
+        logger.info("Stream:{} is working ...", config.name);
         countDownLatch.await();
-        logger.info("stream[{}] finished working", config.name);
+        logger.info("Stream:{} has finished working", config.name);
     }
 }

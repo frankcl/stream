@@ -28,15 +28,14 @@ public class StreamRecordConverter extends ReceiveConverter {
 
     @Override
     public KVRecords convert(Context context, Object object) throws Exception {
-        if (!(object instanceof StreamRecord)) {
-            logger.error("convert record is null or not stream record");
+        if (!(object instanceof StreamRecord streamRecord)) {
+            logger.error("Convert record is null or not stream record");
             return null;
         }
-        StreamRecord streamRecord = (StreamRecord) object;
         context.put(StreamConstants.STREAM_RECORD_TYPE, streamRecord.getRecordType().name());
         KVRecord kvRecord = OTSConverter.convertStreamRecord(streamRecord);
         if (kvRecord == null) {
-            logger.error("convert stream record failed");
+            logger.error("Convert stream record failed");
             return null;
         }
         KVRecords kvRecords = new KVRecords();

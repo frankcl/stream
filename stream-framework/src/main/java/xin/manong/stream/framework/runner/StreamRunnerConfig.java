@@ -37,19 +37,19 @@ public class StreamRunnerConfig {
      */
     public boolean check() {
         if (StringUtils.isEmpty(name)) {
-            logger.error("stream name is empty");
+            logger.error("Stream name is empty");
             return false;
         }
         if (receivers == null || receivers.isEmpty()) {
-            logger.error("receivers are empty");
+            logger.error("Receivers are empty");
             return false;
         }
         if (processors == null || processors.isEmpty()) {
-            logger.error("processors are empty");
+            logger.error("Processors are empty");
             return false;
         }
         if (loggerKeys == null || loggerKeys.isEmpty()) {
-            logger.warn("logger keys are empty");
+            logger.warn("Logger keys are empty");
         }
         return true;
     }

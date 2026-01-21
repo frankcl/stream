@@ -43,8 +43,10 @@
 | aliyun-sdk-oss      | com.aliyun.oss          |    3.15.0    |   true   |
 | commons-cli         | commons-cli             |     1.3      |  false   |
 | commons-pool2       | org.apache.commons      |    2.11.1    |  false   |
+| elasticsearch-java  | co.elastic.clients      |    8.13.4    |   true   |
 | guava               | com.google.guava        |  33.3.1-jre  |   true   |
 | kafka-clients       | org.apache.kafka        |    3.9.0     |   true   |
+| milvus-sdk-java     | io.milvus               |    2.6.12    |   true   |
 | ons-client          | com.aliyun.openservices | 1.8.0.Final  |   true   |
 | redisson            | org.redisson            |    3.38.1    |   true   | 
 | rocketmq-client     | org.apache.rocketmq     |    5.3.3     |   true   | 

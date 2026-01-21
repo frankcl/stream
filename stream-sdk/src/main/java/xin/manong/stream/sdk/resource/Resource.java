@@ -76,7 +76,7 @@ public abstract class Resource<T> {
         try {
             object = create(configMap);
         } catch (Exception e) {
-            logger.error("build resource[{}] failed", name);
+            logger.error("Build resource:{} failed", name);
             logger.error(e.getMessage(), e);
         }
     }

@@ -46,11 +46,11 @@ public class ONSReceiver extends Receiver implements EventListener {
         logger.info("ONS receiver is starting ...");
         ONSConsumerConfig consumerConfig = JSON.toJavaObject(new JSONObject(configMap), ONSConsumerConfig.class);
         if (consumerConfig == null) {
-            logger.error("parse ONS consumer config failed");
+            logger.error("Parse ONS consumer config failed");
             return false;
         }
         if (receiveProcessor == null) {
-            logger.error("receive processor is null");
+            logger.error("Receive processor is null");
             return false;
         }
         processor = new ONSProcessor(receiveProcessor);

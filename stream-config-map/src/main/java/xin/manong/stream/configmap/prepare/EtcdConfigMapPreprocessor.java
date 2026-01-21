@@ -42,9 +42,9 @@ public class EtcdConfigMapPreprocessor extends Preprocessor {
     @Override
     public void process() {
         if (!(appAnnotation instanceof EnableEtcdConfigMap annotation)) {
-            logger.error("app annotation[{}] is not {}", appAnnotation.annotationType().getName(),
+            logger.error("App annotation:{} is not {}", appAnnotation.annotationType().getName(),
                     EnableEtcdConfigMap.class.getName());
-            throw new IllegalStateException(String.format("app annotation[%s] is not %s",
+            throw new IllegalStateException(String.format("App annotation:%s is not %s",
                     appAnnotation.annotationType().getName(), EnableEtcdConfigMap.class.getName()));
         }
         if (StringUtils.isEmpty(annotation.name())) {

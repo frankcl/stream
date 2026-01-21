@@ -65,6 +65,7 @@
         <aliyun-log-producer.version>0.3.12</aliyun-log-producer.version>
         <aliyun-mns.version>1.1.9.2</aliyun-mns.version>
         <elasticsearch-java.version>8.13.4</elasticsearch-java.version>
+        <milvus.version>2.6.12</milvus.version>
         <weapon.version>0.2.7</weapon.version>
         <stream.version>0.1.5</stream.version>
     </properties>
@@ -266,6 +267,11 @@
                 <groupId>co.elastic.clients</groupId>
                 <artifactId>elasticsearch-java</artifactId>
                 <version>${elasticsearch-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.milvus</groupId>
+                <artifactId>milvus-sdk-java</artifactId>
+                <version>${milvus.version}</version>
             </dependency>
             <dependency>
                 <groupId>xin.manong</groupId>

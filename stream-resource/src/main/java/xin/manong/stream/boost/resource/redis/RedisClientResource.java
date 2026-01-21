@@ -33,7 +33,7 @@ public class RedisClientResource extends Resource<RedisClient> {
             try {
                 redisMode = RedisMode.valueOf(value.trim());
             } catch (Exception e) {
-                logger.error("invalid redis mode[{}]", value.trim());
+                logger.error("Invalid redis mode[{}]", value.trim());
                 return null;
             }
         }
@@ -43,7 +43,7 @@ public class RedisClientResource extends Resource<RedisClient> {
                 RedisSingleConfig redisSingleConfig = JSON.toJavaObject(
                         new JSONObject(configMap), RedisSingleConfig.class);
                 if (redisSingleConfig == null || !redisSingleConfig.check()) {
-                    logger.error("redis single config is invalid");
+                    logger.error("Redis single config is invalid");
                     return null;
                 }
                 redisClient = RedisClient.buildRedisClient(redisSingleConfig);
@@ -52,7 +52,7 @@ public class RedisClientResource extends Resource<RedisClient> {
                 RedisClusterConfig redisClusterConfig = JSON.toJavaObject(
                         new JSONObject(configMap), RedisClusterConfig.class);
                 if (redisClusterConfig == null || !redisClusterConfig.check()) {
-                    logger.error("redis cluster config is invalid");
+                    logger.error("Redis cluster config is invalid");
                     return null;
                 }
                 redisClient = RedisClient.buildRedisClient(redisClusterConfig);
@@ -61,14 +61,14 @@ public class RedisClientResource extends Resource<RedisClient> {
                 RedisMasterSlaveConfig redisMasterSlaveConfig = JSON.toJavaObject(
                         new JSONObject(configMap), RedisMasterSlaveConfig.class);
                 if (redisMasterSlaveConfig == null || !redisMasterSlaveConfig.check()) {
-                    logger.error("redis master/slave config is invalid");
+                    logger.error("Redis master/slave config is invalid");
                     return null;
                 }
                 redisClient = RedisClient.buildRedisClient(redisMasterSlaveConfig);
                 break;
         }
-        if (redisClient != null) logger.info("create redis client success");
-        else logger.error("create redis client failed");
+        if (redisClient != null) logger.info("Create redis client success");
+        else logger.error("Create redis client failed");
         return redisClient;
     }
 
@@ -76,6 +76,6 @@ public class RedisClientResource extends Resource<RedisClient> {
     public void destroy() {
         if (object != null) object.close();
         object = null;
-        logger.info("destroy redis client success");
+        logger.info("Close redis client success");
     }
 }

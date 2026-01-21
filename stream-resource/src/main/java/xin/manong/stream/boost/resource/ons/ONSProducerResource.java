@@ -29,22 +29,22 @@ public class ONSProducerResource extends Resource<ONSProducer> {
         ONSProducerConfig producerConfig = JSON.toJavaObject(
                 new JSONObject(configMap), ONSProducerConfig.class);
         if (producerConfig == null) {
-            logger.error("parse ONS producer config failed");
+            logger.error("Parse ONS producer config failed");
             return null;
         }
         ONSProducer producer = new ONSProducer(producerConfig);
         if (!producer.init()) {
-            logger.error("init ONS producer failed");
+            logger.error("Init ONS producer failed");
             return null;
         }
-        logger.info("create ONS producer success");
+        logger.info("Create ONS producer success");
         return producer;
     }
 
     @Override
     public void destroy() {
         if (object != null) object.destroy();
-        logger.error("destroy ONS producer success");
+        logger.error("Destroy ONS producer success");
         object = null;
     }
 }

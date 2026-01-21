@@ -34,7 +34,7 @@ public class DummyHandler extends Plugin {
     public boolean init() {
         name = MapUtil.getValue(configMap, KEY_NAME, String.class);
         if (StringUtils.isEmpty(name)) {
-            logger.error("parameter[{}] is not found", KEY_NAME);
+            logger.error("Parameter:{} is not found", KEY_NAME);
             return false;
         }
         return true;
@@ -44,7 +44,7 @@ public class DummyHandler extends Plugin {
     public ProcessResult handle(KVRecord kvRecord) throws Exception {
         ProcessResult processResult = new ProcessResult();
         Long id = kvRecord.has(Constants.ID) ? (Long) kvRecord.get(Constants.ID) : null;
-        logger.info("record[{}] is processed in plugin[{}]", id, name);
+        logger.info("Record:{} is processed in plugin:{}", id, name);
         return processResult;
     }
 }

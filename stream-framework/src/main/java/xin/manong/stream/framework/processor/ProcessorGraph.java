@@ -43,7 +43,7 @@ public class ProcessorGraph {
             Processor processor = new Processor();
             if (!processor.init(processorConfig)) {
                 throw new UnacceptableException(String.format(
-                        "init processor[%s] failed", processorConfig.name));
+                        "Init processor:%s failed", processorConfig.name));
             }
             processors.put(processor.name, processor);
         }
@@ -52,14 +52,14 @@ public class ProcessorGraph {
             for (Map.Entry<String, String> entry : processorConfig.processors.entrySet()) {
                 String name = entry.getValue();
                 if (!processors.containsKey(name)) {
-                    logger.error("processor[{}] is not found for building graph", name);
+                    logger.error("Processor:{} is not found for building graph", name);
                     throw new UnacceptableException(String.format(
-                            "processor[%s] is not found for building graph", name));
+                            "Processor:%s is not found for building graph", name));
                 }
                 processor.setProcessor(entry.getKey(), processors.get(name));
             }
         }
-        logger.info("build processor graph success");
+        logger.info("Build processor graph success");
     }
 
     /**
@@ -77,7 +77,7 @@ public class ProcessorGraph {
             }
             closeProcessor.destroy();
         }
-        logger.info("close processor graph success");
+        logger.info("Close processor graph success");
     }
 
     /**
@@ -90,13 +90,13 @@ public class ProcessorGraph {
      */
     public final void process(String name, KVRecords kvRecords, Context context) throws Exception {
         if (StringUtils.isEmpty(name)) {
-            logger.warn("processor name is empty");
-            throw new UnacceptableException("processor name is empty");
+            logger.warn("Processor name is empty");
+            throw new UnacceptableException("Processor name is empty");
         }
         Processor processor = processors.getOrDefault(name, null);
         if (processor == null) {
-            logger.warn("processor is not found for name[{}]", name);
-            throw new UnacceptableException(String.format("processor is not found for name[%s]", name));
+            logger.warn("Processor is not found for name:{}", name);
+            throw new UnacceptableException(String.format("Processor is not found for name:%s", name));
         }
         processor.process(kvRecords, context);
     }
@@ -120,14 +120,14 @@ public class ProcessorGraph {
      */
     private void checkGraph() throws UnacceptableException {
         if (processorGraphConfig == null || processorGraphConfig.isEmpty()) {
-            logger.error("processor graph config is empty");
-            throw new UnacceptableException("processor graph config is empty");
+            logger.error("Processor graph config is empty");
+            throw new UnacceptableException("Processor graph config is empty");
         }
         Map<String, ProcessorConfig> processorConfigMap = processorGraphConfig.stream().collect(
                 Collectors.toMap(processorConfig -> processorConfig.name, processorConfig -> processorConfig));
         if (processorConfigMap.size() != processorGraphConfig.size()) {
-            logger.error("duplicated processor exists");
-            throw new UnacceptableException("duplicated processor exists");
+            logger.error("Duplicated processor exists");
+            throw new UnacceptableException("Duplicated processor exists");
         }
         for (String processorName : processorConfigMap.keySet()) {
             checkGraph(processorName, new HashSet<>(), processorConfigMap);
@@ -148,17 +148,17 @@ public class ProcessorGraph {
                             Map<String, ProcessorConfig> processorConfigMap)
             throws UnacceptableException {
         if (visitedProcessors.contains(processorName)) {
-            logger.error("check graph failed, find cycle in graph for processor[{}]", processorName);
+            logger.error("Check graph failed, find cycle in graph for processor:{}", processorName);
             throw new UnacceptableException(String.format(
-                    "check graph failed, find cycle in graph for processor[%s]", processorName));
+                    "Check graph failed, find cycle in graph for processor:%s", processorName));
         }
         visitedProcessors.add(processorName);
         ProcessorConfig processorConfig = processorConfigMap.get(processorName);
         for (String name : processorConfig.processors.values()) {
             if (!processorConfigMap.containsKey(name)) {
-                logger.error("processor[{}] is not found for checking graph", name);
+                logger.error("Processor:{} is not found for checking graph", name);
                 throw new UnacceptableException(String.format(
-                        "processor[%s] is not found for building graph", name));
+                        "Processor:%s is not found for building graph", name));
             }
             checkGraph(name, visitedProcessors, processorConfigMap);
         }

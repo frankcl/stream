@@ -30,17 +30,17 @@ public class RecordQueueResource extends Resource<BlockingQueue<KVRecords>> {
     public BlockingQueue<KVRecords> create(Map<String, Object> configMap) {
         Integer queueSize = MapUtil.getValue(configMap, KEY_QUEUE_SIZE, Integer.class);
         if (queueSize == null || queueSize <= 0) {
-            logger.error("invalid queue size[{}]", queueSize);
+            logger.error("Invalid queue size[{}]", queueSize);
             return null;
         }
-        logger.info("create record queue success");
+        logger.info("Create record queue success");
         return new ArrayBlockingQueue<>(queueSize);
     }
 
     @Override
     public void destroy() {
         if (object != null) object.clear();
-        logger.info("clear record queue success");
+        logger.info("Clear record queue success");
         object = null;
     }
 }

@@ -28,22 +28,22 @@ public class LogClientResource extends Resource<LogClient> {
     public LogClient create(Map<String, Object> configMap) {
         LogClientConfig clientConfig = JSON.toJavaObject(new JSONObject(configMap), LogClientConfig.class);
         if (clientConfig == null) {
-            logger.error("parse log client config failed");
+            logger.error("Parse log client config failed");
             return null;
         }
         LogClient logClient = new LogClient(clientConfig);
         if (!logClient.init()) {
-            logger.error("init log client failed");
+            logger.error("Init log client failed");
             return null;
         }
-        logger.info("create log client success");
+        logger.info("Create log client success");
         return logClient;
     }
 
     @Override
     public void destroy() {
         if (object != null) object.destroy();
-        logger.error("destroy log client success");
+        logger.error("Destroy log client success");
         object = null;
     }
 }

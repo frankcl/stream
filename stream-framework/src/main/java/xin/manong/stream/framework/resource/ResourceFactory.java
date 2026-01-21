@@ -24,7 +24,7 @@ public class ResourceFactory<T> implements PooledObjectFactory<Resource<T>> {
     private final ResourceConfig resourceConfig;
 
     public ResourceFactory(ResourceConfig resourceConfig) {
-        if (!resourceConfig.check()) throw new IllegalArgumentException("resource config is invalid");
+        if (!resourceConfig.check()) throw new IllegalArgumentException("Resource config is invalid");
         this.resourceConfig = resourceConfig;
     }
 
@@ -42,17 +42,17 @@ public class ResourceFactory<T> implements PooledObjectFactory<Resource<T>> {
         args.values = new Object[] { resourceConfig.name };
         Resource<T> resource = (Resource<T>) ReflectUtil.newInstance(resourceConfig.className, args);
         if (resource == null) {
-            logger.error("create resource[{}] failed for class[{}]",
+            logger.error("Create resource:{} failed for class:{}",
                     resourceConfig.name, resourceConfig.className);
             return null;
         }
         ResourceInjector.inject(resource, resourceConfig.configMap);
         resource.build(resourceConfig.configMap);
         if (resource.get() == null) {
-            logger.error("build resource[{}] failed", resourceConfig.name);
+            logger.error("Build resource:{} failed", resourceConfig.name);
             return null;
         }
-        logger.info("create resource success for name[{}]", resourceConfig.name);
+        logger.info("Create resource success for name:{}", resourceConfig.name);
         return new DefaultPooledObject<>(resource);
     }
 
@@ -66,11 +66,11 @@ public class ResourceFactory<T> implements PooledObjectFactory<Resource<T>> {
     public void destroyObject(PooledObject<Resource<T>> pooledObject) throws Exception {
         Resource<?> resource = pooledObject.getObject();
         if (resource == null) {
-            logger.warn("resource[{}] is null, ignore destroying", resourceConfig.name);
+            logger.warn("Resource:{} is null, ignore destroying", resourceConfig.name);
             return;
         }
         resource.destroy();
-        logger.info("destroy resource success for name[{}]", resourceConfig.name);
+        logger.info("Destroy resource success for name:{}", resourceConfig.name);
     }
 
     /**
@@ -83,7 +83,7 @@ public class ResourceFactory<T> implements PooledObjectFactory<Resource<T>> {
     public boolean validateObject(PooledObject<Resource<T>> pooledObject) {
         Resource<?> resource = pooledObject.getObject();
         if (resource == null) {
-            logger.warn("resource[{}] is null, validate failed", resourceConfig.name);
+            logger.warn("Resource:{} is null, validate failed", resourceConfig.name);
             return false;
         }
         return resource.validate();

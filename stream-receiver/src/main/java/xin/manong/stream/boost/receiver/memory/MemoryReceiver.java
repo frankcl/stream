@@ -33,7 +33,7 @@ public class MemoryReceiver extends Receiver {
 
     @Override
     public boolean start() {
-        logger.info("memory receiver is starting ...");
+        logger.info("Memory receiver is starting ...");
         MemoryReceiverConfig receiveConfig = JSON.toJavaObject(
                 new JSONObject(configMap), MemoryReceiverConfig.class);
         if (!receiveConfig.check()) return false;
@@ -43,14 +43,14 @@ public class MemoryReceiver extends Receiver {
             handlers[i] = new MemoryReceiveHandler(String.format("%s-%d", name, i), recordQueue, receiveProcessor);
             handlers[i].start();
         }
-        logger.info("memory receiver has been started");
+        logger.info("Memory receiver has been started");
         return true;
     }
 
     @Override
     public void stop() {
-        logger.info("memory receiver is stopping ...");
+        logger.info("Memory receiver is stopping ...");
         for (MemoryReceiveHandler handler : handlers) handler.stop();
-        logger.info("memory receiver has been stopped");
+        logger.info("Memory receiver has been stopped");
     }
 }

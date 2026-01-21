@@ -54,7 +54,6 @@ public class StreamManager {
         featureMap.put(StreamConstants.STREAM_RECORD_ID, kvRecord.getId());
         featureMap.put(StreamConstants.STREAM_RECORD_TYPE, kvRecord.getRecordType().name());
         if (streamLogger != null) streamLogger.commit(featureMap);
-        else logger.warn("stream logger not init");
     }
 
     /**
@@ -64,7 +63,6 @@ public class StreamManager {
      */
     public static void commitLog(Context context) {
         if (streamLogger != null) streamLogger.commit(context.getFeatureMap());
-        else logger.warn("stream logger not init");
     }
 
     /**
@@ -119,7 +117,7 @@ public class StreamManager {
     private static void appendStreamHistory(KVRecord kvRecord, Context context) {
         String receiver = (String) context.get(StreamConstants.STREAM_RECEIVER);
         if (StringUtils.isEmpty(receiver)) {
-            logger.warn("receiver name is not found from context");
+            logger.warn("Receiver name is not found from context");
             return;
         }
         String traceId = kvRecord.has(StreamConstants.STREAM_TRACE_ID) ?
@@ -127,7 +125,7 @@ public class StreamManager {
         String birthProcessor = kvRecord.has(StreamConstants.STREAM_BIRTH_PROCESSOR) ?
                 (String) kvRecord.get(StreamConstants.STREAM_BIRTH_PROCESSOR) : null;
         if (StringUtils.isEmpty(traceId) && StringUtils.isEmpty(birthProcessor)) {
-            logger.warn("missing fields[{}] and [{}]", StreamConstants.STREAM_TRACE_ID,
+            logger.warn("Missing fields:{} and {}", StreamConstants.STREAM_TRACE_ID,
                     StreamConstants.STREAM_BIRTH_PROCESSOR);
             return;
         }
@@ -152,7 +150,7 @@ public class StreamManager {
                     kvRecord.get(StreamConstants.STREAM_HISTORY) : new JSONArray();
             if (object instanceof String) object = JSON.parseArray((String) object);
             if (object instanceof JSONArray) return (JSONArray) object;
-            throw new Exception(String.format("invalid type[%s] for %s",
+            throw new Exception(String.format("Invalid type:%s for %s",
                     object.getClass().getName(), StreamConstants.STREAM_HISTORY));
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);

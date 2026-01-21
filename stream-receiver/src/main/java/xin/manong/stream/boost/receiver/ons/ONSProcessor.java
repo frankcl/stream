@@ -30,7 +30,7 @@ class ONSProcessor implements MessageListener {
             receiveProcessor.process(message);
             return Action.CommitMessage;
         } catch (Throwable e) {
-            logger.error("process message[{}] failed", message.getMsgID());
+            logger.error("Process message:{} failed", message.getMsgID());
             logger.error(e.getMessage(), e);
             return Action.ReconsumeLater;
         }

@@ -28,18 +28,18 @@ public class MNSClientResource extends Resource<MNSClient> {
     public MNSClient create(Map<String, Object> configMap) {
         MNSClientConfig clientConfig = JSON.toJavaObject(new JSONObject(configMap), MNSClientConfig.class);
         if (clientConfig == null) {
-            logger.error("parse MNS client config failed");
+            logger.error("Parse MNS client config failed");
             return null;
         }
         MNSClient mnsClient = new MNSClient(clientConfig);
-        logger.info("create MNS client success");
+        logger.info("Create MNS client success");
         return mnsClient;
     }
 
     @Override
     public void destroy() {
         if (object != null) object.close();
-        logger.info("close MNS client success");
+        logger.info("Close MNS client success");
         object = null;
     }
 }

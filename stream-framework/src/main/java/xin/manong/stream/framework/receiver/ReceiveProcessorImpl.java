@@ -64,7 +64,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
         Context context = new Context();
         try {
             kvRecords = converter == null ? (KVRecords) object : converter.convert(context, object);
-            if (kvRecords == null) throw new RuntimeException("convert record failed");
+            if (kvRecords == null) throw new RuntimeException("Convert record failed");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             context.put(StreamConstants.STREAM_EXCEPTION_RECEIVER, name);
@@ -110,7 +110,7 @@ public class ReceiveProcessorImpl extends ReceiveProcessor {
         kvRecord.put(StreamConstants.STREAM_DEBUG_MESSAGE, e.getMessage());
         kvRecord.put(StreamConstants.STREAM_EXCEPTION_STACK, ExceptionUtils.getStackTrace(e));
         logger.error(e.getMessage(), e);
-        logger.error("process record exception for receiver[{}]", name);
+        logger.error("Process record exception for receiver:{}", name);
     }
 
     /**

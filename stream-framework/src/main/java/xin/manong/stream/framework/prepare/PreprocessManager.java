@@ -26,12 +26,12 @@ public class PreprocessManager {
      */
     public static void register(Preprocessor preprocessor) {
         if (preprocessor == null) {
-            logger.warn("preprocessor is null, ignore registering");
+            logger.warn("Preprocessor is null, ignore registering");
             return;
         }
         synchronized (PreprocessManager.class) {
             preprocessors.add(preprocessor);
-            logger.info("register preprocessor[{}] success", preprocessor.getClass().getName());
+            logger.info("Register preprocessor:{} success", preprocessor.getClass().getName());
         }
     }
 

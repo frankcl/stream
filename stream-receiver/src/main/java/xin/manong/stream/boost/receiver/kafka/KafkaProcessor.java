@@ -29,7 +29,7 @@ public class KafkaProcessor implements KafkaRecordProcessor {
         try {
             receiveProcessor.process(consumerRecord);
         } catch (Throwable e) {
-            logger.error("process message[{}] failed", new String(consumerRecord.key(), StandardCharsets.UTF_8));
+            logger.error("Process message:{} failed", new String(consumerRecord.key(), StandardCharsets.UTF_8));
             logger.error(e.getMessage(), e);
             throw new Exception(e);
         }

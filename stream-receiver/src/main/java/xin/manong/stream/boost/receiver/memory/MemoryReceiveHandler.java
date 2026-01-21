@@ -48,7 +48,7 @@ public class MemoryReceiveHandler implements Runnable {
             } catch (InterruptedException e) {
                 logger.warn(e.getMessage(), e);
             } catch (Throwable e) {
-                logger.error("process memory record failed");
+                logger.error("Process memory record failed");
                 logger.error(e.getMessage(), e);
             }
         }
@@ -58,18 +58,18 @@ public class MemoryReceiveHandler implements Runnable {
      * 启动
      */
     public void start() {
-        logger.info("memory receive handler[{}] is starting ...", name);
+        logger.info("Memory receive handler:{} is starting ...", name);
         running = true;
         workThread = new Thread(this, name);
         workThread.start();
-        logger.info("memory receive handler[{}] has been started", name);
+        logger.info("Memory receive handler:{} has been started", name);
     }
 
     /**
      * 停止
      */
     public void stop() {
-        logger.info("memory receive handler[{}] is stopping ...", name);
+        logger.info("Memory receive handler:{} is stopping ...", name);
         running = false;
         if (workThread.isAlive()) workThread.interrupt();
         try {
@@ -77,6 +77,6 @@ public class MemoryReceiveHandler implements Runnable {
         } catch (InterruptedException e) {
             logger.error(e.getMessage(), e);
         }
-        logger.info("memory receive handler[{}] has been stopped", name);
+        logger.info("Memory receive handler:{} has been stopped", name);
     }
 }

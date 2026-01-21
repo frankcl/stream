@@ -32,11 +32,11 @@ public class ProcessorConfig {
      */
     public boolean check() {
         if (StringUtils.isEmpty(name)) {
-            logger.error("processor name is empty");
+            logger.error("Processor name is empty");
             return false;
         }
         if (StringUtils.isEmpty(className)) {
-            logger.error("processor[{}] class name is empty", name);
+            logger.error("Processor:{} class name is empty", name);
             return false;
         }
         if (StringUtils.isNotEmpty(pythonEnv)) pluginConfig.put(StreamConstants.PYTHON_ENV, pythonEnv);

@@ -33,8 +33,8 @@ public class ProcessorGraphFactory {
      */
     public static ProcessorGraph make(List<ProcessorConfig> graphConfig) throws UnacceptableException {
         if (graphConfig == null || graphConfig.isEmpty()) {
-            logger.error("processor graph config is empty");
-            throw new UnacceptableException("processor graph config is empty");
+            logger.error("Processor graph config is empty");
+            throw new UnacceptableException("Processor graph config is empty");
         }
         ProcessorGraph processorGraph = new ProcessorGraph(graphConfig);
         processorGraph.buildGraph();
@@ -49,12 +49,12 @@ public class ProcessorGraphFactory {
      */
     public static void clean(String processorGraphId) {
         if (!processorGraphMap.containsKey(processorGraphId)) {
-            logger.warn("processor graph[{}] is not found", processorGraphId);
+            logger.warn("Processor graph:{} is not found", processorGraphId);
             return;
         }
         ProcessorGraph processorGraph = processorGraphMap.remove(processorGraphId);
         if (processorGraph != null) processorGraph.closeGraph();
-        logger.info("clean processor graph[{}] success", processorGraphId);
+        logger.info("Clean processor graph:{} success", processorGraphId);
     }
 
     /**

@@ -52,7 +52,7 @@ public class Processor {
      * @return 成功返回true，否则返回false
      */
     public final boolean init(ProcessorConfig config) {
-        logger.info("init processor[{}] ...", config.name);
+        logger.info("Init processor:{} ...", config.name);
         if (!config.check()) return false;
         name = config.name;
         ReflectArgs args = new ReflectArgs();
@@ -62,13 +62,13 @@ public class Processor {
             plugin = (Plugin) ReflectUtil.newInstance(config.className, args);
             ResourceInjector.inject(plugin, config.pluginConfig);
             if (!plugin.init()) {
-                logger.error("init plugin[{}] failed", name);
+                logger.error("Init plugin:{} failed", name);
                 return false;
             }
-            logger.info("init processor[{}] success", name);
+            logger.info("Init processor:{} success", name);
             return true;
         } catch (Exception e) {
-            logger.error("init processor[{}] failed", name);
+            logger.error("Init processor:{} failed", name);
             logger.error(e.getMessage(), e);
             return false;
         }
@@ -78,13 +78,13 @@ public class Processor {
      * 销毁processor
      */
     public final void destroy() {
-        logger.info("processor[{}] is destroying ...", name);
+        logger.info("Processor:{} is destroying ...", name);
         if (plugin != null)  {
             plugin.flush();
             plugin.destroy();
         }
-        logger.info("process record count[{}] for processor[{}]", processCount, name);
-        logger.info("processor[{}] has been destroyed", name);
+        logger.info("Finally process record count:{} for processor:{}", processCount, name);
+        logger.info("Processor:{} has been destroyed", name);
     }
 
     /**
@@ -114,12 +114,12 @@ public class Processor {
             }
             if (++processCount % 1000 == 0) {
                 plugin.flush();
-                logger.info("process record count[{}] for processor[{}]", processCount, name);
+                logger.info("Process record count:{} for processor:{}", processCount, name);
             }
         }
         for (String fork : processResult.getForks()) {
             if (processors.containsKey(fork)) processors.get(fork).process(processResult.getRecords(fork), context);
-            else logger.debug("fork processor[{}] is not found for processor[{}]", fork, name);
+            else logger.debug("Fork processor:{} is not found for name:{}", fork, name);
         }
     }
 

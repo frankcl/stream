@@ -54,19 +54,19 @@ public class PythonPlugin extends Plugin {
     public boolean init() {
         String pythonEnv = (String) configMap.get(StreamConstants.PYTHON_ENV);
         if (StringUtils.isEmpty(pythonEnv)) {
-            logger.error("python env is empty");
+            logger.error("Python env is empty");
             return false;
         }
         String pythonFile = (String) configMap.get(StreamConstants.PYTHON_FILE);
         if (StringUtils.isEmpty(pythonFile)) {
-            logger.error("python plugin file is empty");
+            logger.error("Python plugin file is empty");
             return false;
         }
         pythonFile = pythonFile.endsWith(".py") ? pythonFile.substring(0, pythonFile.length() - 3) : pythonFile;
         pythonFile = pythonFile.replace("/", ".");
         String pythonClass = (String) configMap.get(StreamConstants.PYTHON_CLASS);
         if (StringUtils.isEmpty(pythonClass)) {
-            logger.error("python plugin class is empty");
+            logger.error("Python plugin class is empty");
             return false;
         }
         Context.Builder builder = GraalPyResources.contextBuilder(Paths.get(pythonEnv));
@@ -112,7 +112,7 @@ public class PythonPlugin extends Plugin {
         if (pluginInstance != null) {
             return pluginInstance.getMember("handle").execute(kvRecord).as(ProcessResult.class);
         }
-        logger.error("python plugin instance is not initialized");
-        throw new UnacceptableException("python plugin instance is not initialized");
+        logger.error("Python plugin instance is not initialized");
+        throw new UnacceptableException("Python plugin instance is not initialized");
     }
 }

@@ -34,11 +34,11 @@ public class ResourceConfig {
         if (num <= 0) num = DEFAULT_NUM;
         if (configMap == null) configMap = new HashMap<>();
         if (StringUtils.isEmpty(name)) {
-            logger.error("resource name is empty");
+            logger.error("Resource name is empty");
             return false;
         }
         if (StringUtils.isEmpty(className)) {
-            logger.error("resource class name is empty");
+            logger.error("Resource class name is empty");
             return false;
         }
         return true;

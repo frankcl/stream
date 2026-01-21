@@ -112,6 +112,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>io.milvus</groupId>
+            <artifactId>milvus-sdk-java</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>xin.manong</groupId>
             <artifactId>weapon-aliyun</artifactId>
         </dependency>

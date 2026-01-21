@@ -47,11 +47,11 @@ public class MNSReceiver extends Receiver implements EventListener {
         logger.info("MNS receiver is starting ...");
         MNSQueueConsumerConfig consumerConfig = JSON.toJavaObject(new JSONObject(configMap), MNSQueueConsumerConfig.class);
         if (consumerConfig == null) {
-            logger.error("parse MNS queue consumer config failed");
+            logger.error("Parse MNS queue consumer config failed");
             return false;
         }
         if (receiveProcessor == null) {
-            logger.error("receive processor is null");
+            logger.error("Receive processor is null");
             return false;
         }
         MNSProcessor processor = new MNSProcessor(receiveProcessor);

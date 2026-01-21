@@ -52,7 +52,7 @@ public class MapResource extends EtcdConfigResource<Map<String, Object>> {
     @Override
     public void processChanged(String key, String content) {
         try {
-            logger.info("Map config[{}] is changed, reload it", key);
+            logger.info("Map config:{} is changed, reload it", key);
             ConcurrentHashMap<String, Object> map = JSON.parseObject(content, new TypeReference<>() {});
             if (map.isEmpty()) return;
             if (object == null) {
@@ -61,7 +61,7 @@ public class MapResource extends EtcdConfigResource<Map<String, Object>> {
             }
             MapUtil.safeReplace(object, map);
         } catch (Exception e) {
-            logger.error("Reload map config[{}] failed", key);
+            logger.error("Reload map config:{} failed", key);
             logger.error(e.getMessage(), e);
         }
     }

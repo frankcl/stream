@@ -28,7 +28,7 @@ class MNSProcessor implements MessageProcessor {
             receiveProcessor.process(message);
             return true;
         } catch (Throwable e) {
-            logger.error("process message[{}] failed", message.getMessageId());
+            logger.error("Process message:{} failed", message.getMessageId());
             logger.error(e.getMessage(), e);
             return false;
         }
