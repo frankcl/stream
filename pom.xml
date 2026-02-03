@@ -7,7 +7,7 @@
     <groupId>xin.manong</groupId>
     <artifactId>stream</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
     <name>stream</name>
     <description>framework for building data stream</description>
     <url>https://github.com/frankcl/stream</url>
@@ -55,19 +55,21 @@
         <redisson.version>3.38.1</redisson.version>
         <kafka.version>4.0.0</kafka.version>
         <graalvm.version>24.2.2</graalvm.version>
+        <gson.version>2.13.1</gson.version>
         <jetcd.version>0.8.3</jetcd.version>
         <oss.version>3.18.1</oss.version>
         <ons-client.version>1.8.0.Final</ons-client.version>
         <tablestore.version>5.13.10</tablestore.version>
         <datahub.version>2.3.0-public</datahub.version>
         <rocketmq-client.version>5.3.3</rocketmq-client.version>
+        <dashscope.version>2.22.6</dashscope.version>
         <aliyun-log.version>0.6.82</aliyun-log.version>
         <aliyun-log-producer.version>0.3.12</aliyun-log-producer.version>
         <aliyun-mns.version>1.1.9.2</aliyun-mns.version>
         <elasticsearch-java.version>8.13.4</elasticsearch-java.version>
         <milvus.version>2.6.12</milvus.version>
-        <weapon.version>0.2.9</weapon.version>
-        <stream.version>0.1.5</stream.version>
+        <weapon.version>0.3.0</weapon.version>
+        <stream.version>0.1.6</stream.version>
     </properties>
 
     <profiles>
@@ -187,6 +189,11 @@
                 <version>${guava.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
                 <version>${redisson.version}</version>
@@ -262,6 +269,11 @@
                 <groupId>com.aliyun.mns</groupId>
                 <artifactId>aliyun-sdk-mns</artifactId>
                 <version>${aliyun-mns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>dashscope-sdk-java</artifactId>
+                <version>${dashscope.version}</version>
             </dependency>
             <dependency>
                 <groupId>co.elastic.clients</groupId>
