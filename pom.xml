@@ -7,7 +7,7 @@
     <groupId>xin.manong</groupId>
     <artifactId>stream</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.6</version>
+    <version>0.1.5</version>
     <name>stream</name>
     <description>framework for building data stream</description>
     <url>https://github.com/frankcl/stream</url>
@@ -69,7 +69,7 @@
         <elasticsearch-java.version>8.13.4</elasticsearch-java.version>
         <milvus.version>2.6.12</milvus.version>
         <weapon.version>0.3.0</weapon.version>
-        <stream.version>0.1.6</stream.version>
+        <stream.version>0.1.5</stream.version>
     </properties>
 
     <profiles>

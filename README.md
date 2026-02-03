@@ -27,11 +27,11 @@
 
  | 工件               | 分组         | 最新版本  | 是否必须 | 说明                  |
 |:-----------------|:-----------|:------|:-----|:--------------------|
- | stream-sdk       | xin.manong | 0.1.6 | 是    | 开发SDK，定义数据接收器、插件和资源 |
- | stream-framework | xin.manong | 0.1.6 | 是    | stream运行框架及环境       |
- | stream-resource  | xin.manong | 0.1.6 | 否    | 通用资源组件实现，按需引入       |
- | stream-receiver  | xin.manong | 0.1.6 | 否    | 通用数据接收器实现，按需引入      |
- | stream-plugin    | xin.manong | 0.1.6 | 否    | 通用插件实现，按需引入         |
+ | stream-sdk       | xin.manong | 0.1.5 | 是    | 开发SDK，定义数据接收器、插件和资源 |
+ | stream-framework | xin.manong | 0.1.5 | 是    | stream运行框架及环境       |
+ | stream-resource  | xin.manong | 0.1.5 | 否    | 通用资源组件实现，按需引入       |
+ | stream-receiver  | xin.manong | 0.1.5 | 否    | 通用数据接收器实现，按需引入      |
+ | stream-plugin    | xin.manong | 0.1.5 | 否    | 通用插件实现，按需引入         |
 
 ## 依赖三方库信息
 
