@@ -35,7 +35,7 @@ public class ResourceInjector {
         Matcher matcher = resourceNamePattern.matcher(resource.name());
         if (!matcher.matches()) return resource.name().trim();
         String name = matcher.group(1).trim();
-        if (configMap == null || !configMap.containsKey(name)) {
+        if (resource.required() && (configMap == null || !configMap.containsKey(name))) {
             String message = String.format("Resource name is not found in config map for key:%s", name);
             logger.error(message);
             throw new IllegalStateException(message);
@@ -54,11 +54,8 @@ public class ResourceInjector {
      */
     private static Object getResource(String resourceName, Field field) {
         Class<?> fieldClass = field.getType();
-        if (StringUtils.isEmpty(resourceName)) {
-            return ResourceManager.getResource(fieldClass);
-        } else {
-            return ResourceManager.getResource(resourceName, fieldClass);
-        }
+        if (StringUtils.isEmpty(resourceName)) return null;
+        return ResourceManager.getResource(resourceName, fieldClass);
     }
 
     /**

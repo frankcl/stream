@@ -20,6 +20,11 @@ public class ElasticSearchClientResource extends Resource<ElasticSearchClient> {
 
     private static final Logger logger = LoggerFactory.getLogger(ElasticSearchClientResource.class);
 
+    @xin.manong.stream.sdk.annotation.Resource(name = "${password}", required = false)
+    protected StringBuilder password;
+    @xin.manong.stream.sdk.annotation.Resource(name = "${apiKey}", required = false)
+    protected StringBuilder apiKey;
+
     public ElasticSearchClientResource(String name) {
         super(name);
     }
@@ -33,6 +38,8 @@ public class ElasticSearchClientResource extends Resource<ElasticSearchClient> {
             return null;
         }
         ElasticSearchClient client = new ElasticSearchClient(config);
+        if (password != null) config.password = password.toString();
+        if (apiKey != null) config.apiKey = apiKey.toString();
         if (!client.open()) return null;
         return client;
     }

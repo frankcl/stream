@@ -4,6 +4,8 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import xin.manong.stream.sdk.resource.Resource;
 
+import java.time.Duration;
+
 /**
  * 资源池化管理
  *
@@ -20,6 +22,7 @@ public class ResourcePool<T> extends GenericObjectPool<Resource<T>> {
         poolConfig.setMinIdle(0);
         poolConfig.setTestOnReturn(true);
         poolConfig.setTestOnBorrow(true);
+        poolConfig.setMaxWait(Duration.ofSeconds(3));
         setConfig(poolConfig);
     }
 }
