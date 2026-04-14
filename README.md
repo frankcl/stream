@@ -1,10 +1,69 @@
 # 流式数据处理框架stream
 
 ## 特点
-* 快速搭建数据处理流程，框架负责解决业务无关逻辑，例如切面日志记录，流程监控报警等
-* 业务逻辑插件化：不同业务通过插件解耦，数据在插件中处理，在插件间传递流转，提高业务代码可读性
-* 配置化流程编排：用户通过配置文件编排数据接收器及插件，构建数据处理流程，支持多流程、多分支拓扑，灵活方便
-* 重复利用：框架实现通用数据接收器、插件及资源，用户不用重复实现，利用已有实现配置即用
+
+- **快速搭建**：框架负责日志记录、流程监控、报警等业务无关逻辑，开发者专注业务实现
+- **插件化**：业务逻辑通过插件（Plugin）解耦，数据在插件间传递流转，提高可读性和可维护性
+- **配置化编排**：通过 JSON 配置文件编排接收器（Receiver）与插件，支持多流程、多分支 DAG 拓扑
+- **资源池化**：连接、客户端等高开销资源统一管理，支持对象池化和依赖注入
+- **开箱即用**：内置 Kafka、RocketMQ、ElasticSearch、Redis、Milvus 等常用组件实现
+
+## 架构概览
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        StreamRunner                             │
+│                      (应用生命周期管理)                            │
+├──────────┬───────────────────────────────────┬──────────────────┤
+│          │                                   │                  │
+│  ReceiveManager        ProcessorGraph       ResourceManager     │
+│  (接收器管理)          (插件DAG拓扑)          (资源池管理)         │
+│          │                                   │                  │
+│  ┌───────┴───────┐   ┌──────────────────┐   ┌┴───────────────┐ │
+│  │ReceiveController│  │    Processor     │   │  ResourcePool  │ │
+│  │  ┌──────────┐  │  │  ┌──────────┐   │   │  ┌──────────┐  │ │
+│  │  │ Receiver │  │──│  │  Plugin   │   │──│  │ Resource  │  │ │
+│  │  └──────────┘  │  │  └──────────┘   │   │  └──────────┘  │ │
+│  │  ┌──────────┐  │  │    fork路由      │   │   对象池化      │ │
+│  │  │Converter │  │  │  ┌──┐ ┌──┐      │   │   @Resource    │ │
+│  │  └──────────┘  │  │  │P1│→│P2│→...  │   │   依赖注入      │ │
+│  └────────────────┘  │  └──┘ └──┘      │   └────────────────┘ │
+│                      └──────────────────┘                      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### 数据流
+
+```
+外部数据源 (Kafka/RocketMQ/OTS/...)
+    ↓
+Receiver (接收原始数据)
+    ↓
+ReceiveConverter (转换为 KVRecords)
+    ↓
+ProcessorGraph (DAG 拓扑路由)
+    ↓
+Plugin.handle(KVRecord) → ProcessResult (fork 分支路由)
+    ↓                          ↓
+Plugin A (fork=success)    Plugin B (fork=fail)
+    ↓
+Plugin C (fork=next)
+```
+
+**核心数据结构**：框架统一使用 `KVRecord`（键值记录）作为数据载体，所有数据源通过 `ReceiveConverter` 转换为 KVRecords 后进入处理管道。
+
+## 模块结构
+
+```
+stream/
+├── stream-sdk           # 开发SDK：核心抽象和注解（Plugin, Receiver, Resource）
+├── stream-framework     # 运行框架：生命周期管理、DAG拓扑、资源池化
+├── stream-receiver      # 通用接收器：Kafka, RocketMQ, ONS, MNS, OTS 等
+├── stream-resource      # 通用资源：Redis, ElasticSearch, Milvus, OSS 等
+├── stream-plugin        # 通用插件：分布式限流等
+├── stream-config-map    # 配置管理：基于 etcd 的动态配置
+└── stream-test          # 测试样例：示例应用
+```
 
 ## 指南
 
